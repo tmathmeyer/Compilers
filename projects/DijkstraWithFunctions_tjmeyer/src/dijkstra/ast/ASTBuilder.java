@@ -10,11 +10,17 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import dijkstra.lexparse.DijkstraBaseVisitor;
 import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.AlternativeStatementContext;
+import dijkstra.lexparse.DijkstraParser.ArgListContext;
+import dijkstra.lexparse.DijkstraParser.ArgumentContext;
 import dijkstra.lexparse.DijkstraParser.ArrayDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.AssignStatementContext;
+import dijkstra.lexparse.DijkstraParser.CompDeclOrStatementContext;
+import dijkstra.lexparse.DijkstraParser.CompoundBodyContext;
+import dijkstra.lexparse.DijkstraParser.CompoundStatementContext;
 import dijkstra.lexparse.DijkstraParser.DijkstraTextContext;
 import dijkstra.lexparse.DijkstraParser.ExprContext;
 import dijkstra.lexparse.DijkstraParser.ExpressionListContext;
+import dijkstra.lexparse.DijkstraParser.FunctionCallContext;
 import dijkstra.lexparse.DijkstraParser.FunctionDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.GuardContext;
 import dijkstra.lexparse.DijkstraParser.GuardedStatementListContext;
@@ -24,7 +30,9 @@ import dijkstra.lexparse.DijkstraParser.IterativeStatementContext;
 import dijkstra.lexparse.DijkstraParser.OutputStatementContext;
 import dijkstra.lexparse.DijkstraParser.ParameterContext;
 import dijkstra.lexparse.DijkstraParser.ParameterListContext;
+import dijkstra.lexparse.DijkstraParser.ProcedureDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.ProgramContext;
+import dijkstra.lexparse.DijkstraParser.ReturnStatementContext;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
 import dijkstra.lexparse.DijkstraParser.TypeListContext;
 import dijkstra.lexparse.DijkstraParser.VarContext;
@@ -33,11 +41,11 @@ import dijkstra.lexparse.DijkstraParser.VariableDeclarationContext;
 
 public class ASTBuilder extends DijkstraBaseVisitor<AST>
 {
-	private final DijkstraParser p;
+	//private final DijkstraParser p;
 	
 	public ASTBuilder(DijkstraParser b)
 	{
-		p = b;
+		//p = b;
 	}
 
 	@Override
@@ -67,7 +75,24 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitAssignStatement(AssignStatementContext ctx)
 	{
-		return new AssignmentAST(getVarsFromList(ctx.varList()), getExprsFromList(ctx.expressionList()).stream().map(e -> e.accept(this)));
+		return new AssignmentAST(getVarsFromList(ctx.varList()).stream().map(a -> {
+			return a.accept(this);
+		}), getExprsFromList(ctx.expressionList()).stream().map(e -> e.accept(this)));
+	}
+	
+	@Override
+	public AST visitVar(VarContext ctx)
+	{
+		if (ctx.ID() != null)
+		{
+			return new VarAST(ctx.getText());
+		}
+		if (ctx.arrayAccessor() != null)
+		{
+			return new ArrayAccessAST(ctx.arrayAccessor().ID().getText(), ctx.arrayAccessor().expr().accept(this));
+		}
+		
+		return null;
 	}
 	
 	@Override
@@ -123,6 +148,37 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		return new FunctionAST.Param(ctx.type(), ctx.ID());
 	}
 	
+	@Override
+	public AST visitCompoundStatement(CompoundStatementContext ctx)
+	{
+		return ctx.compoundBody().accept(this);
+	}
+	
+	@Override
+	public AST visitCompoundBody(CompoundBodyContext ctx)
+	{
+		return new CompoundBodyAST(getCompoundBodyList(ctx).stream().map(a -> a.accept(this)));
+	}
+	
+	@Override
+	public AST visitReturnStatement(ReturnStatementContext ctx)
+	{
+		return new ReturnAST(getExprsFromList(ctx.expressionList()).stream().map(a -> a.accept(this)));
+	}
+	
+	@Override
+	public AST visitFunctionCall(FunctionCallContext ctx)
+	{
+		return new FunctionCallAST(ctx.ID().getText(), getArgList(ctx.argList()).stream().map(a -> a.accept(this)));
+	}
+	
+	@Override
+	public AST visitProcedureDeclaration(ProcedureDeclarationContext ctx)
+	{
+		return new ProcedureAST(ctx.ID().getText(),
+						 		getParams(ctx.parameterList()).stream().map(e -> e.accept(this)),
+						 		ctx.compoundStatement().accept(this));
+	}
 	
 	@Override
 	public AST visitGuardedStatementList(GuardedStatementListContext ctx)
@@ -182,7 +238,6 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		List<ParameterContext> vc = new LinkedList<>();
 		while(plc != null  &&  plc.parameter() != null)
 		{
-			System.out.println(plc.parameter().toStringTree(p));
 			vc.add(plc.parameter());
 			plc = plc.parameterList();
 		}
@@ -196,6 +251,28 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		{
 			vc.add(plc.type());
 			plc = plc.typeList();
+		}
+		return vc;
+	}
+	
+	private List<CompDeclOrStatementContext> getCompoundBodyList(CompoundBodyContext cbc)
+	{
+		List<CompDeclOrStatementContext> vc = new LinkedList<>();
+		while(cbc != null  &&  cbc.compDeclOrStatement() != null)
+		{
+			vc.add(cbc.compDeclOrStatement());
+			cbc = cbc.compoundBody();
+		}
+		return vc;
+	}
+	
+	private List<ArgumentContext> getArgList(ArgListContext alc)
+	{
+		List<ArgumentContext> vc = new LinkedList<>();
+		while(alc != null  &&  alc.argument() != null)
+		{
+			vc.add(alc.argument());
+			alc = alc.argList();
 		}
 		return vc;
 	}

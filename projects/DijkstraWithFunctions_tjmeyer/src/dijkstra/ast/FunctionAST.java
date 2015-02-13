@@ -2,6 +2,7 @@ package dijkstra.ast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -37,9 +38,11 @@ public class FunctionAST implements AST
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder("fun " + name + "(<>)" + String.join(",", types) + "{\n");
+		LinkedList<String> argsS = new LinkedList<>();
+		args.stream().forEach(a -> argsS.push(a.toString()));
+		StringBuilder sb = new StringBuilder("fun " + name + "(" + String.join(",", argsS) + ") : " + String.join(",", types) + " {\n");
 		sb.append(body);
-		sb.append("\n}");
+		sb.append("}");
 		return sb.toString();
 	}
 	

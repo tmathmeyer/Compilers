@@ -55,11 +55,12 @@ guardedStatementList :	guard | guardedStatementList guard;
 
 
 // procedures and procedure calls
-procedureDeclaration :	PROC ID LPAR parameter* RPAR compoundStatement;
+procedureDeclaration :	PROC ID LPAR RPAR compoundStatement
+						| PROC ID LPAR parameterList RPAR compoundStatement;
 
 // function definitions
 functionDeclaration :	FUN ID LPAR RPAR COLON typeList compoundStatement
-						|FUN ID LPAR parameterList RPAR COLON typeList compoundStatement;
+						| FUN ID LPAR parameterList RPAR COLON typeList compoundStatement;
 
 // array declarations
 arrayDeclaration :		type LBRACK expr RBRACK idList separator;
