@@ -14,11 +14,11 @@ public class CompoundBodyAST implements AST
 
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("{\n");
 		for(AST t : parts)
 		{
 			sb.append("  ").append(t.toString()).append("\n");
 		}
-		return sb.toString();
+		return sb.append("}").toString();
 	}
 }

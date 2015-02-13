@@ -85,7 +85,7 @@ statement :				assignStatement
 assignStatement :		varList ASSIGN expressionList SEMICOLON?;
 inputStatement :		INPUT ID SEMICOLON? ;
 outputStatement :		PRINT expr SEMICOLON? ;
-iterativeStatement :	DO guardedStatementList OD ;
+iterativeStatement :	DO guard+ OD ;
 compoundStatement :		LBRACE compoundBody RBRACE ;
 alternativeStatement :	IF guard+ FI ;
 returnStatement :		(RETURN | RETURN expressionList) SEMICOLON?;

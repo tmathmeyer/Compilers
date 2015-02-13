@@ -2,8 +2,6 @@ package dijkstra.ast;
 
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
-import dijkstra.ast.list.List;
-
 public class TerminalAST implements AST
 {
 	private final String name;

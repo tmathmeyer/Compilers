@@ -117,7 +117,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitIterativeStatement(IterativeStatementContext ctx)
 	{
-		return ctx.guardedStatementList().accept(this);
+		return new IterativeAST(ctx.guard().stream().map(m -> m.accept(this)));
 	}
 	
 	@Override
@@ -179,6 +179,9 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 						 		getParams(ctx.parameterList()).stream().map(e -> e.accept(this)),
 						 		ctx.compoundStatement().accept(this));
 	}
+	
+	
+	
 	
 	@Override
 	public AST visitGuardedStatementList(GuardedStatementListContext ctx)

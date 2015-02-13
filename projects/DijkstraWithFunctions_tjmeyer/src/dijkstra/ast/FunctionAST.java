@@ -40,9 +40,8 @@ public class FunctionAST implements AST
 	{
 		LinkedList<String> argsS = new LinkedList<>();
 		args.stream().forEach(a -> argsS.push(a.toString()));
-		StringBuilder sb = new StringBuilder("fun " + name + "(" + String.join(",", argsS) + ") : " + String.join(",", types) + " {\n");
+		StringBuilder sb = new StringBuilder("fun " + name + "(" + String.join(",", argsS) + ") : " + String.join(",", types));
 		sb.append(body);
-		sb.append("}");
 		return sb.toString();
 	}
 	

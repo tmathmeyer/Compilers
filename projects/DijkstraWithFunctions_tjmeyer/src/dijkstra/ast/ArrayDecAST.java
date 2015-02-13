@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import dijkstra.lexparse.DijkstraParser.TypeContext;
 
+
 public class ArrayDecAST implements AST
 {
 	private final String arrayType;

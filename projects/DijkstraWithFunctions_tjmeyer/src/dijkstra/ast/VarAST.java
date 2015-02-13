@@ -3,7 +3,7 @@ package dijkstra.ast;
 public class VarAST implements AST
 {
 	private final String name;
-	private String type;
+	//private String type;
 	
 	public VarAST(String text)
 	{

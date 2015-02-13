@@ -32,9 +32,8 @@ public class ProcedureAST implements AST
 	{
 		LinkedList<String> argsS = new LinkedList<>();
 		args.stream().forEach(a -> argsS.push(a.toString()));
-		StringBuilder sb = new StringBuilder("proc " + procname + "(" + String.join(",", argsS) + ")" + " {\n");
+		StringBuilder sb = new StringBuilder("proc " + procname + "(" + String.join(",", argsS) + ")");
 		sb.append(body);
-		sb.append("}");
 		return sb.toString();
 	}
 
