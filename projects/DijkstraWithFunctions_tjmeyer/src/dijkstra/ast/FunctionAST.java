@@ -1,38 +1,27 @@
 package dijkstra.ast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import dijkstra.ds.ScopedSet;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
 
 public class FunctionAST implements AST
 {
 	private final String name;
-	private final List<String> types = new ArrayList<>();
-	private final List<Param> args = new ArrayList<>();
+	private final ArrayList<String> types = new ArrayList<>();
+	private final ArrayList<Param> args = new ArrayList<>();
 	private final AST body;
 	
 	public FunctionAST(String n, Stream<AST> a, Stream<String> t, AST b)
 	{
 		name = n;
 		body = b;
-		Iterator<Param> ar = a.map(x -> Param.fromAST(x)).iterator();
-		Iterator<String> ty = t.iterator();
-		
-		while(ar.hasNext())
-		{
-			args.add(ar.next());
-		}
-		
-		while(ty.hasNext())
-		{
-			types.add(ty.next());
-		}
+		a.map(x -> Param.fromAST(x)).forEach(X -> args.add(X));
+		t.forEach(X -> types.add(X));
 	}
 
 	@Override
@@ -46,13 +35,30 @@ public class FunctionAST implements AST
 	}
 	
 	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		ScopedSet<String> current = new ScopedSet<>(this);
+		scope.insert(name);
+		
+		for(Param p : args)
+		{
+			current.insert(p.name);
+		}
+		
+		body.getDeclaredVariables(current);
+		
+		scope.merge(current.finish());
+		return scope;
+	}
+	
 	
 	
 	
 	public static class Param implements AST
 	{
 		private String type;
-		private String name;
+		String name;
 		
 		public Param(String t, String n)
 		{

@@ -1,5 +1,7 @@
 package dijkstra.ast;
 
+import dijkstra.ds.ScopedSet;
+
 public class VarAST implements AST
 {
 	private final String name;
@@ -14,6 +16,13 @@ public class VarAST implements AST
 	public String toString()
 	{
 		return name;
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		scope.insert(name);
+		return scope;
 	}
 
 }

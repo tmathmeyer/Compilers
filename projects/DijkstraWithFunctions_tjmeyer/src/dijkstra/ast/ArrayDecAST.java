@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import dijkstra.ds.ScopedSet;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
-
 
 public class ArrayDecAST implements AST
 {
-	private final String arrayType;
-	private final AST arraySize;
-	private final List<String> ids = new LinkedList<>();
+	private final String arrayType; // a type
+	private final AST arraySize; // an expression that evaluates to a number
+	private final List<String> ids = new LinkedList<>(); // a series of names
 	
 	public ArrayDecAST(TypeContext type, AST expr, List<TerminalNode> iDsFromList)
 	{
@@ -29,5 +29,16 @@ public class ArrayDecAST implements AST
 	public String toString()
 	{
 		return arrayType + "[" + arraySize + "] " + String.join(",", ids);
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		for(String p : ids)
+		{
+			scope.insert(p);
+		}
+		
+		return scope;
 	}
 }

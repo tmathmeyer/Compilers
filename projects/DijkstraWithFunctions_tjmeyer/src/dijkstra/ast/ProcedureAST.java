@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import dijkstra.ast.FunctionAST.Param;
+import dijkstra.ds.ScopedSet;
 
 public class ProcedureAST implements AST
 {
@@ -35,6 +36,23 @@ public class ProcedureAST implements AST
 		StringBuilder sb = new StringBuilder("proc " + procname + "(" + String.join(",", argsS) + ")");
 		sb.append(body);
 		return sb.toString();
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		ScopedSet<String> current = new ScopedSet<>(this);
+		scope.insert(procname);
+		
+		for(Param p : args)
+		{
+			current.insert(p.name);
+		}
+		
+		body.getDeclaredVariables(current);
+		
+		scope.merge(current.finish());
+		return scope;
 	}
 
 }

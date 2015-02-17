@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import dijkstra.ds.ScopedSet;
+
 public class IterativeAST implements AST
 {
 
@@ -32,4 +34,17 @@ private final List<AST> conditionals = new LinkedList<>();
 		return sb.toString();
 	}
 
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		ScopedSet<String> current = new ScopedSet<>(this);
+		
+		for(AST p : conditionals)
+		{
+			p.getDeclaredVariables(current);
+		}
+		
+		scope.merge(current.finish());
+		return scope;
+	}
 }

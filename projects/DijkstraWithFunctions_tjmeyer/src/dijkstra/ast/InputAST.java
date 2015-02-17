@@ -1,34 +1,44 @@
 package dijkstra.ast;
 
+import dijkstra.ds.ScopedSet;
 import dijkstra.lexparse.DijkstraParser.InputStatementContext;
 
 public class InputAST implements AST
 {
-	private final String symbolString;
-	private Type inputVariableType;
+	private final TerminalAST input;
 	
 	public InputAST(InputStatementContext ctx)
 	{
-		this.symbolString = ctx.ID().getText();
+		input = new TerminalAST(ctx.ID().getText());
+	}
+
+	public InputAST(TerminalAST in)
+	{
+		input = in;
 	}
 
 	public String getSymbolString()
 	{
-		return symbolString;
+		return input.toString();
 	}
 
 	public Type getInputVariableType()
 	{
-		return inputVariableType;
+		return input.getT();
 	}
 
 	public void setInputVariableType(Type inputVariableType)
 	{
-		this.inputVariableType = inputVariableType;
+		input.setT(inputVariableType);
 	}
 	
 	public String toString()
 	{
-		return "input " + symbolString;
+		return "input " + input;
+	}
+	
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		return input.getDeclaredVariables(scope);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import dijkstra.ds.ScopedSet;
+
 
 public class ProgramAST implements AST
 {
@@ -29,5 +31,18 @@ public class ProgramAST implements AST
 		}
 		
 		return s.toString();
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		scope = new ScopedSet<String>(this);
+		
+		for(AST t : children)
+		{
+			t.getDeclaredVariables(scope);
+		}
+		
+		return scope;
 	}
 }

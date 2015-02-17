@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import dijkstra.ds.ScopedSet;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
 
 public class VariableDeclarationAST implements AST
@@ -24,6 +25,17 @@ public class VariableDeclarationAST implements AST
 	public String toString()
 	{
 		return type + " " + String.join(",", decs);
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		for(String p : decs)
+		{
+			scope.insert(p);
+		}
+		
+		return scope;
 	}
 
 }

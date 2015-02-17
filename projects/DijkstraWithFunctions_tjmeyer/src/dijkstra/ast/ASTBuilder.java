@@ -1,5 +1,6 @@
 package dijkstra.ast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -238,7 +239,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	
 	private List<ParameterContext> getParams(ParameterListContext plc)
 	{
-		List<ParameterContext> vc = new LinkedList<>();
+		ArrayList<ParameterContext> vc = new ArrayList<>();
 		while(plc != null  &&  plc.parameter() != null)
 		{
 			vc.add(plc.parameter());

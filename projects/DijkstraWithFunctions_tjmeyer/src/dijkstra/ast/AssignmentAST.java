@@ -3,6 +3,8 @@ package dijkstra.ast;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 
+import dijkstra.ds.ScopedSet;
+
 public class AssignmentAST implements AST
 {
 	private final LinkedList<AST> assignTo = new LinkedList<>();
@@ -24,6 +26,16 @@ public class AssignmentAST implements AST
 		assignFrom.forEach(a -> right.push(a.toString()));
 		
 		return String.join(",", left) + " <- " + String.join(",", right);
+	}
+	
+	@Override
+	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
+	{
+		for(AST t : assignTo)
+		{
+			t.getDeclaredVariables(scope);
+		}
+		return scope;
 	}
 
 }
