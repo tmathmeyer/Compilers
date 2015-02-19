@@ -1,44 +1,101 @@
 package dijkstra.ast;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import dijkstra.ds.ScopedSet;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
+import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Type;
+import dijkstra.unify.TypeUnificationTable;
 
 public class ArrayDecAST implements AST
 {
-	private final String arrayType; // a type
+	private final Type type; // a type
 	private final AST arraySize; // an expression that evaluates to a number
-	private final List<String> ids = new LinkedList<>(); // a series of names
+	private final List<TerminalAST> ids = new LinkedList<>(); // a series of names
 	
 	public ArrayDecAST(TypeContext type, AST expr, List<TerminalNode> iDsFromList)
 	{
-		arrayType = type.getText();
+		this.type = Type.getArrayOf(Type.fromString(type.getText()));
 		arraySize = expr;
 		Iterator<String> it = iDsFromList.stream().map(e -> e.getText()).iterator();
 		while(it.hasNext())
 		{
-			ids.add(it.next());
+			ids.add(new TerminalAST(it.next(), this.type));
+		}
+	}
+
+	private ArrayDecAST(Type at, AST t, List<String> newdecs)
+	{
+		type = at;
+		arraySize = t;
+		for(String s : newdecs)
+		{
+			ids.add(new TerminalAST(s, type));
 		}
 	}
 
 	public String toString()
 	{
-		return arrayType + "[" + arraySize + "] " + String.join(",", ids);
+		List<String> strings = new LinkedList<>();
+		
+		ids.stream().forEach(a -> strings.add(a.toString()));
+		
+		return type + "[" + arraySize + "] " + String.join(",", strings);
 	}
 	
 	@Override
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{
-		for(String p : ids)
+		for(TerminalAST p : ids)
 		{
-			scope.insert(p);
+			scope.insert(p.toString());
 		}
 		
 		return scope;
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> s)
+	{
+		List<String> newdecs = new ArrayList<>();
+		for(TerminalAST a : ids)
+		{
+			boolean flagged = true;
+			for(VarBind vb : s)
+			{
+				if (a.toString().equals(vb.old))
+				{
+					newdecs.add(vb.New);
+					flagged = false;
+				}
+			}
+			if (flagged) {
+				newdecs.add(a.toString());
+			}
+		}
+		
+		AST t = arraySize.renameVars(s);
+		
+		return new ArrayDecAST(type, t, newdecs);
+	}
+	
+	@Override
+	public AST renameScoping(ScopedSet<VarBind> vb)
+	{
+		return renameVars(vb.getScopeVars(arraySize)).renameVars(vb.getScopeVars(this));
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		tut.register(arraySize, Type.INT);
+		arraySize.buildTUT(tut);
+		ids.stream().forEach(a -> a.buildTUT(tut));
 	}
 }

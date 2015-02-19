@@ -89,10 +89,10 @@ iterativeStatement :	DO guard+ OD ;
 compoundStatement :		LBRACE compoundBody RBRACE ;
 alternativeStatement :	IF guard+ FI ;
 returnStatement :		(RETURN | RETURN expressionList) SEMICOLON?;
-procedureCall :			ID LPAR RPAR
-						| ID LPAR argList RPAR;
-functionCall :			ID LPAR RPAR
-						| ID LPAR argList RPAR;
+procedureCall :			ID LPAR RPAR SEMICOLON?
+						| ID LPAR argList RPAR SEMICOLON?;
+functionCall :			ID LPAR RPAR SEMICOLON?
+						| ID LPAR argList RPAR SEMICOLON?;
 
 
 compoundBody :			compDeclOrStatement 

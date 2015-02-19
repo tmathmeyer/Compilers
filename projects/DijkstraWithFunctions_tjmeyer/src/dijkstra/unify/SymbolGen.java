@@ -2,10 +2,10 @@ package dijkstra.unify;
 
 public class SymbolGen
 {
-	private static int ctr = (int) (Math.random() * Integer.MAX_VALUE);
+	private static int ctr = (int) (Math.random() * 0);
 	
 	public static String gensym()
 	{
-		return "__gen__"+ctr++;
+		return "_g_"+ctr++;
 	}
 }

@@ -31,6 +31,7 @@ import dijkstra.lexparse.DijkstraParser.IterativeStatementContext;
 import dijkstra.lexparse.DijkstraParser.OutputStatementContext;
 import dijkstra.lexparse.DijkstraParser.ParameterContext;
 import dijkstra.lexparse.DijkstraParser.ParameterListContext;
+import dijkstra.lexparse.DijkstraParser.ProcedureCallContext;
 import dijkstra.lexparse.DijkstraParser.ProcedureDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.ProgramContext;
 import dijkstra.lexparse.DijkstraParser.ReturnStatementContext;
@@ -86,7 +87,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	{
 		if (ctx.ID() != null)
 		{
-			return new VarAST(ctx.getText());
+			return new TerminalAST(ctx.getText());
 		}
 		if (ctx.arrayAccessor() != null)
 		{
@@ -171,6 +172,12 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	public AST visitFunctionCall(FunctionCallContext ctx)
 	{
 		return new FunctionCallAST(ctx.ID().getText(), getArgList(ctx.argList()).stream().map(a -> a.accept(this)));
+	}
+	
+	@Override
+	public AST visitProcedureCall(ProcedureCallContext ctx)
+	{
+		return new ProcedureCallAST(ctx.ID().getText(), getArgList(ctx.argList()).stream().map(a -> a.accept(this)));
 	}
 	
 	@Override
@@ -272,10 +279,10 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	
 	private List<ArgumentContext> getArgList(ArgListContext alc)
 	{
-		List<ArgumentContext> vc = new LinkedList<>();
+		LinkedList<ArgumentContext> vc = new LinkedList<>();
 		while(alc != null  &&  alc.argument() != null)
 		{
-			vc.add(alc.argument());
+			vc.push(alc.argument());
 			alc = alc.argList();
 		}
 		return vc;

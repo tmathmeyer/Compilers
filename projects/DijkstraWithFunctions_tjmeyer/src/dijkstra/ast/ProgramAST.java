@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import dijkstra.ds.ScopedSet;
-
+import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class ProgramAST implements AST
 {
@@ -44,5 +44,26 @@ public class ProgramAST implements AST
 		}
 		
 		return scope;
+	}
+	
+	@Override
+	public AST renameScoping(ScopedSet<VarBind> vb)
+	{
+		List<AST> newChildren = new ArrayList<>();
+		for(AST a : children)
+		{
+			a = a.renameScoping(vb);
+			a = a.renameVars(vb.getScopeVars(a));
+			a = a.renameVars(vb.getScopeVars(this));
+			newChildren.add(a);
+		}
+		
+		return new ProgramAST(newChildren.stream());
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		children.stream().forEach(a -> a.buildTUT(tut));
 	}
 }

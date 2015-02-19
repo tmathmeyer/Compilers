@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class FunctionCallAST implements AST
+public class ProcedureCallAST implements AST
 {
 	private final String fname;
 	private final ArrayList<AST> args = new ArrayList<>();
 	
-	public FunctionCallAST(String id, Stream<AST> map)
+	public ProcedureCallAST(String id, Stream<AST> map)
 	{
 		fname = id;
 		map.forEach(a -> args.add(a));
@@ -35,6 +35,6 @@ public class FunctionCallAST implements AST
 			}
 		}
 		
-		return new FunctionCallAST(name, args.stream().map(a -> {return a.renameVars(scope); }));
+		return new ProcedureCallAST(name, args.stream().map(a -> {return a.renameVars(scope); }));
 	}
 }

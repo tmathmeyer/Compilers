@@ -1,32 +1,32 @@
 package dijkstra.ast;
 
+import java.util.Set;
+
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Type;
+import dijkstra.unify.TypeUnificationTable;
 
 public class TerminalAST implements AST
 {
-	private final int type;
 	private final String name;
 	private Type t = Type.UNKNOWN;
 	
 	public TerminalAST(TerminalNodeImpl tree)
 	{
 		name = tree.getText();
-		type = tree.symbol.getType();
 	}
 	
 	public TerminalAST(String tree)
 	{
 		name = tree;
-		type = 42;
 	}
 	
 	public TerminalAST(String name, Type t)
 	{
 		this.name = name;
 		this.t = t;
-		type = 42;
 	}
 
 	@Override
@@ -48,10 +48,26 @@ public class TerminalAST implements AST
 	@Override
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{
-		if (type > 30)
-		{
-			scope.insert(name);
-		}
+		scope.insert(name);
 		return scope;
+	}
+	
+	@Override
+	public TerminalAST renameVars(Set<VarBind> s)
+	{
+		for(VarBind vb : s)
+		{
+			if (name.equals(vb.old))
+			{
+				return new TerminalAST(vb.New);
+			}
+		}
+		return this;
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		tut.register(this, t);
 	}
 }

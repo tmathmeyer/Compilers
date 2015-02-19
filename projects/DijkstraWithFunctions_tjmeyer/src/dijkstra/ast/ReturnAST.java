@@ -2,9 +2,10 @@ package dijkstra.ast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class ReturnAST implements AST
 {
@@ -26,5 +27,11 @@ public class ReturnAST implements AST
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{	
 		return scope;
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> scope)
+	{
+		return new ReturnAST(parts.stream().map(a -> a.renameVars(scope)));
 	}
 }

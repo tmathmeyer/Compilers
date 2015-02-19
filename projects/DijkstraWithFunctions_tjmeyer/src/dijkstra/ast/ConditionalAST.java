@@ -3,6 +3,7 @@ package dijkstra.ast;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class ConditionalAST implements AST
@@ -31,4 +32,9 @@ public class ConditionalAST implements AST
 		return sb.toString();
 	}
 
+	@Override
+	public AST renameVars(Set<VarBind> scope)
+	{
+		return new ConditionalAST(conditionals.stream().map(a -> a.renameVars(scope)));
+	}
 }

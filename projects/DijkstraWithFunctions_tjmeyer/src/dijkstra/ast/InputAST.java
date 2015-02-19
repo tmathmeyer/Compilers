@@ -1,7 +1,11 @@
 package dijkstra.ast;
 
-import dijkstra.ds.ScopedSet;
+import java.util.Set;
+
 import dijkstra.lexparse.DijkstraParser.InputStatementContext;
+import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Type;
+import dijkstra.unify.TypeUnificationTable;
 
 public class InputAST implements AST
 {
@@ -32,13 +36,27 @@ public class InputAST implements AST
 		input.setT(inputVariableType);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "input " + input;
 	}
 	
+	@Override
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{
 		return input.getDeclaredVariables(scope);
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> s)
+	{
+		return new InputAST(input.renameVars(s));
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		input.buildTUT(tut);
 	}
 }

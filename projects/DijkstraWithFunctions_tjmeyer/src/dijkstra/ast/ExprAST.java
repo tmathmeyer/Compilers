@@ -1,11 +1,11 @@
 package dijkstra.ast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class ExprAST implements AST 
 {
@@ -14,12 +14,7 @@ public class ExprAST implements AST
 	
 	public ExprAST(Stream<AST> map)
 	{
-		Iterator<AST> it = map.iterator();
-		
-		while(it.hasNext())
-		{
-			children.add(it.next());
-		}
+		map.forEach(a -> children.add(a));
 	}
 
 	@Override
@@ -46,4 +41,30 @@ public class ExprAST implements AST
 		return scope;
 	}
 	
+	@Override
+	public AST renameVars(Set<VarBind> s)
+	{
+		List<AST> newChildren = new ArrayList<>();
+		for(AST a : children)
+		{
+			newChildren.add(a.renameVars(s));
+		}
+		
+		return new ExprAST(newChildren.stream());
+	}
+	
+	@Override
+	public AST renameScoping(ScopedSet<VarBind> vb)
+	{
+		List<AST> newChildren = new ArrayList<>();
+		for(AST a : children)
+		{
+			a = a.renameVars(vb.getScopeVars(a));
+			a = a.renameVars(vb.getScopeVars(this));
+			a = a.renameScoping(vb);
+			newChildren.add(a);
+		}
+		
+		return new ExprAST(newChildren.stream());
+	}
 }

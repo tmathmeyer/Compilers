@@ -1,6 +1,6 @@
 package dijkstra.ast;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class VarAST implements AST
 {

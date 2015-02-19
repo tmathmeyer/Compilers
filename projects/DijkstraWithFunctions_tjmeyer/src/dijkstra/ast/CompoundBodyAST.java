@@ -1,10 +1,11 @@
 package dijkstra.ast;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ast.FunctionAST.Param;
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class CompoundBodyAST implements AST
 {
@@ -37,5 +38,27 @@ public class CompoundBodyAST implements AST
 		
 		scope.merge(current.finish());
 		return scope;
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> scope)
+	{
+		return new CompoundBodyAST(parts.stream().map(a -> a.renameVars(scope)));
+	}
+	
+	@Override
+	public AST renameScoping(ScopedSet<VarBind> vb)
+	{
+		List<AST> np = new ArrayList<>();
+		for(AST a : parts)
+		{
+			a = a.renameScoping(vb);
+			a = a.renameVars(vb.getScopeVars(a));
+			a = a.renameVars(vb.getScopeVars(this));
+			np.add(a);
+		}
+		
+		return new CompoundBodyAST(np.stream());
+		
 	}
 }

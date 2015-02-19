@@ -1,6 +1,8 @@
 package dijkstra.ast;
 
-import dijkstra.ds.ScopedSet;
+import java.util.Set;
+
+import dijkstra.unify.ScopedSet;
 
 public class GuardedAST implements AST
 {
@@ -23,5 +25,11 @@ public class GuardedAST implements AST
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{
 		return statement.getDeclaredVariables(scope);
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> scope)
+	{
+		return new GuardedAST(conditional.renameVars(scope), statement.renameVars(scope));
 	}
 }

@@ -3,14 +3,15 @@ package dijkstra.ast;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class IterativeAST implements AST
 {
 
-private final List<AST> conditionals = new LinkedList<>();
+	private final List<AST> conditionals = new LinkedList<>();
 	
 	public IterativeAST(Stream<AST> map)
 	{
@@ -46,5 +47,11 @@ private final List<AST> conditionals = new LinkedList<>();
 		
 		scope.merge(current.finish());
 		return scope;
+	}
+	
+	@Override
+	public AST renameVars(Set<VarBind> scope)
+	{
+		return new IterativeAST(conditionals.stream().map(a -> a.renameVars(scope)));
 	}
 }

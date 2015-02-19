@@ -1,9 +1,12 @@
 package dijkstra.ast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ds.ScopedSet;
+import dijkstra.unify.ScopedSet;
 
 public class AssignmentAST implements AST
 {
@@ -29,13 +32,33 @@ public class AssignmentAST implements AST
 	}
 	
 	@Override
-	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
-	{
-		for(AST t : assignTo)
-		{
-			t.getDeclaredVariables(scope);
-		}
-		return scope;
+	public AST renameVars(Set<VarBind> s)
+	{	
+		return new AssignmentAST(assignTo.stream().map(a -> a.renameVars(s)),
+								 assignFrom.stream().map(a -> a.renameVars(s)));
 	}
-
+	
+	@Override
+	public AST renameScoping(ScopedSet<VarBind> vb)
+	{
+		List<AST> afr = new ArrayList<>();
+		List<AST> ato = new ArrayList<>();
+		for(AST a : assignFrom)
+		{
+			a = a.renameVars(vb.getScopeVars(a));
+			a = a.renameVars(vb.getScopeVars(this));
+			a = a.renameScoping(vb);
+			afr.add(a);
+		}
+		
+		for(AST a : assignTo)
+		{
+			a = a.renameVars(vb.getScopeVars(a));
+			a = a.renameVars(vb.getScopeVars(this));
+			a = a.renameScoping(vb);
+			ato.add(a);
+		}
+		
+		return new AssignmentAST(ato.stream(), afr.stream());
+	}
 }

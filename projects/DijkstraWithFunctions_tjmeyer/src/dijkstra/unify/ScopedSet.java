@@ -1,4 +1,4 @@
-package dijkstra.ds;
+package dijkstra.unify;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +57,16 @@ public class ScopedSet<T>
 		return this;
 	}
 	
+	public Set<T> getScopeVars(AST t)
+	{
+		Set<T> g = scope.get(t);
+		if (g == null)
+		{
+			return new HashSet<>();
+		}
+		return g;
+	}
+	
 	public void print()
 	{
 		if (!finalized)
@@ -68,7 +78,6 @@ public class ScopedSet<T>
 		for(Entry<AST, Set<T>> s : scope.entrySet())
 		{
 			System.out.println(s.getKey().toString().replaceAll("\n", " ").replaceAll("[\\ ]+", " "));
-			//System.out.println(s.getKey().getClass().getSimpleName()+":");
 			for(T t : s.getValue())
 			{
 				System.out.println(t);
