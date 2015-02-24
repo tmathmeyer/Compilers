@@ -1,26 +1,26 @@
 package dijkstra.ast;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import dijkstra.unify.ScopedSet;
 
 public class ReturnAST implements AST
 {
-	private final ArrayList<AST> parts = new ArrayList<>();
-	
-	public ReturnAST(Stream<AST> map)
+	private final AST parts;
+
+	public AST getParts()
 	{
-		map.forEach(a -> parts.add(a));
+		return parts;
+	}
+	
+	public ReturnAST(AST accept)
+	{
+		parts = accept;
 	}
 
 	public String toString()
 	{
-		LinkedList<String> partsS = new LinkedList<>();
-		parts.stream().forEach(e -> partsS.add(e.toString()));
-		return "return "+String.join(",", partsS);
+		return "return "+parts.toString();
 	}
 	
 	@Override
@@ -32,6 +32,6 @@ public class ReturnAST implements AST
 	@Override
 	public AST renameVars(Set<VarBind> scope)
 	{
-		return new ReturnAST(parts.stream().map(a -> a.renameVars(scope)));
+		return new ReturnAST(parts.renameVars(scope));
 	}
 }

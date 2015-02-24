@@ -24,5 +24,4 @@ public class VarAST implements AST
 		scope.insert(name);
 		return scope;
 	}
-
 }

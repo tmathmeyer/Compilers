@@ -30,18 +30,18 @@ public class DijkstraParser extends Parser {
 	public static final int
 		RULE_dijkstraText = 0, RULE_program = 1, RULE_declaration = 2, RULE_type = 3, 
 		RULE_var = 4, RULE_parameter = 5, RULE_argument = 6, RULE_separator = 7, 
-		RULE_guard = 8, RULE_varList = 9, RULE_parameterList = 10, RULE_typeList = 11, 
-		RULE_idList = 12, RULE_expressionList = 13, RULE_argList = 14, RULE_guardedStatementList = 15, 
-		RULE_procedureDeclaration = 16, RULE_functionDeclaration = 17, RULE_arrayDeclaration = 18, 
-		RULE_variableDeclaration = 19, RULE_statement = 20, RULE_assignStatement = 21, 
-		RULE_inputStatement = 22, RULE_outputStatement = 23, RULE_iterativeStatement = 24, 
-		RULE_compoundStatement = 25, RULE_alternativeStatement = 26, RULE_returnStatement = 27, 
-		RULE_procedureCall = 28, RULE_functionCall = 29, RULE_compoundBody = 30, 
-		RULE_compDeclOrStatement = 31, RULE_arrayAccessor = 32, RULE_expr = 33;
+		RULE_guard = 8, RULE_varList = 9, RULE_parameterList = 10, RULE_idList = 11, 
+		RULE_expressionList = 12, RULE_argList = 13, RULE_guardedStatementList = 14, 
+		RULE_procedureDeclaration = 15, RULE_functionDeclaration = 16, RULE_arrayDeclaration = 17, 
+		RULE_variableDeclaration = 18, RULE_statement = 19, RULE_assignStatement = 20, 
+		RULE_inputStatement = 21, RULE_outputStatement = 22, RULE_iterativeStatement = 23, 
+		RULE_compoundStatement = 24, RULE_alternativeStatement = 25, RULE_returnStatement = 26, 
+		RULE_procedureCall = 27, RULE_functionCall = 28, RULE_compoundBody = 29, 
+		RULE_compDeclOrStatement = 30, RULE_arrayAccessor = 31, RULE_expr = 32;
 	public static final String[] ruleNames = {
 		"dijkstraText", "program", "declaration", "type", "var", "parameter", 
-		"argument", "separator", "guard", "varList", "parameterList", "typeList", 
-		"idList", "expressionList", "argList", "guardedStatementList", "procedureDeclaration", 
+		"argument", "separator", "guard", "varList", "parameterList", "idList", 
+		"expressionList", "argList", "guardedStatementList", "procedureDeclaration", 
 		"functionDeclaration", "arrayDeclaration", "variableDeclaration", "statement", 
 		"assignStatement", "inputStatement", "outputStatement", "iterativeStatement", 
 		"compoundStatement", "alternativeStatement", "returnStatement", "procedureCall", 
@@ -143,9 +143,9 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(66);
 			program();
-			setState(69);
+			setState(67);
 			match(EOF);
 			}
 		}
@@ -201,16 +201,16 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(69);
 			match(PROGRAM);
-			setState(72);
+			setState(70);
 			match(ID);
-			setState(75); 
+			setState(73); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(75);
+				setState(73);
 				switch (_input.LA(1)) {
 				case BOOLEAN:
 				case INT:
@@ -218,7 +218,7 @@ public class DijkstraParser extends Parser {
 				case PROC:
 				case FLOAT:
 					{
-					setState(73);
+					setState(71);
 					declaration();
 					}
 					break;
@@ -230,7 +230,7 @@ public class DijkstraParser extends Parser {
 				case RETURN:
 				case ID:
 					{
-					setState(74);
+					setState(72);
 					statement();
 					}
 					break;
@@ -238,7 +238,7 @@ public class DijkstraParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(77); 
+				setState(75); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LBRACE) | (1L << BOOLEAN) | (1L << IF) | (1L << DO) | (1L << INPUT) | (1L << INT) | (1L << PRINT) | (1L << FUN) | (1L << PROC) | (1L << FLOAT) | (1L << RETURN) | (1L << ID))) != 0) );
@@ -291,33 +291,33 @@ public class DijkstraParser extends Parser {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_declaration);
 		try {
-			setState(83);
+			setState(81);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(79);
+				setState(77);
 				variableDeclaration();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(80);
+				setState(78);
 				arrayDeclaration();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(81);
+				setState(79);
 				procedureDeclaration();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(82);
+				setState(80);
 				functionDeclaration();
 				}
 				break;
@@ -364,7 +364,7 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
+			setState(83);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << INT) | (1L << FLOAT))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -412,19 +412,19 @@ public class DijkstraParser extends Parser {
 		VarContext _localctx = new VarContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_var);
 		try {
-			setState(89);
+			setState(87);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(87);
+				setState(85);
 				match(ID);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(88);
+				setState(86);
 				arrayAccessor();
 				}
 				break;
@@ -469,12 +469,12 @@ public class DijkstraParser extends Parser {
 		ParameterContext _localctx = new ParameterContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_parameter);
 		try {
-			setState(95);
+			setState(93);
 			switch (_input.LA(1)) {
 			case ID:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(91);
+				setState(89);
 				match(ID);
 				}
 				break;
@@ -483,9 +483,9 @@ public class DijkstraParser extends Parser {
 			case FLOAT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(92);
+				setState(90);
 				type();
-				setState(93);
+				setState(91);
 				match(ID);
 				}
 				break;
@@ -533,7 +533,7 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97);
+			setState(95);
 			expr(0);
 			}
 		}
@@ -576,11 +576,11 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(100);
+			setState(98);
 			_la = _input.LA(1);
 			if (_la==SEMICOLON) {
 				{
-				setState(99);
+				setState(97);
 				match(SEMICOLON);
 				}
 			}
@@ -631,11 +631,11 @@ public class DijkstraParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(102);
+			setState(100);
 			expr(0);
-			setState(103);
+			setState(101);
 			match(GUARD);
-			setState(104);
+			setState(102);
 			statement();
 			}
 		}
@@ -693,11 +693,11 @@ public class DijkstraParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(107);
+			setState(105);
 			var();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(114);
+			setState(112);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -708,16 +708,16 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new VarListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_varList);
-					setState(109);
+					setState(107);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(110);
+					setState(108);
 					match(COMMA);
-					setState(111);
+					setState(109);
 					var();
 					}
 					} 
 				}
-				setState(116);
+				setState(114);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			}
@@ -777,11 +777,11 @@ public class DijkstraParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(118);
+			setState(116);
 			parameter();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(125);
+			setState(123);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -792,102 +792,18 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new ParameterListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_parameterList);
-					setState(120);
+					setState(118);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(121);
+					setState(119);
 					match(COMMA);
-					setState(122);
+					setState(120);
 					parameter();
 					}
 					} 
 				}
-				setState(127);
+				setState(125);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
-			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			unrollRecursionContexts(_parentctx);
-		}
-		return _localctx;
-	}
-
-	public static class TypeListContext extends ParserRuleContext {
-		public TypeContext type() {
-			return getRuleContext(TypeContext.class,0);
-		}
-		public TypeListContext typeList() {
-			return getRuleContext(TypeListContext.class,0);
-		}
-		public TerminalNode COMMA() { return getToken(DijkstraParser.COMMA, 0); }
-		public TypeListContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_typeList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DijkstraListener ) ((DijkstraListener)listener).enterTypeList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DijkstraListener ) ((DijkstraListener)listener).exitTypeList(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof DijkstraVisitor ) return ((DijkstraVisitor<? extends T>)visitor).visitTypeList(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final TypeListContext typeList() throws RecognitionException {
-		return typeList(0);
-	}
-
-	private TypeListContext typeList(int _p) throws RecognitionException {
-		ParserRuleContext _parentctx = _ctx;
-		int _parentState = getState();
-		TypeListContext _localctx = new TypeListContext(_ctx, _parentState);
-		TypeListContext _prevctx = _localctx;
-		int _startState = 22;
-		enterRecursionRule(_localctx, 22, RULE_typeList, _p);
-		try {
-			int _alt;
-			enterOuterAlt(_localctx, 1);
-			{
-			{
-			setState(129);
-			type();
-			}
-			_ctx.stop = _input.LT(-1);
-			setState(136);
-			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					if ( _parseListeners!=null ) triggerExitRuleEvent();
-					_prevctx = _localctx;
-					{
-					{
-					_localctx = new TypeListContext(_parentctx, _parentState);
-					pushNewRecursionContext(_localctx, _startState, RULE_typeList);
-					setState(131);
-					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(132);
-					match(COMMA);
-					setState(133);
-					type();
-					}
-					} 
-				}
-				setState(138);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			}
 			}
 		}
@@ -936,20 +852,20 @@ public class DijkstraParser extends Parser {
 		int _parentState = getState();
 		IdListContext _localctx = new IdListContext(_ctx, _parentState);
 		IdListContext _prevctx = _localctx;
-		int _startState = 24;
-		enterRecursionRule(_localctx, 24, RULE_idList, _p);
+		int _startState = 22;
+		enterRecursionRule(_localctx, 22, RULE_idList, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(140);
+			setState(127);
 			match(ID);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(147);
+			setState(134);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -958,18 +874,18 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new IdListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_idList);
-					setState(142);
+					setState(129);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(143);
+					setState(130);
 					match(COMMA);
-					setState(144);
+					setState(131);
 					match(ID);
 					}
 					} 
 				}
-				setState(149);
+				setState(136);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			}
 			}
 		}
@@ -1020,20 +936,20 @@ public class DijkstraParser extends Parser {
 		int _parentState = getState();
 		ExpressionListContext _localctx = new ExpressionListContext(_ctx, _parentState);
 		ExpressionListContext _prevctx = _localctx;
-		int _startState = 26;
-		enterRecursionRule(_localctx, 26, RULE_expressionList, _p);
+		int _startState = 24;
+		enterRecursionRule(_localctx, 24, RULE_expressionList, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(151);
+			setState(138);
 			expr(0);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(158);
+			setState(145);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1042,18 +958,18 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new ExpressionListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_expressionList);
-					setState(153);
+					setState(140);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(154);
+					setState(141);
 					match(COMMA);
-					setState(155);
+					setState(142);
 					expr(0);
 					}
 					} 
 				}
-				setState(160);
+				setState(147);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 			}
 			}
 		}
@@ -1104,20 +1020,20 @@ public class DijkstraParser extends Parser {
 		int _parentState = getState();
 		ArgListContext _localctx = new ArgListContext(_ctx, _parentState);
 		ArgListContext _prevctx = _localctx;
-		int _startState = 28;
-		enterRecursionRule(_localctx, 28, RULE_argList, _p);
+		int _startState = 26;
+		enterRecursionRule(_localctx, 26, RULE_argList, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(162);
+			setState(149);
 			argument();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(169);
+			setState(156);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1126,18 +1042,18 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new ArgListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_argList);
-					setState(164);
+					setState(151);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(165);
+					setState(152);
 					match(COMMA);
-					setState(166);
+					setState(153);
 					argument();
 					}
 					} 
 				}
-				setState(171);
+				setState(158);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
 			}
 			}
 		}
@@ -1187,20 +1103,20 @@ public class DijkstraParser extends Parser {
 		int _parentState = getState();
 		GuardedStatementListContext _localctx = new GuardedStatementListContext(_ctx, _parentState);
 		GuardedStatementListContext _prevctx = _localctx;
-		int _startState = 30;
-		enterRecursionRule(_localctx, 30, RULE_guardedStatementList, _p);
+		int _startState = 28;
+		enterRecursionRule(_localctx, 28, RULE_guardedStatementList, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(173);
+			setState(160);
 			guard();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(179);
+			setState(166);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
@@ -1209,16 +1125,16 @@ public class DijkstraParser extends Parser {
 					{
 					_localctx = new GuardedStatementListContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_guardedStatementList);
-					setState(175);
+					setState(162);
 					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-					setState(176);
+					setState(163);
 					guard();
 					}
 					} 
 				}
-				setState(181);
+				setState(168);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 			}
 			}
 		}
@@ -1265,39 +1181,39 @@ public class DijkstraParser extends Parser {
 
 	public final ProcedureDeclarationContext procedureDeclaration() throws RecognitionException {
 		ProcedureDeclarationContext _localctx = new ProcedureDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_procedureDeclaration);
+		enterRule(_localctx, 30, RULE_procedureDeclaration);
 		try {
-			setState(194);
-			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+			setState(181);
+			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(182);
+				setState(169);
 				match(PROC);
-				setState(183);
+				setState(170);
 				match(ID);
-				setState(184);
+				setState(171);
 				match(LPAR);
-				setState(185);
+				setState(172);
 				match(RPAR);
-				setState(186);
+				setState(173);
 				compoundStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(187);
+				setState(174);
 				match(PROC);
-				setState(188);
+				setState(175);
 				match(ID);
-				setState(189);
+				setState(176);
 				match(LPAR);
-				setState(190);
+				setState(177);
 				parameterList(0);
-				setState(191);
+				setState(178);
 				match(RPAR);
-				setState(192);
+				setState(179);
 				compoundStatement();
 				}
 				break;
@@ -1320,8 +1236,8 @@ public class DijkstraParser extends Parser {
 		public TerminalNode LPAR() { return getToken(DijkstraParser.LPAR, 0); }
 		public TerminalNode RPAR() { return getToken(DijkstraParser.RPAR, 0); }
 		public TerminalNode COLON() { return getToken(DijkstraParser.COLON, 0); }
-		public TypeListContext typeList() {
-			return getRuleContext(TypeListContext.class,0);
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
 		}
 		public CompoundStatementContext compoundStatement() {
 			return getRuleContext(CompoundStatementContext.class,0);
@@ -1350,47 +1266,47 @@ public class DijkstraParser extends Parser {
 
 	public final FunctionDeclarationContext functionDeclaration() throws RecognitionException {
 		FunctionDeclarationContext _localctx = new FunctionDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_functionDeclaration);
+		enterRule(_localctx, 32, RULE_functionDeclaration);
 		try {
-			setState(213);
-			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
+			setState(200);
+			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(196);
+				setState(183);
 				match(FUN);
-				setState(197);
+				setState(184);
 				match(ID);
-				setState(198);
+				setState(185);
 				match(LPAR);
-				setState(199);
+				setState(186);
 				match(RPAR);
-				setState(200);
+				setState(187);
 				match(COLON);
-				setState(201);
-				typeList(0);
-				setState(202);
+				setState(188);
+				type();
+				setState(189);
 				compoundStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(204);
+				setState(191);
 				match(FUN);
-				setState(205);
+				setState(192);
 				match(ID);
-				setState(206);
+				setState(193);
 				match(LPAR);
-				setState(207);
+				setState(194);
 				parameterList(0);
-				setState(208);
+				setState(195);
 				match(RPAR);
-				setState(209);
+				setState(196);
 				match(COLON);
-				setState(210);
-				typeList(0);
-				setState(211);
+				setState(197);
+				type();
+				setState(198);
 				compoundStatement();
 				}
 				break;
@@ -1443,21 +1359,21 @@ public class DijkstraParser extends Parser {
 
 	public final ArrayDeclarationContext arrayDeclaration() throws RecognitionException {
 		ArrayDeclarationContext _localctx = new ArrayDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_arrayDeclaration);
+		enterRule(_localctx, 34, RULE_arrayDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(215);
+			setState(202);
 			type();
-			setState(216);
+			setState(203);
 			match(LBRACK);
-			setState(217);
+			setState(204);
 			expr(0);
-			setState(218);
+			setState(205);
 			match(RBRACK);
-			setState(219);
+			setState(206);
 			idList(0);
-			setState(220);
+			setState(207);
 			separator();
 			}
 		}
@@ -1503,15 +1419,15 @@ public class DijkstraParser extends Parser {
 
 	public final VariableDeclarationContext variableDeclaration() throws RecognitionException {
 		VariableDeclarationContext _localctx = new VariableDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_variableDeclaration);
+		enterRule(_localctx, 36, RULE_variableDeclaration);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(222);
+			setState(209);
 			type();
-			setState(223);
+			setState(210);
 			idList(0);
-			setState(224);
+			setState(211);
 			separator();
 			}
 		}
@@ -1572,63 +1488,63 @@ public class DijkstraParser extends Parser {
 
 	public final StatementContext statement() throws RecognitionException {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_statement);
+		enterRule(_localctx, 38, RULE_statement);
 		try {
-			setState(234);
-			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
+			setState(221);
+			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(226);
+				setState(213);
 				assignStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(227);
+				setState(214);
 				inputStatement();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(228);
+				setState(215);
 				outputStatement();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(229);
+				setState(216);
 				iterativeStatement();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(230);
+				setState(217);
 				compoundStatement();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(231);
+				setState(218);
 				alternativeStatement();
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(232);
+				setState(219);
 				returnStatement();
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(233);
+				setState(220);
 				procedureCall();
 				}
 				break;
@@ -1675,21 +1591,21 @@ public class DijkstraParser extends Parser {
 
 	public final AssignStatementContext assignStatement() throws RecognitionException {
 		AssignStatementContext _localctx = new AssignStatementContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_assignStatement);
+		enterRule(_localctx, 40, RULE_assignStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(236);
+			setState(223);
 			varList(0);
-			setState(237);
+			setState(224);
 			match(ASSIGN);
-			setState(238);
+			setState(225);
 			expressionList(0);
-			setState(240);
-			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			setState(227);
+			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
-				setState(239);
+				setState(226);
 				match(SEMICOLON);
 				}
 				break;
@@ -1732,19 +1648,19 @@ public class DijkstraParser extends Parser {
 
 	public final InputStatementContext inputStatement() throws RecognitionException {
 		InputStatementContext _localctx = new InputStatementContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_inputStatement);
+		enterRule(_localctx, 42, RULE_inputStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(242);
+			setState(229);
 			match(INPUT);
-			setState(243);
+			setState(230);
 			match(ID);
-			setState(245);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			setState(232);
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 			case 1:
 				{
-				setState(244);
+				setState(231);
 				match(SEMICOLON);
 				}
 				break;
@@ -1789,19 +1705,19 @@ public class DijkstraParser extends Parser {
 
 	public final OutputStatementContext outputStatement() throws RecognitionException {
 		OutputStatementContext _localctx = new OutputStatementContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_outputStatement);
+		enterRule(_localctx, 44, RULE_outputStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(247);
+			setState(234);
 			match(PRINT);
-			setState(248);
+			setState(235);
 			expr(0);
-			setState(250);
-			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			setState(237);
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				{
-				setState(249);
+				setState(236);
 				match(SEMICOLON);
 				}
 				break;
@@ -1849,28 +1765,28 @@ public class DijkstraParser extends Parser {
 
 	public final IterativeStatementContext iterativeStatement() throws RecognitionException {
 		IterativeStatementContext _localctx = new IterativeStatementContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_iterativeStatement);
+		enterRule(_localctx, 46, RULE_iterativeStatement);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(252);
+			setState(239);
 			match(DO);
-			setState(254); 
+			setState(241); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(253);
+				setState(240);
 				guard();
 				}
 				}
-				setState(256); 
+				setState(243); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LPAR) | (1L << MINUS) | (1L << TILDE) | (1L << FALSE) | (1L << TRUE) | (1L << ID) | (1L << INTEGER) | (1L << FLOAT_CONST))) != 0) );
-			setState(258);
+			setState(245);
 			match(OD);
 			}
 		}
@@ -1912,15 +1828,15 @@ public class DijkstraParser extends Parser {
 
 	public final CompoundStatementContext compoundStatement() throws RecognitionException {
 		CompoundStatementContext _localctx = new CompoundStatementContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_compoundStatement);
+		enterRule(_localctx, 48, RULE_compoundStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(260);
+			setState(247);
 			match(LBRACE);
-			setState(261);
+			setState(248);
 			compoundBody();
-			setState(262);
+			setState(249);
 			match(RBRACE);
 			}
 		}
@@ -1965,28 +1881,28 @@ public class DijkstraParser extends Parser {
 
 	public final AlternativeStatementContext alternativeStatement() throws RecognitionException {
 		AlternativeStatementContext _localctx = new AlternativeStatementContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_alternativeStatement);
+		enterRule(_localctx, 50, RULE_alternativeStatement);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(264);
+			setState(251);
 			match(IF);
-			setState(266); 
+			setState(253); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(265);
+				setState(252);
 				guard();
 				}
 				}
-				setState(268); 
+				setState(255); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LPAR) | (1L << MINUS) | (1L << TILDE) | (1L << FALSE) | (1L << TRUE) | (1L << ID) | (1L << INTEGER) | (1L << FLOAT_CONST))) != 0) );
-			setState(270);
+			setState(257);
 			match(FI);
 			}
 		}
@@ -2003,8 +1919,8 @@ public class DijkstraParser extends Parser {
 
 	public static class ReturnStatementContext extends ParserRuleContext {
 		public TerminalNode RETURN() { return getToken(DijkstraParser.RETURN, 0); }
-		public ExpressionListContext expressionList() {
-			return getRuleContext(ExpressionListContext.class,0);
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode SEMICOLON() { return getToken(DijkstraParser.SEMICOLON, 0); }
 		public ReturnStatementContext(ParserRuleContext parent, int invokingState) {
@@ -2028,32 +1944,19 @@ public class DijkstraParser extends Parser {
 
 	public final ReturnStatementContext returnStatement() throws RecognitionException {
 		ReturnStatementContext _localctx = new ReturnStatementContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_returnStatement);
+		enterRule(_localctx, 52, RULE_returnStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(275);
-			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+			setState(259);
+			match(RETURN);
+			setState(260);
+			expr(0);
+			setState(262);
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				{
-				setState(272);
-				match(RETURN);
-				}
-				break;
-			case 2:
-				{
-				setState(273);
-				match(RETURN);
-				setState(274);
-				expressionList(0);
-				}
-				break;
-			}
-			setState(278);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
-			case 1:
-				{
-				setState(277);
+				setState(261);
 				match(SEMICOLON);
 				}
 				break;
@@ -2100,24 +2003,24 @@ public class DijkstraParser extends Parser {
 
 	public final ProcedureCallContext procedureCall() throws RecognitionException {
 		ProcedureCallContext _localctx = new ProcedureCallContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_procedureCall);
+		enterRule(_localctx, 54, RULE_procedureCall);
 		try {
-			setState(293);
-			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
+			setState(277);
+			switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(280);
+				setState(264);
 				match(ID);
-				setState(281);
+				setState(265);
 				match(LPAR);
-				setState(282);
+				setState(266);
 				match(RPAR);
-				setState(284);
-				switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
+				setState(268);
+				switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 				case 1:
 					{
-					setState(283);
+					setState(267);
 					match(SEMICOLON);
 					}
 					break;
@@ -2127,19 +2030,19 @@ public class DijkstraParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(286);
+				setState(270);
 				match(ID);
-				setState(287);
+				setState(271);
 				match(LPAR);
-				setState(288);
+				setState(272);
 				argList(0);
-				setState(289);
+				setState(273);
 				match(RPAR);
-				setState(291);
-				switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
+				setState(275);
+				switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 				case 1:
 					{
-					setState(290);
+					setState(274);
 					match(SEMICOLON);
 					}
 					break;
@@ -2188,24 +2091,24 @@ public class DijkstraParser extends Parser {
 
 	public final FunctionCallContext functionCall() throws RecognitionException {
 		FunctionCallContext _localctx = new FunctionCallContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_functionCall);
+		enterRule(_localctx, 56, RULE_functionCall);
 		try {
-			setState(308);
-			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
+			setState(292);
+			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(295);
+				setState(279);
 				match(ID);
-				setState(296);
+				setState(280);
 				match(LPAR);
-				setState(297);
+				setState(281);
 				match(RPAR);
-				setState(299);
-				switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
+				setState(283);
+				switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
 				case 1:
 					{
-					setState(298);
+					setState(282);
 					match(SEMICOLON);
 					}
 					break;
@@ -2215,19 +2118,19 @@ public class DijkstraParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(301);
+				setState(285);
 				match(ID);
-				setState(302);
+				setState(286);
 				match(LPAR);
-				setState(303);
+				setState(287);
 				argList(0);
-				setState(304);
+				setState(288);
 				match(RPAR);
-				setState(306);
-				switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
+				setState(290);
+				switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 				case 1:
 					{
-					setState(305);
+					setState(289);
 					match(SEMICOLON);
 					}
 					break;
@@ -2275,23 +2178,23 @@ public class DijkstraParser extends Parser {
 
 	public final CompoundBodyContext compoundBody() throws RecognitionException {
 		CompoundBodyContext _localctx = new CompoundBodyContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_compoundBody);
+		enterRule(_localctx, 58, RULE_compoundBody);
 		try {
-			setState(314);
-			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
+			setState(298);
+			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(310);
+				setState(294);
 				compDeclOrStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(311);
+				setState(295);
 				compDeclOrStatement();
-				setState(312);
+				setState(296);
 				compoundBody();
 				}
 				break;
@@ -2339,28 +2242,28 @@ public class DijkstraParser extends Parser {
 
 	public final CompDeclOrStatementContext compDeclOrStatement() throws RecognitionException {
 		CompDeclOrStatementContext _localctx = new CompDeclOrStatementContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_compDeclOrStatement);
+		enterRule(_localctx, 60, RULE_compDeclOrStatement);
 		try {
-			setState(319);
-			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
+			setState(303);
+			switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(316);
+				setState(300);
 				variableDeclaration();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(317);
+				setState(301);
 				arrayDeclaration();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(318);
+				setState(302);
 				statement();
 				}
 				break;
@@ -2405,17 +2308,17 @@ public class DijkstraParser extends Parser {
 
 	public final ArrayAccessorContext arrayAccessor() throws RecognitionException {
 		ArrayAccessorContext _localctx = new ArrayAccessorContext(_ctx, getState());
-		enterRule(_localctx, 64, RULE_arrayAccessor);
+		enterRule(_localctx, 62, RULE_arrayAccessor);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(321);
+			setState(305);
 			match(ID);
-			setState(322);
+			setState(306);
 			match(LBRACK);
-			setState(323);
+			setState(307);
 			expr(0);
-			setState(324);
+			setState(308);
 			match(RBRACK);
 			}
 		}
@@ -2493,59 +2396,59 @@ public class DijkstraParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 66;
-		enterRecursionRule(_localctx, 66, RULE_expr, _p);
+		int _startState = 64;
+		enterRecursionRule(_localctx, 64, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(339);
-			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
+			setState(323);
+			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
 			case 1:
 				{
-				setState(327);
+				setState(311);
 				_la = _input.LA(1);
 				if ( !(_la==MINUS || _la==TILDE) ) {
 				_errHandler.recoverInline(this);
 				} else {
 					consume();
 				}
-				setState(328);
+				setState(312);
 				expr(11);
 				}
 				break;
 			case 2:
 				{
-				setState(329);
+				setState(313);
 				arrayAccessor();
 				}
 				break;
 			case 3:
 				{
-				setState(330);
+				setState(314);
 				functionCall();
 				}
 				break;
 			case 4:
 				{
-				setState(331);
+				setState(315);
 				match(LPAR);
-				setState(332);
+				setState(316);
 				expr(0);
-				setState(333);
+				setState(317);
 				match(RPAR);
 				}
 				break;
 			case 5:
 				{
-				setState(335);
+				setState(319);
 				match(ID);
 				}
 				break;
 			case 6:
 				{
-				setState(336);
+				setState(320);
 				_la = _input.LA(1);
 				if ( !(_la==FALSE || _la==TRUE) ) {
 				_errHandler.recoverInline(this);
@@ -2556,42 +2459,42 @@ public class DijkstraParser extends Parser {
 				break;
 			case 7:
 				{
-				setState(337);
+				setState(321);
 				match(FLOAT_CONST);
 				}
 				break;
 			case 8:
 				{
-				setState(338);
+				setState(322);
 				match(INTEGER);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(361);
+			setState(345);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,33,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,31,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(359);
-					switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+					setState(343);
+					switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(341);
+						setState(325);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
-						setState(342);
+						setState(326);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << SLASH) | (1L << STAR) | (1L << MOD) | (1L << DIV))) != 0)) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(343);
+						setState(327);
 						expr(11);
 						}
 						break;
@@ -2599,16 +2502,16 @@ public class DijkstraParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(344);
+						setState(328);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(345);
+						setState(329);
 						_la = _input.LA(1);
 						if ( !(_la==MINUS || _la==PLUS) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(346);
+						setState(330);
 						expr(10);
 						}
 						break;
@@ -2616,16 +2519,16 @@ public class DijkstraParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(347);
+						setState(331);
 						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(348);
+						setState(332);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << GT) | (1L << LT) | (1L << GTEQ) | (1L << LTEQ))) != 0)) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(349);
+						setState(333);
 						expr(9);
 						}
 						break;
@@ -2633,16 +2536,16 @@ public class DijkstraParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(350);
+						setState(334);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(351);
+						setState(335);
 						_la = _input.LA(1);
 						if ( !(_la==EQ || _la==NEQ) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(352);
+						setState(336);
 						expr(7);
 						}
 						break;
@@ -2650,11 +2553,11 @@ public class DijkstraParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(353);
+						setState(337);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(354);
+						setState(338);
 						match(AMP);
-						setState(355);
+						setState(339);
 						expr(7);
 						}
 						break;
@@ -2662,20 +2565,20 @@ public class DijkstraParser extends Parser {
 						{
 						_localctx = new ExprContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(356);
+						setState(340);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(357);
+						setState(341);
 						match(BAR);
-						setState(358);
+						setState(342);
 						expr(6);
 						}
 						break;
 					}
 					} 
 				}
-				setState(363);
+				setState(347);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,33,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,31,_ctx);
 			}
 			}
 		}
@@ -2697,16 +2600,14 @@ public class DijkstraParser extends Parser {
 		case 10:
 			return parameterList_sempred((ParameterListContext)_localctx, predIndex);
 		case 11:
-			return typeList_sempred((TypeListContext)_localctx, predIndex);
-		case 12:
 			return idList_sempred((IdListContext)_localctx, predIndex);
-		case 13:
+		case 12:
 			return expressionList_sempred((ExpressionListContext)_localctx, predIndex);
-		case 14:
+		case 13:
 			return argList_sempred((ArgListContext)_localctx, predIndex);
-		case 15:
+		case 14:
 			return guardedStatementList_sempred((GuardedStatementListContext)_localctx, predIndex);
-		case 33:
+		case 32:
 			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
@@ -2725,189 +2626,176 @@ public class DijkstraParser extends Parser {
 		}
 		return true;
 	}
-	private boolean typeList_sempred(TypeListContext _localctx, int predIndex) {
+	private boolean idList_sempred(IdListContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 2:
 			return precpred(_ctx, 1);
 		}
 		return true;
 	}
-	private boolean idList_sempred(IdListContext _localctx, int predIndex) {
+	private boolean expressionList_sempred(ExpressionListContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 3:
 			return precpred(_ctx, 1);
 		}
 		return true;
 	}
-	private boolean expressionList_sempred(ExpressionListContext _localctx, int predIndex) {
+	private boolean argList_sempred(ArgListContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 4:
 			return precpred(_ctx, 1);
 		}
 		return true;
 	}
-	private boolean argList_sempred(ArgListContext _localctx, int predIndex) {
+	private boolean guardedStatementList_sempred(GuardedStatementListContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 5:
 			return precpred(_ctx, 1);
 		}
 		return true;
 	}
-	private boolean guardedStatementList_sempred(GuardedStatementListContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 6:
-			return precpred(_ctx, 1);
-		}
-		return true;
-	}
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 7:
+		case 6:
 			return precpred(_ctx, 10);
-		case 8:
+		case 7:
 			return precpred(_ctx, 9);
-		case 9:
+		case 8:
 			return precpred(_ctx, 8);
-		case 10:
+		case 9:
 			return precpred(_ctx, 7);
-		case 11:
+		case 10:
 			return precpred(_ctx, 6);
-		case 12:
+		case 11:
 			return precpred(_ctx, 5);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\60\u016f\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\60\u015f\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
-		"\t!\4\"\t\"\4#\t#\3\2\3\2\3\2\3\3\3\3\3\3\3\3\6\3N\n\3\r\3\16\3O\3\4\3"+
-		"\4\3\4\3\4\5\4V\n\4\3\5\3\5\3\6\3\6\5\6\\\n\6\3\7\3\7\3\7\3\7\5\7b\n\7"+
-		"\3\b\3\b\3\t\5\tg\n\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\7"+
-		"\13s\n\13\f\13\16\13v\13\13\3\f\3\f\3\f\3\f\3\f\3\f\7\f~\n\f\f\f\16\f"+
-		"\u0081\13\f\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u0089\n\r\f\r\16\r\u008c\13\r"+
-		"\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u0094\n\16\f\16\16\16\u0097\13\16"+
-		"\3\17\3\17\3\17\3\17\3\17\3\17\7\17\u009f\n\17\f\17\16\17\u00a2\13\17"+
-		"\3\20\3\20\3\20\3\20\3\20\3\20\7\20\u00aa\n\20\f\20\16\20\u00ad\13\20"+
-		"\3\21\3\21\3\21\3\21\3\21\7\21\u00b4\n\21\f\21\16\21\u00b7\13\21\3\22"+
-		"\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\5\22\u00c5\n\22"+
-		"\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23"+
-		"\3\23\3\23\3\23\5\23\u00d8\n\23\3\24\3\24\3\24\3\24\3\24\3\24\3\24\3\25"+
-		"\3\25\3\25\3\25\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u00ed\n\26"+
-		"\3\27\3\27\3\27\3\27\5\27\u00f3\n\27\3\30\3\30\3\30\5\30\u00f8\n\30\3"+
-		"\31\3\31\3\31\5\31\u00fd\n\31\3\32\3\32\6\32\u0101\n\32\r\32\16\32\u0102"+
-		"\3\32\3\32\3\33\3\33\3\33\3\33\3\34\3\34\6\34\u010d\n\34\r\34\16\34\u010e"+
-		"\3\34\3\34\3\35\3\35\3\35\5\35\u0116\n\35\3\35\5\35\u0119\n\35\3\36\3"+
-		"\36\3\36\3\36\5\36\u011f\n\36\3\36\3\36\3\36\3\36\3\36\5\36\u0126\n\36"+
-		"\5\36\u0128\n\36\3\37\3\37\3\37\3\37\5\37\u012e\n\37\3\37\3\37\3\37\3"+
-		"\37\3\37\5\37\u0135\n\37\5\37\u0137\n\37\3 \3 \3 \3 \5 \u013d\n \3!\3"+
-		"!\3!\5!\u0142\n!\3\"\3\"\3\"\3\"\3\"\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#"+
-		"\3#\3#\5#\u0156\n#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#\3#"+
-		"\3#\7#\u016a\n#\f#\16#\u016d\13#\3#\2\n\24\26\30\32\34\36 D$\2\4\6\b\n"+
-		"\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BD\2\t\5\2\35\35"+
-		"$$**\4\2\n\n\22\22\4\2\36\36\'\'\4\2\20\21\33\34\4\2\n\n\f\f\5\2\5\5\t"+
-		"\t\31\32\4\2\4\4\13\13\u0181\2F\3\2\2\2\4I\3\2\2\2\6U\3\2\2\2\bW\3\2\2"+
-		"\2\n[\3\2\2\2\fa\3\2\2\2\16c\3\2\2\2\20f\3\2\2\2\22h\3\2\2\2\24l\3\2\2"+
-		"\2\26w\3\2\2\2\30\u0082\3\2\2\2\32\u008d\3\2\2\2\34\u0098\3\2\2\2\36\u00a3"+
-		"\3\2\2\2 \u00ae\3\2\2\2\"\u00c4\3\2\2\2$\u00d7\3\2\2\2&\u00d9\3\2\2\2"+
-		"(\u00e0\3\2\2\2*\u00ec\3\2\2\2,\u00ee\3\2\2\2.\u00f4\3\2\2\2\60\u00f9"+
-		"\3\2\2\2\62\u00fe\3\2\2\2\64\u0106\3\2\2\2\66\u010a\3\2\2\28\u0115\3\2"+
-		"\2\2:\u0127\3\2\2\2<\u0136\3\2\2\2>\u013c\3\2\2\2@\u0141\3\2\2\2B\u0143"+
-		"\3\2\2\2D\u0155\3\2\2\2FG\5\4\3\2GH\7\2\2\3H\3\3\2\2\2IJ\7&\2\2JM\7,\2"+
-		"\2KN\5\6\4\2LN\5*\26\2MK\3\2\2\2ML\3\2\2\2NO\3\2\2\2OM\3\2\2\2OP\3\2\2"+
-		"\2P\5\3\2\2\2QV\5(\25\2RV\5&\24\2SV\5\"\22\2TV\5$\23\2UQ\3\2\2\2UR\3\2"+
-		"\2\2US\3\2\2\2UT\3\2\2\2V\7\3\2\2\2WX\t\2\2\2X\t\3\2\2\2Y\\\7,\2\2Z\\"+
-		"\5B\"\2[Y\3\2\2\2[Z\3\2\2\2\\\13\3\2\2\2]b\7,\2\2^_\5\b\5\2_`\7,\2\2`"+
-		"b\3\2\2\2a]\3\2\2\2a^\3\2\2\2b\r\3\2\2\2cd\5D#\2d\17\3\2\2\2eg\7\17\2"+
-		"\2fe\3\2\2\2fg\3\2\2\2g\21\3\2\2\2hi\5D#\2ij\7\6\2\2jk\5*\26\2k\23\3\2"+
-		"\2\2lm\b\13\1\2mn\5\n\6\2nt\3\2\2\2op\f\3\2\2pq\7\26\2\2qs\5\n\6\2ro\3"+
-		"\2\2\2sv\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\25\3\2\2\2vt\3\2\2\2wx\b\f\1\2x"+
-		"y\5\f\7\2y\177\3\2\2\2z{\f\3\2\2{|\7\26\2\2|~\5\f\7\2}z\3\2\2\2~\u0081"+
-		"\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\27\3\2\2\2\u0081\177\3\2"+
-		"\2\2\u0082\u0083\b\r\1\2\u0083\u0084\5\b\5\2\u0084\u008a\3\2\2\2\u0085"+
-		"\u0086\f\3\2\2\u0086\u0087\7\26\2\2\u0087\u0089\5\b\5\2\u0088\u0085\3"+
-		"\2\2\2\u0089\u008c\3\2\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b"+
-		"\31\3\2\2\2\u008c\u008a\3\2\2\2\u008d\u008e\b\16\1\2\u008e\u008f\7,\2"+
-		"\2\u008f\u0095\3\2\2\2\u0090\u0091\f\3\2\2\u0091\u0092\7\26\2\2\u0092"+
-		"\u0094\7,\2\2\u0093\u0090\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0093\3\2"+
-		"\2\2\u0095\u0096\3\2\2\2\u0096\33\3\2\2\2\u0097\u0095\3\2\2\2\u0098\u0099"+
-		"\b\17\1\2\u0099\u009a\5D#\2\u009a\u00a0\3\2\2\2\u009b\u009c\f\3\2\2\u009c"+
-		"\u009d\7\26\2\2\u009d\u009f\5D#\2\u009e\u009b\3\2\2\2\u009f\u00a2\3\2"+
-		"\2\2\u00a0\u009e\3\2\2\2\u00a0\u00a1\3\2\2\2\u00a1\35\3\2\2\2\u00a2\u00a0"+
-		"\3\2\2\2\u00a3\u00a4\b\20\1\2\u00a4\u00a5\5\16\b\2\u00a5\u00ab\3\2\2\2"+
-		"\u00a6\u00a7\f\3\2\2\u00a7\u00a8\7\26\2\2\u00a8\u00aa\5\16\b\2\u00a9\u00a6"+
-		"\3\2\2\2\u00aa\u00ad\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac"+
-		"\37\3\2\2\2\u00ad\u00ab\3\2\2\2\u00ae\u00af\b\21\1\2\u00af\u00b0\5\22"+
-		"\n\2\u00b0\u00b5\3\2\2\2\u00b1\u00b2\f\3\2\2\u00b2\u00b4\5\22\n\2\u00b3"+
-		"\u00b1\3\2\2\2\u00b4\u00b7\3\2\2\2\u00b5\u00b3\3\2\2\2\u00b5\u00b6\3\2"+
-		"\2\2\u00b6!\3\2\2\2\u00b7\u00b5\3\2\2\2\u00b8\u00b9\7)\2\2\u00b9\u00ba"+
-		"\7,\2\2\u00ba\u00bb\7\b\2\2\u00bb\u00bc\7\16\2\2\u00bc\u00c5\5\64\33\2"+
-		"\u00bd\u00be\7)\2\2\u00be\u00bf\7,\2\2\u00bf\u00c0\7\b\2\2\u00c0\u00c1"+
-		"\5\26\f\2\u00c1\u00c2\7\16\2\2\u00c2\u00c3\5\64\33\2\u00c3\u00c5\3\2\2"+
-		"\2\u00c4\u00b8\3\2\2\2\u00c4\u00bd\3\2\2\2\u00c5#\3\2\2\2\u00c6\u00c7"+
-		"\7(\2\2\u00c7\u00c8\7,\2\2\u00c8\u00c9\7\b\2\2\u00c9\u00ca\7\16\2\2\u00ca"+
-		"\u00cb\7\25\2\2\u00cb\u00cc\5\30\r\2\u00cc\u00cd\5\64\33\2\u00cd\u00d8"+
-		"\3\2\2\2\u00ce\u00cf\7(\2\2\u00cf\u00d0\7,\2\2\u00d0\u00d1\7\b\2\2\u00d1"+
-		"\u00d2\5\26\f\2\u00d2\u00d3\7\16\2\2\u00d3\u00d4\7\25\2\2\u00d4\u00d5"+
-		"\5\30\r\2\u00d5\u00d6\5\64\33\2\u00d6\u00d8\3\2\2\2\u00d7\u00c6\3\2\2"+
-		"\2\u00d7\u00ce\3\2\2\2\u00d8%\3\2\2\2\u00d9\u00da\5\b\5\2\u00da\u00db"+
-		"\7\23\2\2\u00db\u00dc\5D#\2\u00dc\u00dd\7\24\2\2\u00dd\u00de\5\32\16\2"+
-		"\u00de\u00df\5\20\t\2\u00df\'\3\2\2\2\u00e0\u00e1\5\b\5\2\u00e1\u00e2"+
-		"\5\32\16\2\u00e2\u00e3\5\20\t\2\u00e3)\3\2\2\2\u00e4\u00ed\5,\27\2\u00e5"+
-		"\u00ed\5.\30\2\u00e6\u00ed\5\60\31\2\u00e7\u00ed\5\62\32\2\u00e8\u00ed"+
-		"\5\64\33\2\u00e9\u00ed\5\66\34\2\u00ea\u00ed\58\35\2\u00eb\u00ed\5:\36"+
-		"\2\u00ec\u00e4\3\2\2\2\u00ec\u00e5\3\2\2\2\u00ec\u00e6\3\2\2\2\u00ec\u00e7"+
-		"\3\2\2\2\u00ec\u00e8\3\2\2\2\u00ec\u00e9\3\2\2\2\u00ec\u00ea\3\2\2\2\u00ec"+
-		"\u00eb\3\2\2\2\u00ed+\3\2\2\2\u00ee\u00ef\5\24\13\2\u00ef\u00f0\7\3\2"+
-		"\2\u00f0\u00f2\5\34\17\2\u00f1\u00f3\7\17\2\2\u00f2\u00f1\3\2\2\2\u00f2"+
-		"\u00f3\3\2\2\2\u00f3-\3\2\2\2\u00f4\u00f5\7#\2\2\u00f5\u00f7\7,\2\2\u00f6"+
-		"\u00f8\7\17\2\2\u00f7\u00f6\3\2\2\2\u00f7\u00f8\3\2\2\2\u00f8/\3\2\2\2"+
-		"\u00f9\u00fa\7%\2\2\u00fa\u00fc\5D#\2\u00fb\u00fd\7\17\2\2\u00fc\u00fb"+
-		"\3\2\2\2\u00fc\u00fd\3\2\2\2\u00fd\61\3\2\2\2\u00fe\u0100\7!\2\2\u00ff"+
-		"\u0101\5\22\n\2\u0100\u00ff\3\2\2\2\u0101\u0102\3\2\2\2\u0102\u0100\3"+
-		"\2\2\2\u0102\u0103\3\2\2\2\u0103\u0104\3\2\2\2\u0104\u0105\7\"\2\2\u0105"+
-		"\63\3\2\2\2\u0106\u0107\7\7\2\2\u0107\u0108\5> \2\u0108\u0109\7\r\2\2"+
-		"\u0109\65\3\2\2\2\u010a\u010c\7 \2\2\u010b\u010d\5\22\n\2\u010c\u010b"+
-		"\3\2\2\2\u010d\u010e\3\2\2\2\u010e\u010c\3\2\2\2\u010e\u010f\3\2\2\2\u010f"+
-		"\u0110\3\2\2\2\u0110\u0111\7\37\2\2\u0111\67\3\2\2\2\u0112\u0116\7+\2"+
-		"\2\u0113\u0114\7+\2\2\u0114\u0116\5\34\17\2\u0115\u0112\3\2\2\2\u0115"+
-		"\u0113\3\2\2\2\u0116\u0118\3\2\2\2\u0117\u0119\7\17\2\2\u0118\u0117\3"+
-		"\2\2\2\u0118\u0119\3\2\2\2\u01199\3\2\2\2\u011a\u011b\7,\2\2\u011b\u011c"+
-		"\7\b\2\2\u011c\u011e\7\16\2\2\u011d\u011f\7\17\2\2\u011e\u011d\3\2\2\2"+
-		"\u011e\u011f\3\2\2\2\u011f\u0128\3\2\2\2\u0120\u0121\7,\2\2\u0121\u0122"+
-		"\7\b\2\2\u0122\u0123\5\36\20\2\u0123\u0125\7\16\2\2\u0124\u0126\7\17\2"+
-		"\2\u0125\u0124\3\2\2\2\u0125\u0126\3\2\2\2\u0126\u0128\3\2\2\2\u0127\u011a"+
-		"\3\2\2\2\u0127\u0120\3\2\2\2\u0128;\3\2\2\2\u0129\u012a\7,\2\2\u012a\u012b"+
-		"\7\b\2\2\u012b\u012d\7\16\2\2\u012c\u012e\7\17\2\2\u012d\u012c\3\2\2\2"+
-		"\u012d\u012e\3\2\2\2\u012e\u0137\3\2\2\2\u012f\u0130\7,\2\2\u0130\u0131"+
-		"\7\b\2\2\u0131\u0132\5\36\20\2\u0132\u0134\7\16\2\2\u0133\u0135\7\17\2"+
-		"\2\u0134\u0133\3\2\2\2\u0134\u0135\3\2\2\2\u0135\u0137\3\2\2\2\u0136\u0129"+
-		"\3\2\2\2\u0136\u012f\3\2\2\2\u0137=\3\2\2\2\u0138\u013d\5@!\2\u0139\u013a"+
-		"\5@!\2\u013a\u013b\5> \2\u013b\u013d\3\2\2\2\u013c\u0138\3\2\2\2\u013c"+
-		"\u0139\3\2\2\2\u013d?\3\2\2\2\u013e\u0142\5(\25\2\u013f\u0142\5&\24\2"+
-		"\u0140\u0142\5*\26\2\u0141\u013e\3\2\2\2\u0141\u013f\3\2\2\2\u0141\u0140"+
-		"\3\2\2\2\u0142A\3\2\2\2\u0143\u0144\7,\2\2\u0144\u0145\7\23\2\2\u0145"+
-		"\u0146\5D#\2\u0146\u0147\7\24\2\2\u0147C\3\2\2\2\u0148\u0149\b#\1\2\u0149"+
-		"\u014a\t\3\2\2\u014a\u0156\5D#\r\u014b\u0156\5B\"\2\u014c\u0156\5<\37"+
-		"\2\u014d\u014e\7\b\2\2\u014e\u014f\5D#\2\u014f\u0150\7\16\2\2\u0150\u0156"+
-		"\3\2\2\2\u0151\u0156\7,\2\2\u0152\u0156\t\4\2\2\u0153\u0156\7.\2\2\u0154"+
-		"\u0156\7-\2\2\u0155\u0148\3\2\2\2\u0155\u014b\3\2\2\2\u0155\u014c\3\2"+
-		"\2\2\u0155\u014d\3\2\2\2\u0155\u0151\3\2\2\2\u0155\u0152\3\2\2\2\u0155"+
-		"\u0153\3\2\2\2\u0155\u0154\3\2\2\2\u0156\u016b\3\2\2\2\u0157\u0158\f\f"+
-		"\2\2\u0158\u0159\t\5\2\2\u0159\u016a\5D#\r\u015a\u015b\f\13\2\2\u015b"+
-		"\u015c\t\6\2\2\u015c\u016a\5D#\f\u015d\u015e\f\n\2\2\u015e\u015f\t\7\2"+
-		"\2\u015f\u016a\5D#\13\u0160\u0161\f\t\2\2\u0161\u0162\t\b\2\2\u0162\u016a"+
-		"\5D#\t\u0163\u0164\f\b\2\2\u0164\u0165\7\27\2\2\u0165\u016a\5D#\t\u0166"+
-		"\u0167\f\7\2\2\u0167\u0168\7\30\2\2\u0168\u016a\5D#\b\u0169\u0157\3\2"+
-		"\2\2\u0169\u015a\3\2\2\2\u0169\u015d\3\2\2\2\u0169\u0160\3\2\2\2\u0169"+
-		"\u0163\3\2\2\2\u0169\u0166\3\2\2\2\u016a\u016d\3\2\2\2\u016b\u0169\3\2"+
-		"\2\2\u016b\u016c\3\2\2\2\u016cE\3\2\2\2\u016d\u016b\3\2\2\2$MOU[aft\177"+
-		"\u008a\u0095\u00a0\u00ab\u00b5\u00c4\u00d7\u00ec\u00f2\u00f7\u00fc\u0102"+
-		"\u010e\u0115\u0118\u011e\u0125\u0127\u012d\u0134\u0136\u013c\u0141\u0155"+
-		"\u0169\u016b";
+		"\t!\4\"\t\"\3\2\3\2\3\2\3\3\3\3\3\3\3\3\6\3L\n\3\r\3\16\3M\3\4\3\4\3\4"+
+		"\3\4\5\4T\n\4\3\5\3\5\3\6\3\6\5\6Z\n\6\3\7\3\7\3\7\3\7\5\7`\n\7\3\b\3"+
+		"\b\3\t\5\te\n\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\7\13q\n"+
+		"\13\f\13\16\13t\13\13\3\f\3\f\3\f\3\f\3\f\3\f\7\f|\n\f\f\f\16\f\177\13"+
+		"\f\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u0087\n\r\f\r\16\r\u008a\13\r\3\16\3\16"+
+		"\3\16\3\16\3\16\3\16\7\16\u0092\n\16\f\16\16\16\u0095\13\16\3\17\3\17"+
+		"\3\17\3\17\3\17\3\17\7\17\u009d\n\17\f\17\16\17\u00a0\13\17\3\20\3\20"+
+		"\3\20\3\20\3\20\7\20\u00a7\n\20\f\20\16\20\u00aa\13\20\3\21\3\21\3\21"+
+		"\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\5\21\u00b8\n\21\3\22\3\22"+
+		"\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22\3\22"+
+		"\3\22\5\22\u00cb\n\22\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\24\3\24\3\24"+
+		"\3\24\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u00e0\n\25\3\26\3\26"+
+		"\3\26\3\26\5\26\u00e6\n\26\3\27\3\27\3\27\5\27\u00eb\n\27\3\30\3\30\3"+
+		"\30\5\30\u00f0\n\30\3\31\3\31\6\31\u00f4\n\31\r\31\16\31\u00f5\3\31\3"+
+		"\31\3\32\3\32\3\32\3\32\3\33\3\33\6\33\u0100\n\33\r\33\16\33\u0101\3\33"+
+		"\3\33\3\34\3\34\3\34\5\34\u0109\n\34\3\35\3\35\3\35\3\35\5\35\u010f\n"+
+		"\35\3\35\3\35\3\35\3\35\3\35\5\35\u0116\n\35\5\35\u0118\n\35\3\36\3\36"+
+		"\3\36\3\36\5\36\u011e\n\36\3\36\3\36\3\36\3\36\3\36\5\36\u0125\n\36\5"+
+		"\36\u0127\n\36\3\37\3\37\3\37\3\37\5\37\u012d\n\37\3 \3 \3 \5 \u0132\n"+
+		" \3!\3!\3!\3!\3!\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\5"+
+		"\"\u0146\n\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3\"\3"+
+		"\"\3\"\3\"\3\"\7\"\u015a\n\"\f\"\16\"\u015d\13\"\3\"\2\t\24\26\30\32\34"+
+		"\36B#\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>"+
+		"@B\2\t\5\2\35\35$$**\4\2\n\n\22\22\4\2\36\36\'\'\4\2\20\21\33\34\4\2\n"+
+		"\n\f\f\5\2\5\5\t\t\31\32\4\2\4\4\13\13\u0170\2D\3\2\2\2\4G\3\2\2\2\6S"+
+		"\3\2\2\2\bU\3\2\2\2\nY\3\2\2\2\f_\3\2\2\2\16a\3\2\2\2\20d\3\2\2\2\22f"+
+		"\3\2\2\2\24j\3\2\2\2\26u\3\2\2\2\30\u0080\3\2\2\2\32\u008b\3\2\2\2\34"+
+		"\u0096\3\2\2\2\36\u00a1\3\2\2\2 \u00b7\3\2\2\2\"\u00ca\3\2\2\2$\u00cc"+
+		"\3\2\2\2&\u00d3\3\2\2\2(\u00df\3\2\2\2*\u00e1\3\2\2\2,\u00e7\3\2\2\2."+
+		"\u00ec\3\2\2\2\60\u00f1\3\2\2\2\62\u00f9\3\2\2\2\64\u00fd\3\2\2\2\66\u0105"+
+		"\3\2\2\28\u0117\3\2\2\2:\u0126\3\2\2\2<\u012c\3\2\2\2>\u0131\3\2\2\2@"+
+		"\u0133\3\2\2\2B\u0145\3\2\2\2DE\5\4\3\2EF\7\2\2\3F\3\3\2\2\2GH\7&\2\2"+
+		"HK\7,\2\2IL\5\6\4\2JL\5(\25\2KI\3\2\2\2KJ\3\2\2\2LM\3\2\2\2MK\3\2\2\2"+
+		"MN\3\2\2\2N\5\3\2\2\2OT\5&\24\2PT\5$\23\2QT\5 \21\2RT\5\"\22\2SO\3\2\2"+
+		"\2SP\3\2\2\2SQ\3\2\2\2SR\3\2\2\2T\7\3\2\2\2UV\t\2\2\2V\t\3\2\2\2WZ\7,"+
+		"\2\2XZ\5@!\2YW\3\2\2\2YX\3\2\2\2Z\13\3\2\2\2[`\7,\2\2\\]\5\b\5\2]^\7,"+
+		"\2\2^`\3\2\2\2_[\3\2\2\2_\\\3\2\2\2`\r\3\2\2\2ab\5B\"\2b\17\3\2\2\2ce"+
+		"\7\17\2\2dc\3\2\2\2de\3\2\2\2e\21\3\2\2\2fg\5B\"\2gh\7\6\2\2hi\5(\25\2"+
+		"i\23\3\2\2\2jk\b\13\1\2kl\5\n\6\2lr\3\2\2\2mn\f\3\2\2no\7\26\2\2oq\5\n"+
+		"\6\2pm\3\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2\2s\25\3\2\2\2tr\3\2\2\2uv\b"+
+		"\f\1\2vw\5\f\7\2w}\3\2\2\2xy\f\3\2\2yz\7\26\2\2z|\5\f\7\2{x\3\2\2\2|\177"+
+		"\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\27\3\2\2\2\177}\3\2\2\2\u0080\u0081\b\r"+
+		"\1\2\u0081\u0082\7,\2\2\u0082\u0088\3\2\2\2\u0083\u0084\f\3\2\2\u0084"+
+		"\u0085\7\26\2\2\u0085\u0087\7,\2\2\u0086\u0083\3\2\2\2\u0087\u008a\3\2"+
+		"\2\2\u0088\u0086\3\2\2\2\u0088\u0089\3\2\2\2\u0089\31\3\2\2\2\u008a\u0088"+
+		"\3\2\2\2\u008b\u008c\b\16\1\2\u008c\u008d\5B\"\2\u008d\u0093\3\2\2\2\u008e"+
+		"\u008f\f\3\2\2\u008f\u0090\7\26\2\2\u0090\u0092\5B\"\2\u0091\u008e\3\2"+
+		"\2\2\u0092\u0095\3\2\2\2\u0093\u0091\3\2\2\2\u0093\u0094\3\2\2\2\u0094"+
+		"\33\3\2\2\2\u0095\u0093\3\2\2\2\u0096\u0097\b\17\1\2\u0097\u0098\5\16"+
+		"\b\2\u0098\u009e\3\2\2\2\u0099\u009a\f\3\2\2\u009a\u009b\7\26\2\2\u009b"+
+		"\u009d\5\16\b\2\u009c\u0099\3\2\2\2\u009d\u00a0\3\2\2\2\u009e\u009c\3"+
+		"\2\2\2\u009e\u009f\3\2\2\2\u009f\35\3\2\2\2\u00a0\u009e\3\2\2\2\u00a1"+
+		"\u00a2\b\20\1\2\u00a2\u00a3\5\22\n\2\u00a3\u00a8\3\2\2\2\u00a4\u00a5\f"+
+		"\3\2\2\u00a5\u00a7\5\22\n\2\u00a6\u00a4\3\2\2\2\u00a7\u00aa\3\2\2\2\u00a8"+
+		"\u00a6\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\37\3\2\2\2\u00aa\u00a8\3\2\2"+
+		"\2\u00ab\u00ac\7)\2\2\u00ac\u00ad\7,\2\2\u00ad\u00ae\7\b\2\2\u00ae\u00af"+
+		"\7\16\2\2\u00af\u00b8\5\62\32\2\u00b0\u00b1\7)\2\2\u00b1\u00b2\7,\2\2"+
+		"\u00b2\u00b3\7\b\2\2\u00b3\u00b4\5\26\f\2\u00b4\u00b5\7\16\2\2\u00b5\u00b6"+
+		"\5\62\32\2\u00b6\u00b8\3\2\2\2\u00b7\u00ab\3\2\2\2\u00b7\u00b0\3\2\2\2"+
+		"\u00b8!\3\2\2\2\u00b9\u00ba\7(\2\2\u00ba\u00bb\7,\2\2\u00bb\u00bc\7\b"+
+		"\2\2\u00bc\u00bd\7\16\2\2\u00bd\u00be\7\25\2\2\u00be\u00bf\5\b\5\2\u00bf"+
+		"\u00c0\5\62\32\2\u00c0\u00cb\3\2\2\2\u00c1\u00c2\7(\2\2\u00c2\u00c3\7"+
+		",\2\2\u00c3\u00c4\7\b\2\2\u00c4\u00c5\5\26\f\2\u00c5\u00c6\7\16\2\2\u00c6"+
+		"\u00c7\7\25\2\2\u00c7\u00c8\5\b\5\2\u00c8\u00c9\5\62\32\2\u00c9\u00cb"+
+		"\3\2\2\2\u00ca\u00b9\3\2\2\2\u00ca\u00c1\3\2\2\2\u00cb#\3\2\2\2\u00cc"+
+		"\u00cd\5\b\5\2\u00cd\u00ce\7\23\2\2\u00ce\u00cf\5B\"\2\u00cf\u00d0\7\24"+
+		"\2\2\u00d0\u00d1\5\30\r\2\u00d1\u00d2\5\20\t\2\u00d2%\3\2\2\2\u00d3\u00d4"+
+		"\5\b\5\2\u00d4\u00d5\5\30\r\2\u00d5\u00d6\5\20\t\2\u00d6\'\3\2\2\2\u00d7"+
+		"\u00e0\5*\26\2\u00d8\u00e0\5,\27\2\u00d9\u00e0\5.\30\2\u00da\u00e0\5\60"+
+		"\31\2\u00db\u00e0\5\62\32\2\u00dc\u00e0\5\64\33\2\u00dd\u00e0\5\66\34"+
+		"\2\u00de\u00e0\58\35\2\u00df\u00d7\3\2\2\2\u00df\u00d8\3\2\2\2\u00df\u00d9"+
+		"\3\2\2\2\u00df\u00da\3\2\2\2\u00df\u00db\3\2\2\2\u00df\u00dc\3\2\2\2\u00df"+
+		"\u00dd\3\2\2\2\u00df\u00de\3\2\2\2\u00e0)\3\2\2\2\u00e1\u00e2\5\24\13"+
+		"\2\u00e2\u00e3\7\3\2\2\u00e3\u00e5\5\32\16\2\u00e4\u00e6\7\17\2\2\u00e5"+
+		"\u00e4\3\2\2\2\u00e5\u00e6\3\2\2\2\u00e6+\3\2\2\2\u00e7\u00e8\7#\2\2\u00e8"+
+		"\u00ea\7,\2\2\u00e9\u00eb\7\17\2\2\u00ea\u00e9\3\2\2\2\u00ea\u00eb\3\2"+
+		"\2\2\u00eb-\3\2\2\2\u00ec\u00ed\7%\2\2\u00ed\u00ef\5B\"\2\u00ee\u00f0"+
+		"\7\17\2\2\u00ef\u00ee\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0/\3\2\2\2\u00f1"+
+		"\u00f3\7!\2\2\u00f2\u00f4\5\22\n\2\u00f3\u00f2\3\2\2\2\u00f4\u00f5\3\2"+
+		"\2\2\u00f5\u00f3\3\2\2\2\u00f5\u00f6\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7"+
+		"\u00f8\7\"\2\2\u00f8\61\3\2\2\2\u00f9\u00fa\7\7\2\2\u00fa\u00fb\5<\37"+
+		"\2\u00fb\u00fc\7\r\2\2\u00fc\63\3\2\2\2\u00fd\u00ff\7 \2\2\u00fe\u0100"+
+		"\5\22\n\2\u00ff\u00fe\3\2\2\2\u0100\u0101\3\2\2\2\u0101\u00ff\3\2\2\2"+
+		"\u0101\u0102\3\2\2\2\u0102\u0103\3\2\2\2\u0103\u0104\7\37\2\2\u0104\65"+
+		"\3\2\2\2\u0105\u0106\7+\2\2\u0106\u0108\5B\"\2\u0107\u0109\7\17\2\2\u0108"+
+		"\u0107\3\2\2\2\u0108\u0109\3\2\2\2\u0109\67\3\2\2\2\u010a\u010b\7,\2\2"+
+		"\u010b\u010c\7\b\2\2\u010c\u010e\7\16\2\2\u010d\u010f\7\17\2\2\u010e\u010d"+
+		"\3\2\2\2\u010e\u010f\3\2\2\2\u010f\u0118\3\2\2\2\u0110\u0111\7,\2\2\u0111"+
+		"\u0112\7\b\2\2\u0112\u0113\5\34\17\2\u0113\u0115\7\16\2\2\u0114\u0116"+
+		"\7\17\2\2\u0115\u0114\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u0118\3\2\2\2"+
+		"\u0117\u010a\3\2\2\2\u0117\u0110\3\2\2\2\u01189\3\2\2\2\u0119\u011a\7"+
+		",\2\2\u011a\u011b\7\b\2\2\u011b\u011d\7\16\2\2\u011c\u011e\7\17\2\2\u011d"+
+		"\u011c\3\2\2\2\u011d\u011e\3\2\2\2\u011e\u0127\3\2\2\2\u011f\u0120\7,"+
+		"\2\2\u0120\u0121\7\b\2\2\u0121\u0122\5\34\17\2\u0122\u0124\7\16\2\2\u0123"+
+		"\u0125\7\17\2\2\u0124\u0123\3\2\2\2\u0124\u0125\3\2\2\2\u0125\u0127\3"+
+		"\2\2\2\u0126\u0119\3\2\2\2\u0126\u011f\3\2\2\2\u0127;\3\2\2\2\u0128\u012d"+
+		"\5> \2\u0129\u012a\5> \2\u012a\u012b\5<\37\2\u012b\u012d\3\2\2\2\u012c"+
+		"\u0128\3\2\2\2\u012c\u0129\3\2\2\2\u012d=\3\2\2\2\u012e\u0132\5&\24\2"+
+		"\u012f\u0132\5$\23\2\u0130\u0132\5(\25\2\u0131\u012e\3\2\2\2\u0131\u012f"+
+		"\3\2\2\2\u0131\u0130\3\2\2\2\u0132?\3\2\2\2\u0133\u0134\7,\2\2\u0134\u0135"+
+		"\7\23\2\2\u0135\u0136\5B\"\2\u0136\u0137\7\24\2\2\u0137A\3\2\2\2\u0138"+
+		"\u0139\b\"\1\2\u0139\u013a\t\3\2\2\u013a\u0146\5B\"\r\u013b\u0146\5@!"+
+		"\2\u013c\u0146\5:\36\2\u013d\u013e\7\b\2\2\u013e\u013f\5B\"\2\u013f\u0140"+
+		"\7\16\2\2\u0140\u0146\3\2\2\2\u0141\u0146\7,\2\2\u0142\u0146\t\4\2\2\u0143"+
+		"\u0146\7.\2\2\u0144\u0146\7-\2\2\u0145\u0138\3\2\2\2\u0145\u013b\3\2\2"+
+		"\2\u0145\u013c\3\2\2\2\u0145\u013d\3\2\2\2\u0145\u0141\3\2\2\2\u0145\u0142"+
+		"\3\2\2\2\u0145\u0143\3\2\2\2\u0145\u0144\3\2\2\2\u0146\u015b\3\2\2\2\u0147"+
+		"\u0148\f\f\2\2\u0148\u0149\t\5\2\2\u0149\u015a\5B\"\r\u014a\u014b\f\13"+
+		"\2\2\u014b\u014c\t\6\2\2\u014c\u015a\5B\"\f\u014d\u014e\f\n\2\2\u014e"+
+		"\u014f\t\7\2\2\u014f\u015a\5B\"\13\u0150\u0151\f\t\2\2\u0151\u0152\t\b"+
+		"\2\2\u0152\u015a\5B\"\t\u0153\u0154\f\b\2\2\u0154\u0155\7\27\2\2\u0155"+
+		"\u015a\5B\"\t\u0156\u0157\f\7\2\2\u0157\u0158\7\30\2\2\u0158\u015a\5B"+
+		"\"\b\u0159\u0147\3\2\2\2\u0159\u014a\3\2\2\2\u0159\u014d\3\2\2\2\u0159"+
+		"\u0150\3\2\2\2\u0159\u0153\3\2\2\2\u0159\u0156\3\2\2\2\u015a\u015d\3\2"+
+		"\2\2\u015b\u0159\3\2\2\2\u015b\u015c\3\2\2\2\u015cC\3\2\2\2\u015d\u015b"+
+		"\3\2\2\2\"KMSY_dr}\u0088\u0093\u009e\u00a8\u00b7\u00ca\u00df\u00e5\u00ea"+
+		"\u00ef\u00f5\u0101\u0108\u010e\u0115\u0117\u011d\u0124\u0126\u012c\u0131"+
+		"\u0145\u0159\u015b";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

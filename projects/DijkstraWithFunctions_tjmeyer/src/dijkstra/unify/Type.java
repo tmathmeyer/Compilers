@@ -1,5 +1,7 @@
 package dijkstra.unify;
 
+import dijkstra.lexparse.DijkstraParser.TypeContext;
+
 public enum Type
 {
 	INT, FLOAT, NUMERIC_GENERAL,
@@ -35,5 +37,14 @@ public enum Type
 			default:
 				throw new RuntimeException("bad type!");
 		}
+	}
+
+	public static Type fromTC(TypeContext type)
+	{
+		if (type == null)
+		{
+			return UNKNOWN;
+		}
+		return fromString(type.getText());
 	}
 }

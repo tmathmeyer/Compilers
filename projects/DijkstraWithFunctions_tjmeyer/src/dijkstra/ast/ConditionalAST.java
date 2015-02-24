@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import dijkstra.unify.TypeUnificationTable;
+
 public class ConditionalAST implements AST
 {
 	private final List<AST> conditionals = new LinkedList<>();
@@ -36,5 +38,11 @@ public class ConditionalAST implements AST
 	public AST renameVars(Set<VarBind> scope)
 	{
 		return new ConditionalAST(conditionals.stream().map(a -> a.renameVars(scope)));
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		conditionals.stream().forEach(a -> a.buildTUT(tut));
 	}
 }

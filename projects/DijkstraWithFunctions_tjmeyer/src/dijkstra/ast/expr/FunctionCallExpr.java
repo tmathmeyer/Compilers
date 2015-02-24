@@ -1,16 +1,20 @@
-package dijkstra.ast;
+package dijkstra.ast.expr;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class FunctionCallAST implements AST
+import dijkstra.ast.AST;
+import dijkstra.unify.TypeUnificationTable;
+
+public class FunctionCallExpr extends ExprAST
 {
 	private final String fname;
 	private final ArrayList<AST> args = new ArrayList<>();
 	
-	public FunctionCallAST(String id, Stream<AST> map)
+	public FunctionCallExpr(String id, Stream<AST> map)
 	{
 		fname = id;
 		map.forEach(a -> args.add(a));
@@ -24,7 +28,7 @@ public class FunctionCallAST implements AST
 	}
 	
 	@Override
-	public AST renameVars(Set<VarBind> scope)
+	public ExprAST renameVars(Set<VarBind> scope)
 	{
 		String name = fname;
 		for(VarBind b : scope)
@@ -35,6 +39,18 @@ public class FunctionCallAST implements AST
 			}
 		}
 		
-		return new FunctionCallAST(name, args.stream().map(a -> {return a.renameVars(scope); }));
+		return new FunctionCallExpr(name, args.stream().map(a -> {return a.renameVars(scope); }));
+	}
+
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		// TODO: maybe?
+	}
+
+	@Override
+	protected List<AST> getChildren()
+	{
+		return args;
 	}
 }

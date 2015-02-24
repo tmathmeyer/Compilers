@@ -2,6 +2,7 @@ package dijkstra.unify;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class ReverseNameIndex
 {
@@ -20,5 +21,14 @@ public class ReverseNameIndex
 	public String toString()
 	{
 		return reverse.toString();
+	}
+
+	public String sanatize(String replaceAll)
+	{
+		for(Entry<String, String> t : reverse.entrySet())
+		{
+			replaceAll = replaceAll.replaceAll(t.getKey(), t.getValue());
+		}
+		return replaceAll;
 	}
 }

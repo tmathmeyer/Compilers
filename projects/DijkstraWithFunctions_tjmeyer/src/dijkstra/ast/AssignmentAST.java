@@ -1,12 +1,14 @@
 package dijkstra.ast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class AssignmentAST implements AST
 {
@@ -17,6 +19,11 @@ public class AssignmentAST implements AST
 	{
 		vars.forEach(a -> assignTo.push(a));
 		xpressions.forEach(a -> assignFrom.push(a));
+		
+		if (assignFrom.size() != assignTo.size())
+		{
+			throw new RuntimeException("mismatched assignment stament");
+		}
 	}
 	
 	@Override
@@ -60,5 +67,20 @@ public class AssignmentAST implements AST
 		}
 		
 		return new AssignmentAST(ato.stream(), afr.stream());
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		Iterator<AST> to = assignTo.iterator();
+		Iterator<AST> from = assignFrom.iterator();
+		for(int i=0; i<assignTo.size(); i++)
+		{
+			AST t = to.next();
+			AST f = from.next();
+			t.buildTUT(tut);
+			f.buildTUT(tut);
+			tut.register(t, f);
+		}
 	}
 }

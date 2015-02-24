@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Type;
+import dijkstra.unify.TypeUnificationTable;
 
 public class CompoundBodyAST implements AST
 {
@@ -41,13 +43,13 @@ public class CompoundBodyAST implements AST
 	}
 	
 	@Override
-	public AST renameVars(Set<VarBind> scope)
+	public CompoundBodyAST renameVars(Set<VarBind> scope)
 	{
 		return new CompoundBodyAST(parts.stream().map(a -> a.renameVars(scope)));
 	}
 	
 	@Override
-	public AST renameScoping(ScopedSet<VarBind> vb)
+	public CompoundBodyAST renameScoping(ScopedSet<VarBind> vb)
 	{
 		List<AST> np = new ArrayList<>();
 		for(AST a : parts)
@@ -59,6 +61,18 @@ public class CompoundBodyAST implements AST
 		}
 		
 		return new CompoundBodyAST(np.stream());
-		
+	}
+	
+	public void trySetReturn(TypeUnificationTable tut, Type type)
+	{
+		for(AST t : parts)
+		{
+			if (t instanceof ReturnAST)
+			{
+				tut.register(((ReturnAST)t).getParts(), type);
+			}
+			
+			t.buildTUT(tut);
+		}
 	}
 }

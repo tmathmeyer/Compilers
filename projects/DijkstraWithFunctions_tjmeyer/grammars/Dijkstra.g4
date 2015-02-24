@@ -44,7 +44,6 @@ guard :					expr GUARD statement;
 // list types
 varList :				var | varList COMMA var;
 parameterList :			parameter | parameterList COMMA parameter;
-typeList :				type | typeList COMMA type;
 idList :				ID | idList COMMA ID;
 expressionList :		expr | expressionList COMMA expr;
 argList :				argument | argList COMMA argument;
@@ -59,8 +58,8 @@ procedureDeclaration :	PROC ID LPAR RPAR compoundStatement
 						| PROC ID LPAR parameterList RPAR compoundStatement;
 
 // function definitions
-functionDeclaration :	FUN ID LPAR RPAR COLON typeList compoundStatement
-						| FUN ID LPAR parameterList RPAR COLON typeList compoundStatement;
+functionDeclaration :	FUN ID LPAR RPAR COLON type compoundStatement
+						| FUN ID LPAR parameterList RPAR COLON type compoundStatement;
 
 // array declarations
 arrayDeclaration :		type LBRACK expr RBRACK idList separator;
@@ -88,7 +87,7 @@ outputStatement :		PRINT expr SEMICOLON? ;
 iterativeStatement :	DO guard+ OD ;
 compoundStatement :		LBRACE compoundBody RBRACE ;
 alternativeStatement :	IF guard+ FI ;
-returnStatement :		(RETURN | RETURN expressionList) SEMICOLON?;
+returnStatement :		RETURN expr SEMICOLON?;
 procedureCall :			ID LPAR RPAR SEMICOLON?
 						| ID LPAR argList RPAR SEMICOLON?;
 functionCall :			ID LPAR RPAR SEMICOLON?
@@ -113,7 +112,7 @@ arrayAccessor :			ID LBRACK expr RBRACK;
  */
 expr :			arrayAccessor
 						| functionCall
-						|LPAR expr RPAR
+						| LPAR expr RPAR
 						| (TILDE | MINUS) expr
 						| expr (STAR | SLASH | MOD | DIV) expr
 						| expr (PLUS | MINUS) expr
@@ -126,6 +125,7 @@ expr :			arrayAccessor
 						| FLOAT_CONST
 						| INTEGER
 						;
+
 
 //expr:   expr '.' ID                 // suffix operator, precedence 11
 //    |   expr '[' expr ']'           // suffix operator, precedence 10

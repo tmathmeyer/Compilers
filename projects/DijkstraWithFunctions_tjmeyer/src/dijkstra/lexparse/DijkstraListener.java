@@ -123,16 +123,6 @@ public interface DijkstraListener extends ParseTreeListener {
 	 */
 	void exitParameterList(DijkstraParser.ParameterListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DijkstraParser#typeList}.
-	 * @param ctx the parse tree
-	 */
-	void enterTypeList(DijkstraParser.TypeListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DijkstraParser#typeList}.
-	 * @param ctx the parse tree
-	 */
-	void exitTypeList(DijkstraParser.TypeListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DijkstraParser#idList}.
 	 * @param ctx the parse tree
 	 */

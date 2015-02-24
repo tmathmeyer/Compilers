@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class IterativeAST implements AST
 {
@@ -53,5 +54,11 @@ public class IterativeAST implements AST
 	public AST renameVars(Set<VarBind> scope)
 	{
 		return new IterativeAST(conditionals.stream().map(a -> a.renameVars(scope)));
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		conditionals.stream().forEach(a -> a.buildTUT(tut));
 	}
 }

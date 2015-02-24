@@ -8,6 +8,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
+import dijkstra.ast.expr.ExprAST;
+import dijkstra.ast.expr.FunctionCallExpr;
 import dijkstra.lexparse.DijkstraBaseVisitor;
 import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.AlternativeStatementContext;
@@ -35,11 +37,10 @@ import dijkstra.lexparse.DijkstraParser.ProcedureCallContext;
 import dijkstra.lexparse.DijkstraParser.ProcedureDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.ProgramContext;
 import dijkstra.lexparse.DijkstraParser.ReturnStatementContext;
-import dijkstra.lexparse.DijkstraParser.TypeContext;
-import dijkstra.lexparse.DijkstraParser.TypeListContext;
 import dijkstra.lexparse.DijkstraParser.VarContext;
 import dijkstra.lexparse.DijkstraParser.VarListContext;
 import dijkstra.lexparse.DijkstraParser.VariableDeclarationContext;
+import dijkstra.unify.Type;
 
 public class ASTBuilder extends DijkstraBaseVisitor<AST>
 {
@@ -100,7 +101,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitExpr(ExprContext ctx)
 	{
-		return new ExprAST(ctx.children.stream().map(e -> examineExpr(e)));
+		return ExprAST.getExpr(ctx.children.stream().map(e -> examineExpr(e)));
 	}
 	
 	@Override
@@ -140,14 +141,14 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		return new FunctionAST(
 				ctx.ID().getText(),
 				getParams(ctx.parameterList()).stream().map(e -> e.accept(this)),
-				getParams(ctx.typeList()).stream().map(e -> e.getText()),
+				ctx.type().getText(),
 				ctx.compoundStatement().accept(this));
 	}
 	
 	@Override
 	public AST visitParameter(ParameterContext ctx)
 	{
-		return new FunctionAST.Param(ctx.type(), ctx.ID());
+		return new TerminalAST(ctx.ID().getText(), Type.fromTC(ctx.type()));
 	}
 	
 	@Override
@@ -165,13 +166,13 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitReturnStatement(ReturnStatementContext ctx)
 	{
-		return new ReturnAST(getExprsFromList(ctx.expressionList()).stream().map(a -> a.accept(this)));
+		return new ReturnAST(ctx.expr().accept(this));
 	}
 	
 	@Override
 	public AST visitFunctionCall(FunctionCallContext ctx)
 	{
-		return new FunctionCallAST(ctx.ID().getText(), getArgList(ctx.argList()).stream().map(a -> a.accept(this)));
+		return new FunctionCallExpr(ctx.ID().getText(), getArgList(ctx.argList()).stream().map(a -> a.accept(this)));
 	}
 	
 	@Override
@@ -189,18 +190,6 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	}
 	
 	
-	
-	
-	@Override
-	public AST visitGuardedStatementList(GuardedStatementListContext ctx)
-	{
-		throw new RuntimeException("not implemented");
-	}
-	
-	
-	
-	
-	
 	private AST examineExpr(ParseTree tree)
 	{
 		if (tree instanceof TerminalNodeImpl)
@@ -209,6 +198,12 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		}
 		
 		return tree.accept(this);
+	}
+	
+	@Override
+	public AST visitGuardedStatementList(GuardedStatementListContext ctx)
+	{
+		throw new RuntimeException("not implemented");
 	}
 	
 	private List<VarContext> getVarsFromList(VarListContext vct)
@@ -251,17 +246,6 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 		{
 			vc.add(plc.parameter());
 			plc = plc.parameterList();
-		}
-		return vc;
-	}
-	
-	private List<TypeContext> getParams(TypeListContext plc)
-	{
-		List<TypeContext> vc = new LinkedList<>();
-		while(plc != null  &&  plc.type() != null)
-		{
-			vc.add(plc.type());
-			plc = plc.typeList();
 		}
 		return vc;
 	}

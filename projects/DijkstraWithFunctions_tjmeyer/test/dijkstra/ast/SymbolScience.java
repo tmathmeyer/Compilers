@@ -27,21 +27,21 @@ public class SymbolScience {
 					  +"int[a+b+1] c "
 					  +"c[b],c[a] <- a,b "
 					  +"product <- a*b+a/b; "
-					  +"fun func (int x, y, float q) : int,int { "
-					  +"  return x+y, x*y; "
+					  +"fun func (int x, y, float q) : int { "
+					  +"  return x+y; "
 					  +"} "
 					  +"fun fn () : int { "
 					  +"  return 1 + z; "
 					  +"} "
 					  +"do "
 					  +"  x=y :: {x <- x+1} "
-					  +"  x<y :: y <- y-1 "
+					  +"  x<y :: y <- -y "
 					  +"od "
 					  +"proc foo (int q, r) { "
 					  +"   c[b-a] <- q-r "
 					  +"} "
 					  +"foo(b, z); "
-					  +"m,n <- func(0, x+y, 0.0)"
+					  +"m <- func(0, x+y, 0.0)"
 					  +"if "
 					  +"  true :: print x+y "
 					  +"  x>10 :: print product "
@@ -53,7 +53,7 @@ public class SymbolScience {
 	@Test
 	public void testLiterallyEveryLanguageConstructCanBeVisited()
 	{
-		String astToString = "input a input b INT z,y,x A_INT[a+b+1] c c[a],c[b] <- b,a product <- a*b+a/b fun func(int x,y,float q) : int,int{  return x*y,x+y } fun fn() : int{  return 1+z } do  x=y :: {  x <- x+1 }  x<y :: y <- y-1 od proc foo(int q,r){  c[b-a] <- q-r } foo(b,z) n,m <- func(0,x+y,0.0) if  true :: print x+y  x>10 :: print product  x<10 :: print product+10  -x=-10 :: print 0 fi ";
+		String astToString = "input a input b INT z,y,x A_INT[a+b+1] c c[a],c[b] <- b,a product <- a*b+a/b fun func(x,y,q) : INT{  return x+y } fun fn() : INT{  return 1+z } do  x=y :: {  x <- x+1 }  x<y :: y <- -y od proc foo(q,r){  c[b-a] <- q-r } foo(b,z) m <- func(0,x+y,0.0) if  true :: print x+y  x>10 :: print product  x<10 :: print product+10  -x=-10 :: print 0 fi ";
 		
 		AST t = tree.a.accept(new ASTBuilder(tree.b));
 		
@@ -82,9 +82,7 @@ public class SymbolScience {
 		
 		t.buildTUT(tut);
 		
-		System.out.println(rsi);
-		
-		System.out.println(tut);
+		System.out.println(tut.toString(rsi));
 	}
 
 }

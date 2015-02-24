@@ -1,32 +1,25 @@
 package dijkstra.ast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import dijkstra.ast.FunctionAST.Param;
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class ProcedureAST implements AST
 {
 	private final String procname;
-	private final List<Param> args = new ArrayList<>();
-	private final AST body;
+	private final ArrayList<TerminalAST> args = new ArrayList<>();
+	private final CompoundBodyAST body;
 	
 	public ProcedureAST(String text, Stream<AST> map, AST accept)
 	{
 		procname = text;
-		body = accept;
-		
-		Iterator<Param> ar = map.map(x -> Param.fromAST(x)).iterator();
-		
-		while(ar.hasNext())
-		{
-			args.add(ar.next());
-		}
+		body = (CompoundBodyAST) accept;
+		map.map(x -> (TerminalAST)x).forEach(x -> args.add(x));
 	}
 	
 	@Override
@@ -45,9 +38,9 @@ public class ProcedureAST implements AST
 		ScopedSet<String> current = new ScopedSet<>(this);
 		scope.insert(procname);
 		
-		for(Param p : args)
+		for(TerminalAST p : args)
 		{
-			current.insert(p.name);
+			current.insert(p.toString());
 		}
 		
 		body.getDeclaredVariables(current);
@@ -77,11 +70,10 @@ public class ProcedureAST implements AST
 	public AST renameScoping(ScopedSet<VarBind> vb)
 	{
 		List<AST> newChildren = new ArrayList<>();
-		for(Param a : args)
+		for(TerminalAST a : args)
 		{
 			a = a.renameVars(vb.getScopeVars(a));
 			a = a.renameVars(vb.getScopeVars(this));
-			a = a.renameScoping(vb);
 			newChildren.add(a);
 		}
 		
@@ -92,4 +84,10 @@ public class ProcedureAST implements AST
 		return new ProcedureAST(procname, newChildren.stream(), bod);
 	}
 
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		body.trySetReturn(tut, null);
+		args.stream().forEach(a -> a.buildTUT(tut));
+	}
 }

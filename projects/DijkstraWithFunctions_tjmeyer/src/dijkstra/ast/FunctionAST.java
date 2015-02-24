@@ -6,24 +6,28 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
-
-import dijkstra.lexparse.DijkstraParser.TypeContext;
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Type;
+import dijkstra.unify.TypeUnificationTable;
 
 public class FunctionAST implements AST
 {
 	private final String name;
-	private final ArrayList<String> types = new ArrayList<>();
-	private final ArrayList<Param> args = new ArrayList<>();
-	private final AST body;
+	private final Type type;
+	private final ArrayList<TerminalAST> args = new ArrayList<>();
+	private final CompoundBodyAST body;
 	
-	public FunctionAST(String n, Stream<AST> a, Stream<String> t, AST b)
+	public FunctionAST(String n, Stream<AST> a, String t, AST b)
+	{
+		this(n, a, Type.fromString(t), (CompoundBodyAST) b);
+	}
+
+	public FunctionAST(String n, Stream<AST> a, Type t, CompoundBodyAST b)
 	{
 		name = n;
 		body = b;
-		a.map(x -> Param.fromAST(x)).forEach(X -> args.add(X));
-		t.forEach(X -> types.add(X));
+		a.map(x -> (TerminalAST)x).forEach(x -> args.add(x));
+		type = t;
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class FunctionAST implements AST
 	{
 		LinkedList<String> argsS = new LinkedList<>();
 		args.stream().forEach(a -> argsS.push(a.toString()));
-		StringBuilder sb = new StringBuilder("fun " + name + "(" + String.join(",", argsS) + ") : " + String.join(",", types));
+		StringBuilder sb = new StringBuilder("fun " + name + "(" + String.join(",", argsS) + ") : " + type);
 		sb.append(body);
 		return sb.toString();
 	}
@@ -43,9 +47,9 @@ public class FunctionAST implements AST
 		ScopedSet<String> current = new ScopedSet<>(this);
 		scope.insert(name);
 		
-		for(Param p : args)
+		for(TerminalAST p : args)
 		{
-			current.insert(p.name);
+			current.insert(p.toString());
 		}
 		
 		body.getDeclaredVariables(current);
@@ -68,84 +72,33 @@ public class FunctionAST implements AST
 		
 		return new FunctionAST(name,
 				args.stream().map(a -> {return a.renameVars(scope); }),
-		   		types.stream(),
-		   		body.renameVars(scope));
+		   		type, body.renameVars(scope));
 	}
 	
 	@Override
 	public AST renameScoping(ScopedSet<VarBind> vb)
 	{
 		List<AST> newChildren = new ArrayList<>();
-		for(Param a : args)
+		for(TerminalAST a : args)
 		{
 			a = a.renameVars(vb.getScopeVars(a));
 			a = a.renameVars(vb.getScopeVars(this));
-			a = a.renameScoping(vb);
 			newChildren.add(a);
 		}
 		
-		AST bod = body.renameVars(vb.getScopeVars(body));
+		CompoundBodyAST bod = body.renameVars(vb.getScopeVars(body));
 		bod = bod.renameVars(vb.getScopeVars(this));
 		bod = bod.renameScoping(vb);
 		
-		return new FunctionAST(name, newChildren.stream(), types.stream(), bod);
+		return new FunctionAST(name, newChildren.stream(), type, bod);
 	}
 	
 	
-	
-	public static class Param implements AST
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
 	{
-		private String type;
-		String name;
-		
-		public Param(String t, String n)
-		{
-			type = t;
-			name = n;
-		}
-
-		public Param(TypeContext type2, TerminalNode id)
-		{
-			name = id.getText();
-			type = type2==null?"UNKNOWN":type2.getText();
-		}
-		
-		@Override
-		public String toString()
-		{
-			if (type.equals("UNKNOWN"))
-			{
-				return name;
-			}
-			return type+" "+name;
-		}
-
-		public static Param fromAST(AST a)
-		{
-			if (a instanceof Param)
-			{
-				return (Param) a;
-			}
-			throw new RuntimeException("cant make a parameter from this: "+a);
-		}
-		
-		@Override
-		public Param renameScoping(ScopedSet<VarBind> vb)
-		{
-			return this;
-		}
-		
-		@Override
-		public Param renameVars(Set<VarBind> scope)
-		{
-			for(VarBind b : scope)
-			{
-				if (b.old.equals(name))
-				{
-					return new Param(type, b.New);
-				}
-			}
-			return this;
-		}
+		body.trySetReturn(tut, type);
+		args.stream().forEach(a -> a.buildTUT(tut));
+		tut.register(this, type);
 	}
 }
