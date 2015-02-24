@@ -3,28 +3,31 @@ package dijkstra.unify.rlist;
 import java.util.Set;
 import java.util.function.Function;
 
+import dijkstra.type.Monad;
 import dijkstra.unify.Constraint;
+import dijkstra.unify.Term;
 
-public interface RList<T extends Combinable<T>>
+public interface RList<W, T extends Combinable<T, W>>
 {
-	public RList<T> rest();
-	public RList<T> cons(T t);
-	public RList<T> setAdd(T t);
+	public RList<W, T> rest();
+	public RList<W, T> cons(T t);
+	public RList<W, T> setAdd(T t, Monad<W> monad);
 	public T first();
 	public boolean empty();
+	public <X extends Combinable<X, W>> RList<W, X> map(Function<T, X> fnx);
 	
 	
-	public <X extends Combinable<X>> RList<X> map(Function<T, X> fnx);
 	
-	public static <Y extends Combinable<Y>> RList<Y> emptyList()
+	
+	public static <L, Y extends Combinable<Y, L>> RList<L, Y> emptyList()
 	{
-		return new RList<Y>()
+		return new RList<L, Y>()
 		{
 			@Override
-			public RList<Y> rest() { return this; }
+			public RList<L, Y> rest() { return this; }
 
 			@Override
-			public RList<Y> cons(Y t) { return new _RList<Y>(this, t); }
+			public RList<L, Y> cons(Y t) { return new _RList<L, Y>(this, t); }
 
 			@Override
 			public Y first() { return null; }
@@ -33,17 +36,21 @@ public interface RList<T extends Combinable<T>>
 			public boolean empty() { return true; }
 
 			@Override
-			public <X extends Combinable<X>> RList<X> map(Function<Y, X> fnx) { return RList.emptyList(); }
+			public <X extends Combinable<X, L>> RList<L, X> map(Function<Y, X> fnx) { return RList.emptyList(); }
 
 			@Override
-			public RList<Y> setAdd(Y t) { return cons(t); }
+			public RList<L, Y> setAdd(Y t, Monad<L> monad)
+			{
+				monad.set(t.important());
+				return cons(t);
+			}
 			
 			@Override
 			public String toString() { return ""; }
 		};
 	}
 
-	public static RList<Constraint> append(RList<Constraint> add, RList<Constraint> to)
+	public static RList<Term, Constraint> append(RList<Term, Constraint> add, RList<Term, Constraint> to)
 	{
 		while(!add.empty())
 		{
@@ -52,9 +59,10 @@ public interface RList<T extends Combinable<T>>
 		}
 		return to;
 	}
-	public static <M extends Combinable<M>> RList<M> fromSet(Set<M> terms)
+	
+	public static <N, M extends Combinable<M,N>> RList<N, M> fromSet(Set<M> terms)
 	{
-		RList<M> res = emptyList();
+		RList<N, M> res = emptyList();
 		for(M m : terms)
 		{
 			res = res.cons(m);

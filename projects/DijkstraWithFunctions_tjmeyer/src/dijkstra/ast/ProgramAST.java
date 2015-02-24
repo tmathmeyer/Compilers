@@ -14,11 +14,22 @@ public class ProgramAST implements AST
 	
 	public ProgramAST(Stream<AST> c)
 	{	
-		Iterator<AST> it = c.iterator();
-		while(it.hasNext())
+		this(c.iterator());
+	}
+	
+	public ProgramAST(Iterator<AST> c)
+	{	
+		if (c.hasNext())
 		{
-			children.add(it.next());
+			children.add(c.next());
+			children.add(new ProgramAST(c));
 		}
+		
+		
+		//while(c.hasNext())
+		//{
+		//	children.add(c.next());
+		//}
 	}
 
 	@Override

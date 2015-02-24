@@ -5,7 +5,7 @@ import dijkstra.type.Type;
 import dijkstra.unify.rlist.Combinable;
 import dijkstra.unify.rlist.RList;
 
-public class Constraint implements Combinable<Constraint>
+public class Constraint implements Combinable<Constraint, Term>
 {
 	public static final boolean PRETTY = true;
 	
@@ -124,7 +124,7 @@ public class Constraint implements Combinable<Constraint>
 
 	
 	
-	public RList<Constraint> generateAdditions()
+	public RList<Term, Constraint> generateAdditions()
 	{
 		throw new RuntimeException("NOOOOO");
 	}
@@ -133,6 +133,13 @@ public class Constraint implements Combinable<Constraint>
 	public Constraint combine(Constraint x)
 	{
 		return new Constraint(left.combine(x.left), right.combine(x.right));
+	}
+
+	@Override
+	public Term important()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

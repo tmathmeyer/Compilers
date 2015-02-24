@@ -3,15 +3,16 @@ package dijkstra.unify;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.TerminalAST;
 import dijkstra.type.Arrow;
+import dijkstra.type.Monad;
 import dijkstra.unify.rlist.RList;
 
 public class TypeUnificationTable
 {
 	private final ReverseNameIndex rni;
 	
-	private RList<Constraint> temp = RList.emptyList();
+	private RList<Term, Constraint> temp = RList.emptyList();
 	
-	public TypeUnificationTable(RList<Constraint> cs, ReverseNameIndex r)
+	public TypeUnificationTable(RList<Term, Constraint> cs, ReverseNameIndex r)
 	{
 		this(r);
 		temp = cs;
@@ -22,9 +23,11 @@ public class TypeUnificationTable
 		rni = r;
 	}
 	
-	public void register(ExprAST tree, Term t)
+	public Term register(ExprAST tree, Term t)
 	{
-		temp = temp.setAdd(new Constraint(tree, t));
+		Monad<Term> monad = Monad.of();
+		temp = temp.setAdd(new Constraint(tree, t), monad);
+		return monad.get();
 	}
 	
 	public String toString()
@@ -34,8 +37,8 @@ public class TypeUnificationTable
 	
 	public TypeUnificationTable getOnlyTerminalValues()
 	{
-		RList<Constraint> mew = RList.emptyList();
-		RList<Constraint> temp = this.temp;
+		RList<Term, Constraint> mew = RList.emptyList();
+		RList<Term, Constraint> temp = this.temp;
 		
 		while(!temp.empty())
 		{
@@ -50,7 +53,7 @@ public class TypeUnificationTable
 	}
 	
 	
-	public static RList<Constraint> unify(RList<Constraint> stack, RList<Constraint> subst)
+	public static RList<Term, Constraint> unify(RList<Term, Constraint> stack, RList<Term, Constraint> subst)
 	{
 		if (stack.empty())
 		{
@@ -81,7 +84,7 @@ public class TypeUnificationTable
 		
 		if (current.matchingArity())
 		{
-			RList<Constraint> additions = current.generateAdditions();
+			RList<Term, Constraint> additions = current.generateAdditions();
 			stack = RList.append(additions, stack);
 			return unify(stack, subst);
 		}
@@ -89,7 +92,7 @@ public class TypeUnificationTable
 		throw new RuntimeException("didn't know what to do with: "+current);
 	}
 
-	private static RList<Constraint> replaceInList(Term l, Term r, RList<Constraint> s)
+	private static RList<Term, Constraint> replaceInList(Term l, Term r, RList<Term, Constraint> s)
 	{
 		if (l instanceof Arrow) {
 			return replaceInList(((Arrow) l).o, r, s);
@@ -100,7 +103,7 @@ public class TypeUnificationTable
 		return s.map(a -> new Constraint(a.left().replace(l, r), a.right().replace(l, r)));
 	}
 	
-	public TypeUnificationTable check(RList<Constraint> cons)
+	public TypeUnificationTable check(RList<Term, Constraint> cons)
 	{
 		return new TypeUnificationTable(unify(temp, cons), rni);
 	}

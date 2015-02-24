@@ -74,6 +74,11 @@ public enum Type implements AType
 			return true;
 		}
 		
+		if (type==INT && other==FLOAT)
+		{
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -102,6 +107,9 @@ public enum Type implements AType
 		
 		if (a==VOID) return b;
 		if (b==VOID) return a;
+
+		if (a==INT && b==FLOAT) return INT;
+		if (a==FLOAT && b==INT) return FLOAT;
 		
 		
 		if (a==INT && b==NUMERIC_GENERAL) return INT;

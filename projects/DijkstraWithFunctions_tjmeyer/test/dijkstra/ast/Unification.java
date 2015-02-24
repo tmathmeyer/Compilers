@@ -69,12 +69,8 @@ public class Unification {
 		TypeUnificationTable tut = new TypeUnificationTable(rsi);
 		
 		t.buildTUT(tut);
-		
-		System.out.println(tut);
-		
+
 		tut = tut.check(RList.emptyList()).getOnlyTerminalValues();
-		
-		System.out.println(tut);
 	}
 	
 	
@@ -84,10 +80,34 @@ public class Unification {
 	{
 		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree("float a "
 																 +"int b "
-																 +"print a+b "
-																 +"b <- 1 "
-																 +"a <- b "
-																 +"print b ");
+																 +"b <- a "
+																 +"print b+a ");
+		
+		ReverseNameIndex rsi = new ReverseNameIndex();
+		
+		AST t = AST.makeUnique(false, tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
+		
+		t.buildTUT(tut);
+		
+		System.out.println(tut);
+		
+		System.out.println("\n\n\n");
+		
+		tut = tut.check(RList.emptyList());
+		
+		System.out.println(tut);
+	}
+	
+	
+	
+	@Test
+	public void testNotFailHAHA()
+	{
+		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree("float a "
+				 												 +"a <- b "
+																 +"float b ");
 		
 		ReverseNameIndex rsi = new ReverseNameIndex();
 		

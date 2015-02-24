@@ -2,27 +2,29 @@ package dijkstra.unify.rlist;
 
 import java.util.function.Function;
 
-public class _RList<T extends Combinable<T>> implements RList<T>
+import dijkstra.type.Monad;
+
+public class _RList<D, T extends Combinable<T, D>> implements RList<D, T>
 {
-	private final RList<T> list;
+	private final RList<D, T> list;
 	private final T t;
 	
-	_RList(RList<T> RList, T t2)
+	_RList(RList<D, T> RList, T t2)
 	{
 		list = RList;
 		t = t2;
 	}
 
 	@Override
-	public RList<T> rest()
+	public RList<D, T> rest()
 	{
 		return list;
 	}
 
 	@Override
-	public RList<T> cons(T t)
+	public RList<D, T> cons(T t)
 	{
-		return new _RList<T>(this, t);
+		return new _RList<D, T>(this, t);
 	}
 
 	@Override
@@ -38,27 +40,27 @@ public class _RList<T extends Combinable<T>> implements RList<T>
 	}
 
 	@Override
-	public <X extends Combinable<X>> RList<X> map(Function<T, X> fnx)
+	public <X extends Combinable<X, D>> RList<D, X> map(Function<T, X> fnx)
 	{
-		return new _RList<X>(list.map(fnx), fnx.apply(t));
+		return new _RList<D, X>(list.map(fnx), fnx.apply(t));
 	}
 
 	@Override
-	public RList<T> setAdd(T a)
+	public RList<D, T> setAdd(T a, Monad<D> monad)
 	{
 		if (a.equals(t))
 		{
-			return new _RList<T>(list, a.combine(t));
+			return new _RList<D, T>(list, a.combine(t));
 		}
 		
-		return new _RList<T>(list.setAdd(a), t);
+		return new _RList<D, T>(list.setAdd(a, monad), t);
 	}
 	
 	@Override
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		RList<T> temp = this;
+		RList<D, T> temp = this;
 		while(!temp.empty())
 		{
 			sb.append(temp.first()).append("\n");
