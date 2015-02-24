@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Set;
 
 import dijkstra.ast.AST;
-import dijkstra.unify.Type;
+import dijkstra.type.Type;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
 public class NotExpr extends ExprAST
 {
-	private final AST n;
+	private final ExprAST n;
 	
-	public NotExpr(AST next)
+	public NotExpr(ExprAST next)
 	{
 		n = next;
 	}
@@ -43,5 +44,16 @@ public class NotExpr extends ExprAST
 	public String toString()
 	{
 		return "!" + n;
+	}
+	
+	@Override
+	public Term replace(Term l, Term r)
+	{
+		if (this.equals(l))
+		{
+			return r;
+		}
+		
+		return this;
 	}
 }

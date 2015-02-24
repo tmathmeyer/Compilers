@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class CompoundBodyAST implements AST

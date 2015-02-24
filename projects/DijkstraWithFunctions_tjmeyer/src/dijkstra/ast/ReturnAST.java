@@ -2,20 +2,22 @@ package dijkstra.ast;
 
 import java.util.Set;
 
+import dijkstra.ast.expr.ExprAST;
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class ReturnAST implements AST
 {
-	private final AST parts;
+	private final ExprAST parts;
 
-	public AST getParts()
+	public ExprAST getParts()
 	{
 		return parts;
 	}
 	
 	public ReturnAST(AST accept)
 	{
-		parts = accept;
+		parts = (ExprAST) accept;
 	}
 
 	public String toString()
@@ -33,5 +35,11 @@ public class ReturnAST implements AST
 	public AST renameVars(Set<VarBind> scope)
 	{
 		return new ReturnAST(parts.renameVars(scope));
+	}
+	
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		parts.buildTUT(tut);
 	}
 }

@@ -2,9 +2,11 @@ package dijkstra.ast;
 
 import java.util.Set;
 
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.lexparse.DijkstraParser.InputStatementContext;
+import dijkstra.type.AType;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class InputAST implements AST
@@ -26,7 +28,7 @@ public class InputAST implements AST
 		return input.toString();
 	}
 
-	public Type getInputVariableType()
+	public AType getInputVariableType()
 	{
 		return input.getT();
 	}

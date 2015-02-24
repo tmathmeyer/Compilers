@@ -8,8 +8,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
+import dijkstra.ast.expr.ArrayAccessAST;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.FunctionCallExpr;
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.lexparse.DijkstraBaseVisitor;
 import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.AlternativeStatementContext;
@@ -40,7 +42,7 @@ import dijkstra.lexparse.DijkstraParser.ReturnStatementContext;
 import dijkstra.lexparse.DijkstraParser.VarContext;
 import dijkstra.lexparse.DijkstraParser.VarListContext;
 import dijkstra.lexparse.DijkstraParser.VariableDeclarationContext;
-import dijkstra.unify.Type;
+import dijkstra.type.Type;
 
 public class ASTBuilder extends DijkstraBaseVisitor<AST>
 {

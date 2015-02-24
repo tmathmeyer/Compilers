@@ -50,8 +50,12 @@ public interface AST
 		// do nothing
 	}
 	
-	public static AST makeUnique(AST t, ReverseNameIndex ... indicies)
+	public static AST makeUnique(boolean b, AST t, ReverseNameIndex ... indicies)
 	{
+		if (!b)
+		{
+			return t;
+		}
 		if (indicies.length > 0)
 		{
 			return t.renameScoping(getBindings(t.getDeclaredVariables(null).finish(), indicies[0]));
@@ -73,6 +77,5 @@ public interface AST
 	{
 		return new ScopedSet<String>(this);
 	}
-	
 	
 }

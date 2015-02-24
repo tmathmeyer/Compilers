@@ -8,21 +8,23 @@ import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import dijkstra.ast.expr.ExprAST;
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class ArrayDecAST implements AST
 {
 	private final Type type; // a type
-	private final AST arraySize; // an expression that evaluates to a number
+	private final ExprAST arraySize; // an expression that evaluates to a number
 	private final List<TerminalAST> ids = new LinkedList<>(); // a series of names
 	
 	public ArrayDecAST(TypeContext type, AST expr, List<TerminalNode> iDsFromList)
 	{
 		this.type = Type.getArrayOf(Type.fromString(type.getText()));
-		arraySize = expr;
+		arraySize = (ExprAST) expr;
 		Iterator<String> it = iDsFromList.stream().map(e -> e.getText()).iterator();
 		while(it.hasNext())
 		{
@@ -30,7 +32,7 @@ public class ArrayDecAST implements AST
 		}
 	}
 
-	private ArrayDecAST(Type at, AST t, List<String> newdecs)
+	private ArrayDecAST(Type at, ExprAST t, List<String> newdecs)
 	{
 		type = at;
 		arraySize = t;
@@ -80,7 +82,7 @@ public class ArrayDecAST implements AST
 			}
 		}
 		
-		AST t = arraySize.renameVars(s);
+		ExprAST t = arraySize.renameVars(s);
 		
 		return new ArrayDecAST(type, t, newdecs);
 	}

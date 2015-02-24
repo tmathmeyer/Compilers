@@ -7,18 +7,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import dijkstra.ast.expr.ExprAST;
+import dijkstra.ast.expr.FunctionCallExpr;
+import dijkstra.ast.expr.TerminalAST;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 
 public class AssignmentAST implements AST
 {
-	private final LinkedList<AST> assignTo = new LinkedList<>();
-	private final LinkedList<AST> assignFrom = new LinkedList<>();
+	private final LinkedList<ExprAST> assignTo = new LinkedList<>();
+	private final LinkedList<ExprAST> assignFrom = new LinkedList<>();
 	
 	public AssignmentAST(Stream<AST> vars, Stream<AST> xpressions)
 	{
-		vars.forEach(a -> assignTo.push(a));
-		xpressions.forEach(a -> assignFrom.push(a));
+		vars.forEach(a -> assignTo.push((ExprAST) a));
+		xpressions.forEach(a -> assignFrom.push((ExprAST) a));
 		
 		if (assignFrom.size() != assignTo.size())
 		{
@@ -72,15 +76,22 @@ public class AssignmentAST implements AST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		Iterator<AST> to = assignTo.iterator();
-		Iterator<AST> from = assignFrom.iterator();
+		Iterator<ExprAST> to = assignTo.iterator();
+		Iterator<ExprAST> from = assignFrom.iterator();
 		for(int i=0; i<assignTo.size(); i++)
 		{
-			AST t = to.next();
-			AST f = from.next();
+			ExprAST t = to.next();
+			ExprAST f = from.next();
 			t.buildTUT(tut);
 			f.buildTUT(tut);
-			tut.register(t, f);
+			if (f instanceof FunctionCallExpr)
+			{
+				tut.register(t, new TerminalAST(((FunctionCallExpr)f).getName(), Type.UNKNOWN));
+			}
+			else
+			{
+				tut.register(t, f);
+			}
 		}
 	}
 }

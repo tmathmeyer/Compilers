@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import dijkstra.ast.expr.TerminalAST;
+import dijkstra.type.Arrow;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class FunctionAST implements AST
@@ -16,6 +18,11 @@ public class FunctionAST implements AST
 	private final Type type;
 	private final ArrayList<TerminalAST> args = new ArrayList<>();
 	private final CompoundBodyAST body;
+	
+	public Type getReturnType()
+	{
+		return type;
+	}
 	
 	public FunctionAST(String n, Stream<AST> a, String t, AST b)
 	{
@@ -27,6 +34,7 @@ public class FunctionAST implements AST
 		name = n;
 		body = b;
 		a.map(x -> (TerminalAST)x).forEach(x -> args.add(x));
+		args.stream().forEach(x -> x.setT(Type.VOID));
 		type = t;
 	}
 
@@ -99,6 +107,9 @@ public class FunctionAST implements AST
 	{
 		body.trySetReturn(tut, type);
 		args.stream().forEach(a -> a.buildTUT(tut));
-		tut.register(this, type);
+		
+		Arrow a = new Arrow(Arrow.fromList(args), type);
+		
+		tut.register(new TerminalAST(name, a), a);
 	}
 }

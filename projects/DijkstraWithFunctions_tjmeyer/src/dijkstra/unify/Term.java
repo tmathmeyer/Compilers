@@ -2,5 +2,9 @@ package dijkstra.unify;
 
 public interface Term
 {
-	// marker interface for unification
+	boolean isID();
+
+	Term replace(Term l, Term r);
+
+	Term combine(Term left);
 }

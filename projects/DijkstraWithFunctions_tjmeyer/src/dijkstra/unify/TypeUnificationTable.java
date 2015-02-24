@@ -1,117 +1,107 @@
 package dijkstra.unify;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import dijkstra.ast.AST;
+import dijkstra.ast.expr.ExprAST;
+import dijkstra.ast.expr.TerminalAST;
+import dijkstra.type.Arrow;
+import dijkstra.unify.rlist.RList;
 
 public class TypeUnificationTable
 {
-	private final Map<AST, Type> typeTable = new HashMap<>();
-	private final Map<AST, AST> astTable = new HashMap<>();
+	private final ReverseNameIndex rni;
 	
-	private final Map<AST, Type> results = new HashMap<>();
+	private RList<Constraint> temp = RList.emptyList();
 	
-	public void register(AST tree, Type t)
+	public TypeUnificationTable(RList<Constraint> cs, ReverseNameIndex r)
 	{
-		typeTable.put(tree, t);
+		this(r);
+		temp = cs;
 	}
 	
-	public void register(AST tree, AST to)
+	public TypeUnificationTable(ReverseNameIndex r)
 	{
-		astTable.put(tree, to);
+		rni = r;
 	}
 	
-	public String toString(ReverseNameIndex rni)
+	public void register(ExprAST tree, Term t)
 	{
-		StringBuilder sb = new StringBuilder();
-		for(Entry<AST, Type> t : typeTable.entrySet())
-		{
-			sb.append(rni.sanatize(t.getKey().toString().replaceAll("\n", " ").replaceAll("[\\ ]+", " ")));
-			sb.append(":").append(t.getValue());
-			sb.append("\n");
-		}
-		
-		for(Entry<AST, AST> t : astTable.entrySet())
-		{
-			sb.append(rni.sanatize(t.getKey().toString().replaceAll("\n", " ").replaceAll("[\\ ]+", " ")));
-			sb.append(":").append(rni.sanatize(t.getValue().toString().replaceAll("\n", " ").replaceAll("[\\ ]+", " ")));
-			sb.append("\n");
-		}
-		return sb.toString();
+		temp = temp.setAdd(new Constraint(tree, t));
 	}
 	
-	public String getFinishedTypes(ReverseNameIndex rni)
-	{
-		StringBuilder sb = new StringBuilder();
-		for(Entry<AST, Type> t : results.entrySet())
-		{
-			sb.append("(");
-			sb.append(rni.sanatize(t.getKey().toString().replaceAll("\n", " ").replaceAll("[\\ ]+", " ")));
-			sb.append(" # ");
-			sb.append(t.getKey().getClass().getSimpleName());
-			sb.append(")");
-			sb.append("  ::  ").append(t.getValue());
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-	
-	@Override
 	public String toString()
 	{
-		return toString(new ReverseNameIndex());
+		return rni.sanatize(temp.toString());
 	}
 	
-	public void unify()
+	public TypeUnificationTable getOnlyTerminalValues()
 	{
+		RList<Constraint> mew = RList.emptyList();
+		RList<Constraint> temp = this.temp;
 		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private Type specify(Type a, Type b)
-	{
-		if (a == null) {
-			return b;
-		}
-		if (b == null) {
-			return a;
-		}
-		if (a == b)
+		while(!temp.empty())
 		{
-			return a;
+			if (temp.first().left() instanceof TerminalAST)
+			{
+				mew = mew.cons(temp.first());
+			}
+			temp = temp.rest();
 		}
 		
-		Type t = _specify(a, b);
-		if (t == null) {
-			t = _specify(b, a);
-		}
-		if (t == null) {
-			throw new RuntimeException("mismatched types "+a+" :: "+b);
-		}
-		return t;
+		return new TypeUnificationTable(mew, rni);
 	}
 	
-	private Type _specify(Type a, Type b)
+	
+	public static RList<Constraint> unify(RList<Constraint> stack, RList<Constraint> subst)
 	{
-		if (a == Type.INT && b == Type.NUMERIC_GENERAL)
+		if (stack.empty())
 		{
-			return Type.INT;
+			return subst;
 		}
 		
-		return null;
+		Constraint current = stack.first();
+		stack = stack.rest();
+		
+		if (current.same())
+		{
+			return unify(stack, subst);
+		}
+		
+		if (current.left().isID())
+		{
+			stack = replaceInList(current.left(), current.right(), stack);
+			subst = replaceInList(current.left(), current.right(), subst);
+			return unify(stack, subst.cons(current));
+		}
+		
+		if (current.right().isID())
+		{
+			stack = replaceInList(current.right(), current.left(), stack);
+			subst = replaceInList(current.right(), current.left(), subst);
+			return unify(stack, subst.cons(current));
+		}
+		
+		if (current.matchingArity())
+		{
+			RList<Constraint> additions = current.generateAdditions();
+			stack = RList.append(additions, stack);
+			return unify(stack, subst);
+		}
+		
+		throw new RuntimeException("didn't know what to do with: "+current);
+	}
+
+	private static RList<Constraint> replaceInList(Term l, Term r, RList<Constraint> s)
+	{
+		if (l instanceof Arrow) {
+			return replaceInList(((Arrow) l).o, r, s);
+		}
+		if (r instanceof Arrow) {
+			return replaceInList(l, ((Arrow) r).o, s);
+		}
+		return s.map(a -> new Constraint(a.left().replace(l, r), a.right().replace(l, r)));
+	}
+	
+	public TypeUnificationTable check(RList<Constraint> cons)
+	{
+		return new TypeUnificationTable(unify(temp, cons), rni);
 	}
 }

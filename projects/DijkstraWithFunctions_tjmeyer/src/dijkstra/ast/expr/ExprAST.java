@@ -1,6 +1,5 @@
 package dijkstra.ast.expr;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -8,13 +7,13 @@ import java.util.Stack;
 import java.util.stream.Stream;
 
 import dijkstra.ast.AST;
-import dijkstra.ast.TerminalAST;
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
-public abstract class ExprAST implements AST 
+public abstract class ExprAST implements AST, Term
 {
-	public static AST getExpr(Stream<AST> map)
+	public static ExprAST getExpr(Stream<AST> map)
 	{
 		long size = 0;
 		Iterator<AST> it = map.iterator();
@@ -28,31 +27,38 @@ public abstract class ExprAST implements AST
 		
 		if (size == 1)
 		{
-			return new TerminalAST(it.next().toString());
+			AST ttt = it.next();
+			if (ttt instanceof FunctionCallExpr)
+			{
+				return (ExprAST) ttt;
+			}
+			return new TerminalAST(ttt.toString());
 		}
 		else if (size == 2)
 		{
 			AST t = it.next();
 			if (t.toString().equals("~"))
 			{
-				return new NotExpr(it.next());
+				return new NotExpr((ExprAST) it.next());
 			}
 			else if (t.toString().equals("-"))
 			{
-				return new NegExpr(it.next());
+				return new NegExpr((ExprAST) it.next());
 			}
 		}
 		else if (size == 3)
 		{
-			AST first = it.next();
+			AST f = it.next();
 			AST op = it.next();
-			AST last = it.next();
+			AST l = it.next();
 			
-			if (first.toString().equals("("))
+			if (f.toString().equals("("))
 			{
-				return  op;
+				return (ExprAST) op;
 			}
 			
+			ExprAST first = (ExprAST)f;
+			ExprAST last = (ExprAST)l;
 			switch(op.toString())
 			{
 			case "*":
@@ -103,16 +109,7 @@ public abstract class ExprAST implements AST
 	@Override
 	public AST renameScoping(ScopedSet<VarBind> vb)
 	{
-		List<AST> newChildren = new ArrayList<>();
-		for(AST a : getChildren())
-		{
-			a = a.renameVars(vb.getScopeVars(a));
-			a = a.renameVars(vb.getScopeVars(this));
-			a = a.renameScoping(vb);
-			newChildren.add(a);
-		}
-		
-		return ExprAST.getExpr(newChildren.stream());
+		return this;
 	}
 	
 	@Override
@@ -126,6 +123,31 @@ public abstract class ExprAST implements AST
 		return scope;
 	}
 	
+	@Override
+	public boolean isID()
+	{
+		return true;
+	}
 	
+	@Override
+	public Term replace(Term l, Term r)
+	{
+		if (this.equals(l))
+		{
+			return r;
+		}
+		return this;
+	}
+	
+	@Override
+	public Term combine(Term other)
+	{
+		if (other.equals(this))
+		{
+			return this;
+		}
+		
+		throw new RuntimeException("cant consolidate "+this+" and "+other);
+	}
 	
 }

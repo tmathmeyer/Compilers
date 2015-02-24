@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 import dijkstra.ast.AST;
-import dijkstra.unify.Type;
+import dijkstra.type.Type;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
 public class NegExpr extends ExprAST
 {
-	private final AST n;
-	public NegExpr(AST next)
+	private final ExprAST n;
+	public NegExpr(ExprAST next)
 	{
 		n = next;
 	}
@@ -29,7 +30,7 @@ public class NegExpr extends ExprAST
 		n.buildTUT(tut);
 		
 		tut.register(n, Type.NUMERIC_GENERAL);
-		tut.register(this, Type.NUMERIC_GENERAL);
+		tut.register(this, n);
 	}
 	
 	@Override
@@ -42,5 +43,16 @@ public class NegExpr extends ExprAST
 	public String toString()
 	{
 		return "-" + n;
+	}
+	
+	@Override
+	public Term replace(Term l, Term r)
+	{
+		if (this.equals(l))
+		{
+			return r;
+		}
+
+		return this;
 	}
 }

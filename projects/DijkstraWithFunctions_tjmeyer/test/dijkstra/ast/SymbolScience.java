@@ -13,6 +13,7 @@ import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.DijkstraTextContext;
 import dijkstra.unify.ReverseNameIndex;
 import dijkstra.unify.TypeUnificationTable;
+import dijkstra.unify.rlist.RList;
 
 public class SymbolScience {
 	
@@ -27,8 +28,8 @@ public class SymbolScience {
 					  +"int[a+b+1] c "
 					  +"c[b],c[a] <- a,b "
 					  +"product <- a*b+a/b; "
-					  +"fun func (int x, y, float q) : int { "
-					  +"  return x+y; "
+					  +"fun func (int x, yy, float q) : int { "
+					  +"  return x+yy; "
 					  +"} "
 					  +"fun fn () : int { "
 					  +"  return 1 + z; "
@@ -53,7 +54,7 @@ public class SymbolScience {
 	@Test
 	public void testLiterallyEveryLanguageConstructCanBeVisited()
 	{
-		String astToString = "input a input b INT z,y,x A_INT[a+b+1] c c[a],c[b] <- b,a product <- a*b+a/b fun func(x,y,q) : INT{  return x+y } fun fn() : INT{  return 1+z } do  x=y :: {  x <- x+1 }  x<y :: y <- -y od proc foo(q,r){  c[b-a] <- q-r } foo(b,z) m <- func(0,x+y,0.0) if  true :: print x+y  x>10 :: print product  x<10 :: print product+10  -x=-10 :: print 0 fi ";
+		String astToString = "input a input b INT z,y,x A_INT[a+b+1] c c[a],c[b] <- b,a product <- a*b+a/b fun func(x,yy,q) : INT{  return x+yy } fun fn() : INT{  return 1+z } do  x=y :: {  x <- x+1 }  x<y :: y <- -y od proc foo(q,r){  c[b-a] <- q-r } foo(b,z) m <- func(0,x+y,0.0) if  true :: print x+y  x>10 :: print product  x<10 :: print product+10  -x=-10 :: print 0 fi ";
 		
 		AST t = tree.a.accept(new ASTBuilder(tree.b));
 		
@@ -66,7 +67,7 @@ public class SymbolScience {
 	{
 		AST t = tree.a.accept(new ASTBuilder(tree.b));
 		
-		t = AST.makeUnique(t);
+		t = AST.makeUnique(true, t);
 		
 		assertTrue(t != null); // no exceptions were thrown
 	}
@@ -76,13 +77,19 @@ public class SymbolScience {
 	{
 		ReverseNameIndex rsi = new ReverseNameIndex();
 		
-		AST t = AST.makeUnique(tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		AST t = AST.makeUnique(true, tree.a.accept(new ASTBuilder(tree.b)), rsi);
 		
-		TypeUnificationTable tut = new TypeUnificationTable();
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
 		
 		t.buildTUT(tut);
 		
-		System.out.println(tut.toString(rsi));
+		System.out.println(tut);
+		
+		tut = tut.check(RList.emptyList()).getOnlyTerminalValues();
+		
+		System.out.println("\n\n\n\n\n\n");
+		
+		System.out.println(tut);
 	}
 
 }

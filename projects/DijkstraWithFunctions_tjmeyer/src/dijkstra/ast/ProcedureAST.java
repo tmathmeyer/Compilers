@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 

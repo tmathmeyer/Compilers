@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 import dijkstra.ast.AST;
-import dijkstra.unify.Type;
+import dijkstra.type.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class LessThanExpr extends ExprAST
 {
-	private final AST f, l;
+	private final ExprAST f, l;
 	
-	public LessThanExpr(AST first, AST last)
+	public LessThanExpr(ExprAST first, ExprAST last)
 	{
 		f = first;
 		l = last;
@@ -48,4 +48,6 @@ public class LessThanExpr extends ExprAST
 	{
 		return f + "<" + l;
 	}
+	
+	
 }

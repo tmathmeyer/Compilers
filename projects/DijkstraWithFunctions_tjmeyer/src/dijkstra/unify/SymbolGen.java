@@ -6,6 +6,6 @@ public class SymbolGen
 	
 	public static String gensym()
 	{
-		return "_g_"+((ctr++) + 'a') ;
+		return "_g_"+((ctr++) + 'a')+"_";
 	}
 }

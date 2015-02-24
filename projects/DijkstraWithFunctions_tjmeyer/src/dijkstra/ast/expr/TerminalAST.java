@@ -1,21 +1,32 @@
-package dijkstra.ast;
+package dijkstra.ast.expr;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
+import dijkstra.ast.AST;
+import dijkstra.type.AType;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
-public class TerminalAST implements AST
+public class TerminalAST extends ExprAST
 {
 	private final String name;
-	private Type t = Type.UNKNOWN;
+	private AType t = Type.UNKNOWN;
 	
 	public TerminalAST(TerminalNodeImpl tree)
 	{
 		this(tree.getText());
+	}
+	
+	public TerminalAST(String name2, AType a)
+	{
+		name = name2;
+		t = a;
 	}
 	
 	public TerminalAST(String tree)
@@ -81,7 +92,7 @@ public class TerminalAST implements AST
 		return name;
 	}
 
-	public Type getT()
+	public AType getT()
 	{
 		return t;
 	}
@@ -124,7 +135,27 @@ public class TerminalAST implements AST
 			case "=": case "+":
 				break;
 			default:
-				tut.register(this, t);
+				if (t != Type.UNKNOWN)
+				{
+					tut.register(this, t);
+				}
 		}
+	}
+
+	@Override
+	protected List<AST> getChildren()
+	{
+		return new LinkedList<>();
+	}
+
+	@Override
+	public Term replace(Term l, Term r)
+	{
+		if (l.equals(this))
+		{
+			return r;
+		}
+		
+		return this;
 	}
 }

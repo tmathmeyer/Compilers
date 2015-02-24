@@ -1,18 +1,23 @@
-package dijkstra.ast;
+package dijkstra.ast.expr;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
+import dijkstra.ast.AST;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
-public class ArrayAccessAST implements AST
+public class ArrayAccessAST extends ExprAST
 {
-	private final AST numericEqu;
+	private final ExprAST numericEqu;
 	private final String arr;
 	
 	public ArrayAccessAST(String id, AST expr)
 	{
 		arr = id;
-		numericEqu = expr;
+		numericEqu = (ExprAST) expr;
 	}
 	
 	@Override
@@ -30,7 +35,7 @@ public class ArrayAccessAST implements AST
 	}
 
 	@Override
-	public AST renameVars(Set<VarBind> s)
+	public ExprAST renameVars(Set<VarBind> s)
 	{
 		for(VarBind b : s)
 		{
@@ -40,5 +45,18 @@ public class ArrayAccessAST implements AST
 			}
 		}
 		return this;
+	}
+
+	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		numericEqu.buildTUT(tut);
+		tut.register(numericEqu, Type.INT);
+	}
+
+	@Override
+	protected List<AST> getChildren()
+	{
+		return new LinkedList<>();
 	}
 }

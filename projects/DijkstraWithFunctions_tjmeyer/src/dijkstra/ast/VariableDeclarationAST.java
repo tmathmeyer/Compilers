@@ -7,9 +7,10 @@ import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class VariableDeclarationAST implements AST

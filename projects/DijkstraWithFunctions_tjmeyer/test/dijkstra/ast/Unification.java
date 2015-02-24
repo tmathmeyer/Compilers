@@ -9,6 +9,7 @@ import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.DijkstraTextContext;
 import dijkstra.unify.ReverseNameIndex;
 import dijkstra.unify.TypeUnificationTable;
+import dijkstra.unify.rlist.RList;
 
 public class Unification {
 	
@@ -22,19 +23,81 @@ public class Unification {
 		
 		ReverseNameIndex rsi = new ReverseNameIndex();
 		
-		AST t = AST.makeUnique(tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		AST t = AST.makeUnique(true, tree.a.accept(new ASTBuilder(tree.b)), rsi);
 		
-		TypeUnificationTable tut = new TypeUnificationTable();
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
 		
 		t.buildTUT(tut);
 		
-		tut.unify();
+		tut = tut.check(RList.emptyList());
+	}
+	
+	
+	@Test
+	public void testFail()
+	{
+		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree("float a "
+																 +"int b "
+																 +"print a+b "
+																 +"print a mod b ");
 		
-		System.out.println(tut.toString(rsi));
-		System.out.println("\n\n\n");
+		ReverseNameIndex rsi = new ReverseNameIndex();
 		
-		tut.unify();
-		System.out.println(tut.getFinishedTypes(rsi));
+		AST t = AST.makeUnique(true, tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
+		
+		t.buildTUT(tut);
+		
+		tut = tut.check(RList.emptyList());
+	}
+	
+	
+	@Test
+	public void testfunc()
+	{
+		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree("fun test(a):int { "
+																 +"   return 4 mod a; "
+																 +"} "
+																 +"a <- test(5) + 0.5"
+																 +"print a");
+		
+		ReverseNameIndex rsi = new ReverseNameIndex();
+		
+		AST t = AST.makeUnique(true, tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
+		
+		t.buildTUT(tut);
+		
+		System.out.println(tut);
+		
+		tut = tut.check(RList.emptyList()).getOnlyTerminalValues();
+		
+		System.out.println(tut);
+	}
+	
+	
+	
+	@Test
+	public void testNotFail()
+	{
+		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree("float a "
+																 +"int b "
+																 +"print a+b "
+																 +"b <- 1 "
+																 +"a <- b "
+																 +"print b ");
+		
+		ReverseNameIndex rsi = new ReverseNameIndex();
+		
+		AST t = AST.makeUnique(false, tree.a.accept(new ASTBuilder(tree.b)), rsi);
+		
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
+		
+		t.buildTUT(tut);
+
+		tut = tut.check(RList.emptyList());
 	}
 
 }

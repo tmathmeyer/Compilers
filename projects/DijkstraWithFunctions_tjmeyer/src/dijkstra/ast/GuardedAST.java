@@ -2,18 +2,19 @@ package dijkstra.ast;
 
 import java.util.Set;
 
+import dijkstra.ast.expr.ExprAST;
+import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
-import dijkstra.unify.Type;
 import dijkstra.unify.TypeUnificationTable;
 
 public class GuardedAST implements AST
 {
-	private final AST conditional;
+	private final ExprAST conditional;
 	private final AST statement;
 	
 	public GuardedAST(AST c, AST s)
 	{
-		conditional = c;
+		conditional = (ExprAST) c;
 		statement = s;
 	}
 	

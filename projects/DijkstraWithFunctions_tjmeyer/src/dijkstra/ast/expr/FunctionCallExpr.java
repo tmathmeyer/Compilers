@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import dijkstra.ast.AST;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
 public class FunctionCallExpr extends ExprAST
@@ -18,6 +19,7 @@ public class FunctionCallExpr extends ExprAST
 	{
 		fname = id;
 		map.forEach(a -> args.add(a));
+		id = "fuck?";
 	}
 
 	public String toString()
@@ -45,12 +47,28 @@ public class FunctionCallExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		// TODO: maybe?
+		// huh
 	}
 
 	@Override
 	protected List<AST> getChildren()
 	{
 		return args;
+	}
+
+	public String getName()
+	{
+		return fname;
+	}
+	
+	@Override
+	public Term replace(Term l, Term r)
+	{
+		if (this.equals(l))
+		{
+			return r;
+		}
+		
+		return this;
 	}
 }
