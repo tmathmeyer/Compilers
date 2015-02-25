@@ -29,8 +29,8 @@ public class LessThanExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		f.buildAssignment(tut);
-		l.buildAssignment(tut);
+		f.buildTUT(tut);
+		l.buildTUT(tut);
 		
 		tut.register(f, Type.NUMERIC_GENERAL);
 		tut.register(l, Type.NUMERIC_GENERAL);

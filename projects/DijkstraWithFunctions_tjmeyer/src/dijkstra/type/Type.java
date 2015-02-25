@@ -9,7 +9,7 @@ public enum Type implements AType
 	C_INT, C_FLOAT, CASTABLE,
 	A_INT, A_FLOAT, A_BOOL,
 	UNKNOWN, VOID,
-	BOOLEAN;
+	BOOLEAN, LOOKUP;
 	
 	public static Type fromString(String s)
 	{
@@ -79,12 +79,12 @@ public enum Type implements AType
 			return true;
 		}
 		
-		if (type==INT && other==C_INT)
+		if (type==INT && (other==C_FLOAT || other==C_INT))
 		{
 			return true;
 		}
 		
-		if (type==FLOAT && other==C_FLOAT)
+		if (type==FLOAT && (other==C_FLOAT || other==C_INT))
 		{
 			return true;
 		}
@@ -117,6 +117,10 @@ public enum Type implements AType
 		
 		if (a==VOID) return b;
 		if (b==VOID) return a;
+		
+		if (a==CASTABLE) return getCastable(b);
+		if (b==CASTABLE) return getCastable(a);
+		
 
 		if (a==INT && b==C_INT) return C_INT;
 		if (a==C_INT && b==INT) return C_INT;
@@ -124,17 +128,11 @@ public enum Type implements AType
 		if (a==FLOAT && b==C_FLOAT) return C_FLOAT;
 		if (a==C_FLOAT && b==FLOAT) return C_FLOAT;
 		
-		if (a==CASTABLE && b==FLOAT) return C_FLOAT;
-		if (b==CASTABLE && a==FLOAT) return C_FLOAT;
+		if (a==FLOAT && b==C_INT) return FLOAT;
+		if (b==FLOAT && a==C_INT) return FLOAT;
 		
-		if (a==CASTABLE && b==INT) return C_FLOAT;
-		if (b==CASTABLE && a==INT) return C_FLOAT;
-		
-		if (a==CASTABLE && b==C_FLOAT) return C_FLOAT;
-		if (b==CASTABLE && a==C_FLOAT) return C_FLOAT;
-		
-		if (a==CASTABLE && b==C_INT) return C_FLOAT;
-		if (b==CASTABLE && a==C_INT) return C_FLOAT;
+		if (a==INT && b==C_FLOAT) return INT;
+		if (b==INT && a==C_FLOAT) return INT;
 		
 		if (a==CASTABLE && b==NUMERIC_GENERAL) return NUMERIC_GENERAL;
 		if (b==CASTABLE && a==NUMERIC_GENERAL) return NUMERIC_GENERAL;

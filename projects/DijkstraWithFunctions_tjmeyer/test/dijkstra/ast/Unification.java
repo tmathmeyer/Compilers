@@ -11,28 +11,85 @@ public class Unification {
 		TypeCheckRunner.check("input b "
 				 			 +"input c "
 				 			 +"print 1 "
-				 			 +"print  (b + c) mod (b - c) ");
+				 			 +"print  (b + c) mod (b - c) "
+		);
 	}
 	
 	
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void testFail()
 	{
-		System.out.println(TypeCheckRunner.check("float a "
+		TypeCheckRunner.check("float a "
 				 +"int b "
 				 +"print a+b "
-				 +"print a mod b "));
+				 +"print a mod b "
+		);
+	}
+	
+	@Test
+	public void testArrays()
+	{
+		TypeCheckRunner.check(
+				  "input a "
+				 +"int[a] arr "
+				 +"a <- 4.2 ");
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testArraysEasy()
+	{
+		TypeCheckRunner.check(
+				  "input a "
+				 +"int[a / 4] arr "
+				 +"a <- 4.2 ");
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testShouldReallyFail()
+	{
+		TypeCheckRunner.check(
+				  "print 7.2 mod 3 "
+		);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testShouldReallyFail2()
+	{
+		TypeCheckRunner.check(
+				  "float a "
+				+ "print a mod 3 "
+		);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testCastingThings()
+	{
+		TypeCheckRunner.check(
+				  "input a "
+				 +"a <- (1+(6/3)) mod 3 "
+		);
 	}
 	
 	
 	@Test
 	public void testfunc()
 	{
-		TypeCheckRunner.check("fun test(a):int { "
+		TypeCheckRunner.check(
+				  "fun test(a):int { "
 				 +"   return 4 mod a; "
 				 +"} "
 				 +"a <- test(5) + 0.5"
 				 +"print a");
+	}
+	
+	@Test
+	public void testfutenc()
+	{
+		System.out.println(TypeCheckRunner.check(
+				  "int a "
+				 +"float[a+1] first "
+				 +"a <- first[a] "
+		));
 	}
 	
 	
@@ -40,20 +97,31 @@ public class Unification {
 	@Test
 	public void testNotFail()
 	{
-		TypeCheckRunner.check("float a "
+		TypeCheckRunner.check(
+				  "float a "
 				 +"int b "
 				 +"b <- a "
-				 +"print b+a ");
+				 +"print b+a "
+		);
 	}
 	
 	
+	@Test
+	public void testCreepy()
+	{
+		TypeCheckRunner.check("a <- 6/7 = 3*4");
+	}
+	
 	
 	@Test
-	public void testNotFailHAHA()
+	public void uhh()
 	{
-		TypeCheckRunner.check("float a "
-				 +"a <- b "
-				 +"float b ");
+		TypeCheckRunner.check("a <- 1 "
+							 +"input b, c "
+							 +"if "
+							 +"  a=b :: print a "
+							 +"  c :: print b "
+							 +"fi ");
 	}
 
 }

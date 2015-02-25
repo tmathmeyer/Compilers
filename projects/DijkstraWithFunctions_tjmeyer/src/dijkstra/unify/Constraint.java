@@ -126,7 +126,7 @@ public class Constraint implements Combinable<Constraint, Term>
 	
 	public RList<Term, Constraint> generateAdditions()
 	{
-		throw new RuntimeException("NOOOOO");
+		throw new RuntimeException("stop. you should not be doing that");
 	}
 
 	@Override
@@ -138,12 +138,47 @@ public class Constraint implements Combinable<Constraint, Term>
 	@Override
 	public Term important()
 	{
-		if (left == Type.FLOAT || right == Type.FLOAT)
+		if (left == Type.INT && right == Type.INT)
+		{
+			return Type.INT;
+		}
+		
+		if (left == Type.FLOAT && right == Type.FLOAT)
 		{
 			return Type.FLOAT;
 		}
 		
-		return Type.INT;
+		if (left == Type.INT && right == Type.FLOAT)
+		{
+			throw new RuntimeException("you can't do that Dave");
+		}
+		
+		if (right == Type.INT && left == Type.FLOAT)
+		{
+			throw new RuntimeException("you can't do that Dave");
+		}
+		
+		if ((left==Type.INT || left==Type.FLOAT) && right == Type.NUMERIC_GENERAL)
+		{
+			return left;
+		}
+		
+		if ((right==Type.INT || right==Type.FLOAT) && left == Type.NUMERIC_GENERAL)
+		{
+			return right;
+		}
+		
+		if (!(left instanceof Type))
+		{
+			return right;
+		}
+		
+		if (!(right instanceof Type))
+		{
+			return left;
+		}
+		
+		return Type.NUMERIC_GENERAL;
 	}
 
 	

@@ -17,6 +17,7 @@ import dijkstra.lexparse.DijkstraParser;
 import dijkstra.lexparse.DijkstraParser.AlternativeStatementContext;
 import dijkstra.lexparse.DijkstraParser.ArgListContext;
 import dijkstra.lexparse.DijkstraParser.ArgumentContext;
+import dijkstra.lexparse.DijkstraParser.ArrayAccessorContext;
 import dijkstra.lexparse.DijkstraParser.ArrayDeclarationContext;
 import dijkstra.lexparse.DijkstraParser.AssignStatementContext;
 import dijkstra.lexparse.DijkstraParser.CompDeclOrStatementContext;
@@ -56,7 +57,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitInputStatement(InputStatementContext ctx)
 	{
-		return new InputAST(ctx);
+		return new InputAST(getIDsFromList(ctx.idList()));
 	}
 	
 	@Override
@@ -97,7 +98,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 			return new ArrayAccessAST(ctx.arrayAccessor().ID().getText(), ctx.arrayAccessor().expr().accept(this));
 		}
 		
-		return null;
+		throw new RuntimeException("something is wrong here... "+ctx);
 	}
 	
 	@Override
@@ -110,6 +111,12 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	public AST visitArrayDeclaration(ArrayDeclarationContext ctx)
 	{
 		return new ArrayDecAST(ctx.type(), ctx.expr().accept(this), getIDsFromList(ctx.idList()));
+	}
+	
+	@Override
+	public AST visitArrayAccessor(ArrayAccessorContext ctx)
+	{
+		return new ArrayAccessAST(ctx.ID().getText(), ctx.expr().accept(this));
 	}
 	
 	

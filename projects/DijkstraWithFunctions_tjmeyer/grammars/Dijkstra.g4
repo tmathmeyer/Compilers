@@ -82,7 +82,7 @@ statement :				assignStatement
 	 				 	| returnStatement
 	 				 	| procedureCall;
 assignStatement :		varList ASSIGN expressionList SEMICOLON?;
-inputStatement :		INPUT ID SEMICOLON? ;
+inputStatement :		INPUT idList SEMICOLON? ;
 outputStatement :		PRINT expr SEMICOLON? ;
 iterativeStatement :	DO guard+ OD ;
 compoundStatement :		LBRACE compoundBody RBRACE ;

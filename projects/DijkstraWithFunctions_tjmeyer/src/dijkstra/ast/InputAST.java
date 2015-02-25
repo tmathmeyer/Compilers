@@ -1,26 +1,34 @@
 package dijkstra.ast;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
+
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import dijkstra.ast.expr.TerminalAST;
-import dijkstra.lexparse.DijkstraParser.InputStatementContext;
-import dijkstra.type.AType;
 import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 
 public class InputAST implements AST
 {
-	private final TerminalAST input;
+	private final List<TerminalAST> input = new LinkedList<>();
 	
-	public InputAST(InputStatementContext ctx)
+	public InputAST(List<TerminalNode> stream)
 	{
-		input = new TerminalAST(ctx.ID().getText());
+		this(stream.stream().map(a -> new TerminalAST(a.getText(), Type.UNKNOWN)));
 	}
-
-	public InputAST(TerminalAST in)
+	
+	public InputAST(Stream<TerminalAST> stream)
 	{
-		input = in;
+		Iterator<TerminalAST> it = stream.iterator();
+		while(it.hasNext())
+		{
+			input.add(it.next());
+		}
 	}
 
 	public String getSymbolString()
@@ -28,16 +36,6 @@ public class InputAST implements AST
 		return input.toString();
 	}
 
-	public AType getInputVariableType()
-	{
-		return input.getT();
-	}
-
-	public void setInputVariableType(Type inputVariableType)
-	{
-		input.setT(inputVariableType);
-	}
-	
 	@Override
 	public String toString()
 	{
@@ -47,18 +45,24 @@ public class InputAST implements AST
 	@Override
 	public ScopedSet<String> getDeclaredVariables(ScopedSet<String> scope)
 	{
-		return input.getDeclaredVariables(scope);
+		ScopedSet<String> s = scope;
+		for(TerminalAST tast : input)
+		{
+			s = tast.getDeclaredVariables(s);
+		}
+		return s;
+				
 	}
 	
 	@Override
 	public AST renameVars(Set<VarBind> s)
 	{
-		return new InputAST(input.renameVars(s));
+		return new InputAST(input.stream().map(a -> a.renameVars(s)));
 	}
 	
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		input.buildTUT(tut);
+		input.stream().forEach(a -> a.buildTUT(tut));
 	}
 }

@@ -47,6 +47,7 @@ public class TerminalAST extends ExprAST
 			}
 		}
 		
+		
 		if (name.equals("true") || name.equals("false"))
 		{
 			t = Type.BOOLEAN;

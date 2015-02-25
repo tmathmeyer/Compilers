@@ -23,8 +23,8 @@ public class AdditionExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		f.buildAssignment(tut);
-		l.buildAssignment(tut);
+		f.buildTUT(tut);
+		l.buildTUT(tut);
 		
 		Term t1 = tut.register(f, Type.NUMERIC_GENERAL);
 		Term t2 = tut.register(l, Type.NUMERIC_GENERAL);

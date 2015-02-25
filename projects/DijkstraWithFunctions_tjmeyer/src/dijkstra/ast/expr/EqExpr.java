@@ -29,8 +29,8 @@ public class EqExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		f.buildAssignment(tut);
-		l.buildAssignment(tut);
+		f.buildTUT(tut);
+		l.buildTUT(tut);
 		
 		tut.register(f, l);
 		tut.register(this, Type.BOOLEAN);

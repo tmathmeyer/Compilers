@@ -1625,7 +1625,9 @@ public class DijkstraParser extends Parser {
 
 	public static class InputStatementContext extends ParserRuleContext {
 		public TerminalNode INPUT() { return getToken(DijkstraParser.INPUT, 0); }
-		public TerminalNode ID() { return getToken(DijkstraParser.ID, 0); }
+		public IdListContext idList() {
+			return getRuleContext(IdListContext.class,0);
+		}
 		public TerminalNode SEMICOLON() { return getToken(DijkstraParser.SEMICOLON, 0); }
 		public InputStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1655,7 +1657,7 @@ public class DijkstraParser extends Parser {
 			setState(229);
 			match(INPUT);
 			setState(230);
-			match(ID);
+			idList(0);
 			setState(232);
 			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 			case 1:
@@ -2753,8 +2755,8 @@ public class DijkstraParser extends Parser {
 		"\u00dd\3\2\2\2\u00df\u00de\3\2\2\2\u00e0)\3\2\2\2\u00e1\u00e2\5\24\13"+
 		"\2\u00e2\u00e3\7\3\2\2\u00e3\u00e5\5\32\16\2\u00e4\u00e6\7\17\2\2\u00e5"+
 		"\u00e4\3\2\2\2\u00e5\u00e6\3\2\2\2\u00e6+\3\2\2\2\u00e7\u00e8\7#\2\2\u00e8"+
-		"\u00ea\7,\2\2\u00e9\u00eb\7\17\2\2\u00ea\u00e9\3\2\2\2\u00ea\u00eb\3\2"+
-		"\2\2\u00eb-\3\2\2\2\u00ec\u00ed\7%\2\2\u00ed\u00ef\5B\"\2\u00ee\u00f0"+
+		"\u00ea\5\30\r\2\u00e9\u00eb\7\17\2\2\u00ea\u00e9\3\2\2\2\u00ea\u00eb\3"+
+		"\2\2\2\u00eb-\3\2\2\2\u00ec\u00ed\7%\2\2\u00ed\u00ef\5B\"\2\u00ee\u00f0"+
 		"\7\17\2\2\u00ef\u00ee\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0/\3\2\2\2\u00f1"+
 		"\u00f3\7!\2\2\u00f2\u00f4\5\22\n\2\u00f3\u00f2\3\2\2\2\u00f4\u00f5\3\2"+
 		"\2\2\u00f5\u00f3\3\2\2\2\u00f5\u00f6\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7"+

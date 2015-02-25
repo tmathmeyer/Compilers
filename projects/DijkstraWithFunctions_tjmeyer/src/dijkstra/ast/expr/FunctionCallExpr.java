@@ -19,7 +19,6 @@ public class FunctionCallExpr extends ExprAST
 	{
 		fname = id;
 		map.forEach(a -> args.add(a));
-		id = "fuck?";
 	}
 
 	public String toString()
