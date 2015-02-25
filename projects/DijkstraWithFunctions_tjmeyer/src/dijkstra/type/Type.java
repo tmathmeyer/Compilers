@@ -6,9 +6,9 @@ import dijkstra.unify.Term;
 public enum Type implements AType
 {
 	INT, FLOAT, NUMERIC_GENERAL,
+	C_INT, C_FLOAT, CASTABLE,
 	A_INT, A_FLOAT, A_BOOL,
-	FUNCTION, UNKNOWN,
-	VOID,
+	UNKNOWN, VOID,
 	BOOLEAN;
 	
 	public static Type fromString(String s)
@@ -69,12 +69,22 @@ public enum Type implements AType
 			return true;
 		}
 		
-		if (type == NUMERIC_GENERAL && (other == INT || other == FLOAT))
+		if (type == NUMERIC_GENERAL && (other==INT || other==FLOAT || other==C_INT || other==C_FLOAT))
 		{
 			return true;
 		}
 		
-		if (type==INT && other==FLOAT)
+		if (type == CASTABLE && (other==INT || other==FLOAT || other==C_INT || other==C_FLOAT || other==NUMERIC_GENERAL))
+		{
+			return true;
+		}
+		
+		if (type==INT && other==C_INT)
+		{
+			return true;
+		}
+		
+		if (type==FLOAT && other==C_FLOAT)
 		{
 			return true;
 		}
@@ -108,23 +118,63 @@ public enum Type implements AType
 		if (a==VOID) return b;
 		if (b==VOID) return a;
 
-		if (a==INT && b==FLOAT) return INT;
-		if (a==FLOAT && b==INT) return FLOAT;
+		if (a==INT && b==C_INT) return C_INT;
+		if (a==C_INT && b==INT) return C_INT;
 		
+		if (a==FLOAT && b==C_FLOAT) return C_FLOAT;
+		if (a==C_FLOAT && b==FLOAT) return C_FLOAT;
 		
-		if (a==INT && b==NUMERIC_GENERAL) return INT;
-		if (a==FLOAT && b==NUMERIC_GENERAL) return FLOAT;
+		if (a==CASTABLE && b==FLOAT) return C_FLOAT;
+		if (b==CASTABLE && a==FLOAT) return C_FLOAT;
 		
-		if (b==INT && a==NUMERIC_GENERAL) return INT;
-		if (b==FLOAT && a==NUMERIC_GENERAL) return FLOAT;
+		if (a==CASTABLE && b==INT) return C_FLOAT;
+		if (b==CASTABLE && a==INT) return C_FLOAT;
+		
+		if (a==CASTABLE && b==C_FLOAT) return C_FLOAT;
+		if (b==CASTABLE && a==C_FLOAT) return C_FLOAT;
+		
+		if (a==CASTABLE && b==C_INT) return C_FLOAT;
+		if (b==CASTABLE && a==C_INT) return C_FLOAT;
+		
+		if (a==CASTABLE && b==NUMERIC_GENERAL) return NUMERIC_GENERAL;
+		if (b==CASTABLE && a==NUMERIC_GENERAL) return NUMERIC_GENERAL;
 		
 		if (b==INT && a==FLOAT) return FLOAT;
 		if (b==FLOAT && a==INT) return FLOAT;
+		
+		if (a==INT && b==NUMERIC_GENERAL) return INT;
+		if (a==FLOAT && b==NUMERIC_GENERAL) return FLOAT;
+
+		if (b==INT && a==NUMERIC_GENERAL) return INT;
+		if (b==FLOAT && a==NUMERIC_GENERAL) return FLOAT;
+		
+		if (b==C_INT && a==NUMERIC_GENERAL) return C_INT;
+		if (b==C_FLOAT && a==NUMERIC_GENERAL) return C_FLOAT;
+		
 		
 		
 		
 		
 		
 		throw new RuntimeException("cant consolidate "+a+" and "+b);
+	}
+
+	public static Term getCastable(AType t)
+	{
+		if (t instanceof Type)
+		{
+			Type tt = (Type)t;
+			
+			switch(tt)
+			{
+				case INT:
+					return C_INT;
+				case FLOAT:
+					return C_FLOAT;
+				default:
+					return t;
+			}
+		}
+		return t;
 	}
 }

@@ -29,8 +29,8 @@ public class ModuloExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		f.buildTUT(tut);
-		l.buildTUT(tut);
+		f.buildAssignment(tut);
+		l.buildAssignment(tut);
 		
 		tut.register(f, Type.INT);
 		tut.register(l, Type.INT);

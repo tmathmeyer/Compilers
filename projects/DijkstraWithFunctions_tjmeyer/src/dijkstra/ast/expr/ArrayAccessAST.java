@@ -50,7 +50,7 @@ public class ArrayAccessAST extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		numericEqu.buildTUT(tut);
+		numericEqu.buildAssignment(tut);
 		tut.register(numericEqu, Type.INT);
 	}
 

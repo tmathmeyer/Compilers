@@ -6,6 +6,8 @@ import java.util.Set;
 
 import dijkstra.ast.AST;
 import dijkstra.type.Type;
+import dijkstra.unify.Constraint;
+import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
 public class AdditionExpr extends ExprAST
@@ -21,12 +23,14 @@ public class AdditionExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		f.buildTUT(tut);
-		l.buildTUT(tut);
+		f.buildAssignment(tut);
+		l.buildAssignment(tut);
 		
-		tut.register(f, Type.NUMERIC_GENERAL);
-		tut.register(l, Type.NUMERIC_GENERAL);
-		tut.register(this, Type.NUMERIC_GENERAL);
+		Term t1 = tut.register(f, Type.NUMERIC_GENERAL);
+		Term t2 = tut.register(l, Type.NUMERIC_GENERAL);
+		
+		Constraint c = new Constraint(t1, t2);
+		tut.register(this, c.important());
 	}
 
 	@Override

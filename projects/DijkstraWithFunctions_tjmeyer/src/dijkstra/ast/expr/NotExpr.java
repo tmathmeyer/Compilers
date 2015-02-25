@@ -28,7 +28,7 @@ public class NotExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		n.buildTUT(tut);
+		n.buildAssignment(tut);
 		
 		tut.register(n, Type.BOOLEAN);
 		tut.register(this, Type.BOOLEAN);

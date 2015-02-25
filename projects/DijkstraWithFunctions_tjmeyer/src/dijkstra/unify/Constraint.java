@@ -138,8 +138,12 @@ public class Constraint implements Combinable<Constraint, Term>
 	@Override
 	public Term important()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (left == Type.FLOAT || right == Type.FLOAT)
+		{
+			return Type.FLOAT;
+		}
+		
+		return Type.INT;
 	}
 
 	

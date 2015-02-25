@@ -83,7 +83,7 @@ public class AssignmentAST implements AST
 			ExprAST t = to.next();
 			ExprAST f = from.next();
 			t.buildTUT(tut);
-			f.buildTUT(tut);
+			f.buildAssignment(tut);
 			if (f instanceof FunctionCallExpr)
 			{
 				tut.register(t, new TerminalAST(((FunctionCallExpr)f).getName(), Type.UNKNOWN));

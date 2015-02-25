@@ -19,17 +19,16 @@ public class ProgramAST implements AST
 	
 	public ProgramAST(Iterator<AST> c)
 	{	
-		if (c.hasNext())
+//		if (c.hasNext())
+//		{
+//			children.add(c.next());
+//			children.add(new ProgramAST(c));
+//		}
+
+		while(c.hasNext())
 		{
 			children.add(c.next());
-			children.add(new ProgramAST(c));
 		}
-		
-		
-		//while(c.hasNext())
-		//{
-		//	children.add(c.next());
-		//}
 	}
 
 	@Override

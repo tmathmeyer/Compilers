@@ -63,7 +63,7 @@ public class SymbolScience {
 	}
 	
 	@Test
-	public void testLiterallyEveryLanguageConstructCanBeMadeUniqui()
+	public void testLiterallyEveryLanguageConstructCanBeMadeUnique()
 	{
 		AST t = tree.a.accept(new ASTBuilder(tree.b));
 		

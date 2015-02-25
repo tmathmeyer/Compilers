@@ -50,7 +50,9 @@ public class _RList<D, T extends Combinable<T, D>> implements RList<D, T>
 	{
 		if (a.equals(t))
 		{
-			return new _RList<D, T>(list, a.combine(t));
+			T ttt = a.combine(t);
+			monad.set(ttt.important());
+			return new _RList<D, T>(list, ttt);
 		}
 		
 		return new _RList<D, T>(list.setAdd(a, monad), t);

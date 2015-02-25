@@ -158,4 +158,28 @@ public class TerminalAST extends ExprAST
 		
 		return this;
 	}
+	
+	@Override
+	public void buildAssignment(TypeUnificationTable tut)
+	{
+		switch(name)
+		{
+			case "-": case "~":
+			case ">": case "<":
+			case "*": case "/":
+			case "&": case "|":
+			case "div": case "mod":
+			case "=": case "+":
+				break;
+			default:
+				if (t != Type.UNKNOWN)
+				{
+					tut.register(this, Type.getCastable(t));
+				}
+				else
+				{
+					tut.register(this, Type.CASTABLE);
+				}
+		}
+	}
 }

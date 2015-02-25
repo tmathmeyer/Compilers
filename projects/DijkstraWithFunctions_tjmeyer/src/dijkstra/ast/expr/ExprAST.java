@@ -150,4 +150,8 @@ public abstract class ExprAST implements AST, Term
 		throw new RuntimeException("cant consolidate "+this+" and "+other);
 	}
 	
+	public void buildAssignment(TypeUnificationTable tut)
+	{
+		buildTUT(tut);
+	}
 }

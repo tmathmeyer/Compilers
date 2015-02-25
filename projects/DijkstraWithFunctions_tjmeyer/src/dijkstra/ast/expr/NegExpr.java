@@ -27,7 +27,7 @@ public class NegExpr extends ExprAST
 	@Override
 	public void buildTUT(TypeUnificationTable tut)
 	{
-		n.buildTUT(tut);
+		n.buildAssignment(tut);
 		
 		tut.register(n, Type.NUMERIC_GENERAL);
 		tut.register(this, n);
