@@ -75,7 +75,7 @@ public class ASTBuilder extends DijkstraBaseVisitor<AST>
 	@Override
 	public AST visitProgram(ProgramContext ctx)
 	{
-		return new ProgramAST(ctx.children.stream().filter(c -> !(c instanceof TerminalNodeImpl)).map(e -> e.accept(this)));
+		return new ProgramAST(ctx.ID().getText(), ctx.children.stream().filter(c -> !(c instanceof TerminalNodeImpl)).map(e -> e.accept(this)));
 	}
 	
 	@Override

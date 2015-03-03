@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
+import dijkstra.unify.TypeUnificationTable;
+
 public class ProcedureCallAST implements AST
 {
 	private final String fname;
@@ -36,5 +41,11 @@ public class ProcedureCallAST implements AST
 		}
 		
 		return new ProcedureCallAST(name, args.stream().map(a -> {return a.renameVars(scope); }));
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

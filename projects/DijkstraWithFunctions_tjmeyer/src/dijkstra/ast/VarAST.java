@@ -1,6 +1,10 @@
 package dijkstra.ast;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.unify.ScopedSet;
+import dijkstra.unify.TypeUnificationTable;
 
 public class VarAST implements AST
 {
@@ -23,5 +27,11 @@ public class VarAST implements AST
 	{
 		scope.insert(name);
 		return scope;
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

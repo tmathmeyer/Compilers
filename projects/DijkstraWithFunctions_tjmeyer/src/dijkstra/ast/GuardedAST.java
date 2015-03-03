@@ -2,6 +2,9 @@ package dijkstra.ast;
 
 import java.util.Set;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
@@ -43,5 +46,11 @@ public class GuardedAST implements AST
 		
 		conditional.buildTUT(tut);
 		statement.buildTUT(tut);
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

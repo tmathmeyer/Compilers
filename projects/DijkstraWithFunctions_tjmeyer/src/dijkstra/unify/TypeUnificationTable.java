@@ -1,9 +1,11 @@
 package dijkstra.unify;
 
+import dijkstra.ast.AST;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.TerminalAST;
 import dijkstra.type.Arrow;
 import dijkstra.type.Monad;
+import dijkstra.type.Type;
 import dijkstra.unify.rlist.RList;
 
 public class TypeUnificationTable
@@ -106,5 +108,33 @@ public class TypeUnificationTable
 	public TypeUnificationTable check(RList<Term, Constraint> cons)
 	{
 		return new TypeUnificationTable(unify(temp, cons), rni);
+	}
+
+	public Type getTypeByName(AST outputAST)
+	{
+		while(!temp.empty())
+		{
+			Constraint c = temp.first();
+			
+			if (c.left().equals(outputAST))
+			{
+				if (c.right() instanceof Type)
+				{
+					return (Type) c.right();
+				}
+			}
+			
+			if (c.right().equals(outputAST))
+			{
+				if (c.left() instanceof Type)
+				{
+					return (Type) c.left();
+				}
+			}
+			
+			temp = temp.rest();
+		}
+		
+		return Type.INT;
 	}
 }

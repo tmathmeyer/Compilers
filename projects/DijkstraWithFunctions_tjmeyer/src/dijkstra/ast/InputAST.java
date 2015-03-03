@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.expr.TerminalAST;
 import dijkstra.type.Type;
@@ -64,5 +66,11 @@ public class InputAST implements AST
 	public void buildTUT(TypeUnificationTable tut)
 	{
 		input.stream().forEach(a -> a.buildTUT(tut));
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		//throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

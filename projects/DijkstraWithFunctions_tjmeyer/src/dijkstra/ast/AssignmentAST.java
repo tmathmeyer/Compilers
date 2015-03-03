@@ -1,11 +1,17 @@
 package dijkstra.ast;
 
+import static org.objectweb.asm.Opcodes.ISTORE;
+import static org.objectweb.asm.Opcodes.FSTORE;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.FunctionCallExpr;
@@ -92,6 +98,35 @@ public class AssignmentAST implements AST
 			{
 				tut.register(t, f);
 			}
+		}
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
+	{
+		Iterator<ExprAST> to = assignTo.iterator();
+		Iterator<ExprAST> from = assignFrom.iterator();
+		for(int i=0; i<assignTo.size(); i++)
+		{
+			ExprAST t = to.next();
+			ExprAST f = from.next();
+			
+			f.generateCode(writer, mv, null);
+			switch(tut.getTypeByName(t))
+			{
+				case A_BOOL: case INT: case C_INT: case NUMERIC_GENERAL:
+				case CASTABLE: case BOOLEAN: case A_INT:
+					mv.visitVarInsn(ISTORE, t.getAddr());
+					break;
+				case A_FLOAT: case C_FLOAT: case FLOAT:
+					mv.visitVarInsn(FSTORE, t.getAddr());
+					break;
+				default:
+					throw new RuntimeException("Cant Load that type " + t);
+			}
+			
+			
+			
 		}
 	}
 }

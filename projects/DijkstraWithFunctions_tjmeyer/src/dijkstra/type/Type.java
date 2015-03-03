@@ -89,6 +89,11 @@ public enum Type implements AType
 			return true;
 		}
 		
+		if (type==C_INT && other==C_FLOAT)
+		{
+			return true;
+		}
+		
 		return false;
 	}
 

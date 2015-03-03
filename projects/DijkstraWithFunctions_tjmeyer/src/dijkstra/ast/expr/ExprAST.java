@@ -7,6 +7,7 @@ import java.util.Stack;
 import java.util.stream.Stream;
 
 import dijkstra.ast.AST;
+import dijkstra.gen.JVMInfo;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
@@ -153,5 +154,10 @@ public abstract class ExprAST implements AST, Term
 	public void buildAssignment(TypeUnificationTable tut)
 	{
 		buildTUT(tut);
+	}
+	
+	public int getAddr()
+	{
+		return Integer.MIN_VALUE;
 	}
 }

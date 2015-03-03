@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.ast.AST;
 import dijkstra.type.Type;
 import dijkstra.unify.TypeUnificationTable;
@@ -49,5 +52,9 @@ public class OrExpr extends ExprAST
 		return f + "|" + l;
 	}
 	
-	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
+	}
 }

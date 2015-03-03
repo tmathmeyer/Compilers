@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.ast.AST;
 import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
@@ -69,5 +72,11 @@ public class FunctionCallExpr extends ExprAST
 		}
 		
 		return this;
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

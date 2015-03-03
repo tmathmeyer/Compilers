@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 
@@ -60,5 +63,11 @@ public class IterativeAST implements AST
 	public void buildTUT(TypeUnificationTable tut)
 	{
 		conditionals.stream().forEach(a -> a.buildTUT(tut));
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

@@ -12,7 +12,23 @@ import dijkstra.unify.rlist.RList;
 
 public class TypeCheckRunner
 {
-	public static TypeUnificationTable check(String code)
+	public static TypeUnificationTable check(String code, String ... x)
+	{
+		
+		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree(code);
+
+		ReverseNameIndex rsi = new ReverseNameIndex();
+		
+		AST t = AST.makeUnique(true, tree.a.accept(new ASTBuilder(tree.b)), x.length==0 ? rsi : new ReverseNameIndex());
+		
+		TypeUnificationTable tut = new TypeUnificationTable(rsi);
+		
+		t.buildTUT(tut);
+		
+		return tut.check(RList.emptyList());
+	}
+	
+	public static Tuple<TypeUnificationTable, AST> check(String code)
 	{
 		Tuple<DijkstraTextContext, DijkstraParser> tree = getTree(code);
 
@@ -24,6 +40,6 @@ public class TypeCheckRunner
 		
 		t.buildTUT(tut);
 		
-		return tut.check(RList.emptyList());
+		return new Tuple<TypeUnificationTable, AST>(tut.check(RList.emptyList()), t);
 	}
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.expr.TerminalAST;
 import dijkstra.lexparse.DijkstraParser.TypeContext;
@@ -84,5 +86,11 @@ public class VariableDeclarationAST implements AST
 	public void buildTUT(TypeUnificationTable tut)
 	{
 		decs.stream().forEach(t -> t.buildTUT(tut));
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		//throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }

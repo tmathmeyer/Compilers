@@ -35,6 +35,16 @@ public class Unification {
 				 +"a <- 4.2 ");
 	}
 	
+	@Test
+	public void testCrazy()
+	{
+		TypeCheckRunner.check(
+				  "a <- 4.0 "
+				 +"a <- 1 "
+				 +"x <- a mod 2 "
+		);
+	}
+	
 	@Test(expected = RuntimeException.class)
 	public void testArraysEasy()
 	{
@@ -74,22 +84,26 @@ public class Unification {
 	@Test
 	public void testfunc()
 	{
+		System.out.println(
 		TypeCheckRunner.check(
 				  "fun test(a):int { "
 				 +"   return 4 mod a; "
 				 +"} "
 				 +"a <- test(5) + 0.5"
-				 +"print a");
+				 +"print a"
+		).a.getOnlyTerminalValues());
 	}
+	
+	
 	
 	@Test
 	public void testfutenc()
 	{
-		System.out.println(TypeCheckRunner.check(
+		TypeCheckRunner.check(
 				  "int a "
 				 +"float[a+1] first "
 				 +"a <- first[a] "
-		));
+		);
 	}
 	
 	
@@ -116,12 +130,14 @@ public class Unification {
 	@Test
 	public void uhh()
 	{
-		TypeCheckRunner.check("a <- 1 "
-							 +"input b, c "
-							 +"if "
-							 +"  a=b :: print a "
-							 +"  c :: print b "
-							 +"fi ");
+		TypeCheckRunner.check(
+				"a <- 1 "
+			   +"input b, c "
+			   +"if "
+			   +"  a=b :: print a "
+			   +"  c :: print b "
+			   +"fi "
+		);
 	}
 
 }

@@ -3,6 +3,9 @@ package dijkstra.ast;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.unify.ReverseNameIndex;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.SymbolGen;
@@ -77,5 +80,7 @@ public interface AST
 	{
 		return new ScopedSet<String>(this);
 	}
+	
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut);
 	
 }

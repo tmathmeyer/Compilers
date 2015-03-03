@@ -1,12 +1,18 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.FLOAD;
+import static org.objectweb.asm.Opcodes.ILOAD;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.AST;
+import dijkstra.gen.JVMInfo;
 import dijkstra.type.AType;
 import dijkstra.type.Type;
 import dijkstra.unify.ScopedSet;
@@ -17,6 +23,7 @@ public class TerminalAST extends ExprAST
 {
 	private final String name;
 	private AType t = Type.UNKNOWN;
+	private int constant;
 	
 	public TerminalAST(TerminalNodeImpl tree)
 	{
@@ -32,16 +39,19 @@ public class TerminalAST extends ExprAST
 	public TerminalAST(String tree)
 	{
 		name = tree;
+		constant = 0;
 		
 		try
 		{
 			Integer.parseInt(name);
 			t = Type.INT;
+			constant = 1;
 		} catch(Exception e) {
 			try
 			{
 				Float.parseFloat(name);
 				t = Type.FLOAT;
+				constant = 2;
 			} catch(Exception ee) {
 				
 			}
@@ -51,6 +61,7 @@ public class TerminalAST extends ExprAST
 		if (name.equals("true") || name.equals("false"))
 		{
 			t = Type.BOOLEAN;
+			constant = 3;
 		}
 		
 	}
@@ -182,5 +193,63 @@ public class TerminalAST extends ExprAST
 					tut.register(this, Type.CASTABLE);
 				}
 		}
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
+	{
+		if (constant == 1)
+		{
+			mv.visitLdcInsn(Integer.parseInt(name));
+			return;
+		}
+		if (constant == 2)
+		{
+			mv.visitLdcInsn(new Float(name));
+			return;
+		}
+		if (constant == 3)
+		{
+			if (name.equals("true"))
+			{
+				mv.visitLdcInsn(1);
+			}
+			
+			if (name.equals("false"))
+			{
+				mv.visitLdcInsn(0);
+			}
+			
+			return;
+		}
+		
+		switch(tut.getTypeByName(this))
+		{
+			case A_BOOL:
+			case INT:
+			case A_INT:
+			case CASTABLE:
+			case C_INT:
+			case BOOLEAN:
+				mv.visitVarInsn(ILOAD, getAddr());
+				break;
+			case A_FLOAT:
+			case C_FLOAT:
+			case FLOAT:
+				mv.visitVarInsn(FLOAD, getAddr());
+				break;
+			default:
+				throw new RuntimeException("Cant Load that type " + t);
+		}
+	}
+	
+	private int addr = Integer.MIN_VALUE;
+	public int getAddr()
+	{
+		if (addr == Integer.MIN_VALUE)
+		{
+			addr = JVMInfo.addressOf(name);
+		}
+		return addr;
 	}
 }

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import dijkstra.ast.expr.TerminalAST;
 import dijkstra.type.Arrow;
 import dijkstra.type.Type;
@@ -111,5 +114,11 @@ public class FunctionAST implements AST
 		Arrow a = new Arrow(Arrow.fromList(args), type);
 		
 		tut.register(new TerminalAST(name, a), a);
+	}
+	
+	@Override
+	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	{
+		throw new RuntimeException("NOT IMPLEMENTED");
 	}
 }
