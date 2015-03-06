@@ -1,26 +1,29 @@
 package dijkstra.ast;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.unify.TypeUnificationTable;
 
 public class ConditionalAST implements AST
 {
-	private final List<AST> conditionals = new LinkedList<>();
+	private final List<GuardedAST> conditionals = new ArrayList<>();
 	
 	public ConditionalAST(Stream<AST> map)
 	{
 		Iterator<AST> it = map.iterator();
 		while(it.hasNext())
 		{
-			conditionals.add(it.next());
+			conditionals.add((GuardedAST) it.next());
 		}
 	}
 	
@@ -50,8 +53,15 @@ public class ConditionalAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Label done = new Label();
+		for(GuardedAST t : conditionals)
+		{
+			t.generateCode(writer, mv, tut, done);
+		}
+		mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "condFail", "()V", false);
+		
+		mv.visitLabel(done);
 	}
 }

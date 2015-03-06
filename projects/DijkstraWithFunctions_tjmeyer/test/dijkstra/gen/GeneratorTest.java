@@ -1,10 +1,14 @@
 package dijkstra.gen;
 
+//import org.antlr.v4.codegen.CodeGenerator;
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Test;
 import org.objectweb.asm.ClassWriter;
 
 import dijkstra.Tuple;
 import dijkstra.ast.AST;
+import dijkstra.runtime.DijkstraRuntime.ConditionRuntimeException;
 import dijkstra.unify.TypeUnificationTable;
 import dijkstra.utility.TypeCheckRunner;
 
@@ -111,6 +115,51 @@ public class GeneratorTest extends ClassLoader
 	public void testConditionals() throws Exception
 	{	
 		System.out.println("====testConditionals====");
+		runCode(
+				"x <- 5; "
+			  + "if "
+			  + "  x>3 :: print x "
+			  + "  x>0 :: print x+1 "
+			  + "fi"
+		);
+		
+		runCode(
+				"x <- 4; "
+			  + "if "
+			  + "  x>5 :: print x "
+			  + "  x>4 :: print x*2 "
+			  + "  x>3 :: print x*3 "
+			  + "  x>2 :: print x*4 "
+			  + "  x>1 :: print x*5 "
+			  + "fi"
+		);
+		
+		runCode(
+				"input x; "
+			  + "if "
+			  + "  x=0 :: x <- x "
+			  + "  x>0 :: x <- x "
+			  + "  x<0 :: x <- (-x)*2 "
+			  + "fi "
+			  + "print x"
+		);
+		System.out.println("\n\n");
+	}
+	
+	
+	
+	@Test(expected=InvocationTargetException.class)
+	public void testInvalidConditionals() throws Exception
+	{	
+		System.out.println("====testInvalidConditionals====");
+		runCode(
+				"boolean negative "
+			  + "x <- 0; "
+			  + "if "
+			  + "  x>0 :: negative <- false; "
+			  + "  x<0 :: negative <- true; "
+			  + "fi "
+		);
 		System.out.println("\n\n");
 	}
 	

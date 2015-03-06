@@ -108,7 +108,7 @@ public class ArrayDecAST implements AST
 	@Override
 	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		int TYPE = NOP;
+		int TYPE;
 		
 		switch(type)
 		{
@@ -121,6 +121,8 @@ public class ArrayDecAST implements AST
 		case A_INT:
 			TYPE = T_INT;
 			break;
+		default:
+			TYPE = NOP;
 		}
 		
 		for(TerminalAST tast : ids)

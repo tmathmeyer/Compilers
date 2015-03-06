@@ -3,7 +3,10 @@ package dijkstra.ast;
 import java.util.Set;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+
+import static org.objectweb.asm.Opcodes.*;
 
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.type.Type;
@@ -49,8 +52,17 @@ public class GuardedAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		throw new RuntimeException("no, you should NOT be here");
+	}
+
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut, Label done) {
+		Label l = new Label();
+		conditional.generateCode(writer, mv, tut);
+		mv.visitJumpInsn(IFEQ, l);
+		statement.generateCode(writer, mv, tut);
+		mv.visitJumpInsn(GOTO, done);
+		mv.visitLabel(l);
 	}
 }

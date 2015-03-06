@@ -164,4 +164,20 @@ public class DijkstraRuntime
 		DijkstraRuntime.inputs = inputs;
 		inputIndex = 0;
 	}
+	
+	
+	
+	public static void condFail()
+	{
+		throw new ConditionRuntimeException("none of the conditional branches evaluated");
+	}
+	
+	@SuppressWarnings("serial")
+	public static class ConditionRuntimeException extends RuntimeException
+	{
+		public ConditionRuntimeException(String string)
+		{
+			super(string);
+		}
+	}
 }

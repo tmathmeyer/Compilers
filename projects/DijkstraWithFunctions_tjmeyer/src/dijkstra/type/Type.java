@@ -147,6 +147,9 @@ public enum Type implements AType
 		if (b==C_INT && a==NUMERIC_GENERAL) return C_INT;
 		if (b==C_FLOAT && a==NUMERIC_GENERAL) return C_FLOAT;
 		
+		if (a==C_INT && b==NUMERIC_GENERAL) return C_INT;
+		if (a==C_FLOAT && b==NUMERIC_GENERAL) return C_FLOAT;
+		
 		if (b==C_INT && a==C_FLOAT) return NUMERIC_GENERAL;
 		if (b==C_FLOAT && a==C_INT) return NUMERIC_GENERAL;
 		
