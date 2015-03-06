@@ -1,5 +1,7 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -60,8 +62,34 @@ public class NegExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Type me = tut.getTypeByName(this);
+		Type nn = tut.getTypeByName(n);
+		int V = NOP;
+		
+		switch(me)
+		{
+		case INT:
+			mv.visitInsn(ICONST_0);
+			V = (ISUB);
+			break;
+		case FLOAT:
+			mv.visitInsn(FCONST_0);
+			V = (FSUB);
+			break;
+		default:
+			break;
+		}
+		
+		
+		n.generateCode(writer, mv, tut);
+		if (me==Type.INT && nn==Type.FLOAT) {
+			mv.visitInsn(F2I);
+		} else if (me==Type.FLOAT && nn==Type.INT) {
+			mv.visitInsn(I2F);
+		}
+		
+		mv.visitInsn(V);
 	}
 }

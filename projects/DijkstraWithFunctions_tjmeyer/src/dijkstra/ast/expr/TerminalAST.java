@@ -1,7 +1,6 @@
 package dijkstra.ast.expr;
 
-import static org.objectweb.asm.Opcodes.FLOAD;
-import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -190,7 +189,7 @@ public class TerminalAST extends ExprAST
 				}
 				else
 				{
-					tut.register(this, Type.CASTABLE);
+					tut.register(this, Type.UNKNOWN);
 				}
 		}
 	}
@@ -212,12 +211,12 @@ public class TerminalAST extends ExprAST
 		{
 			if (name.equals("true"))
 			{
-				mv.visitLdcInsn(1);
+				mv.visitInsn(ICONST_1);
 			}
 			
 			if (name.equals("false"))
 			{
-				mv.visitLdcInsn(0);
+				mv.visitInsn(ICONST_0);
 			}
 			
 			return;
@@ -225,18 +224,14 @@ public class TerminalAST extends ExprAST
 		
 		switch(tut.getTypeByName(this))
 		{
-			case A_BOOL:
-			case INT:
-			case A_INT:
-			case CASTABLE:
-			case C_INT:
-			case BOOLEAN:
+			case INT: case BOOLEAN:
 				mv.visitVarInsn(ILOAD, getAddr());
 				break;
-			case A_FLOAT:
-			case C_FLOAT:
 			case FLOAT:
 				mv.visitVarInsn(FLOAD, getAddr());
+				break;
+			case A_INT: case A_FLOAT: case A_BOOL:
+				mv.visitVarInsn(ASTORE, getAddr());
 				break;
 			default:
 				throw new RuntimeException("Cant Load that type " + t);

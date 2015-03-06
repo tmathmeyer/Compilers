@@ -1,5 +1,7 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +39,15 @@ public class MultiplicationExpr extends ExprAST
 		
 		tut.register(f, Type.NUMERIC_GENERAL);
 		tut.register(l, Type.NUMERIC_GENERAL);
-		tut.register(this, Type.NUMERIC_GENERAL);
+		
+		if (tut.getTypeByName(f) == tut.getTypeByName(l))
+		{
+			tut.register(this, tut.getTypeByName(f));
+		}
+		else
+		{
+			tut.register(this, Type.NUMERIC_GENERAL);
+		}
 	}
 
 	@Override
@@ -53,8 +63,37 @@ public class MultiplicationExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Type me = tut.getTypeByName(this);
+		Type ff = tut.getTypeByName(f);
+		Type ll = tut.getTypeByName(l);
+		
+		f.generateCode(writer, mv, tut);
+		if (me==Type.INT && ff==Type.FLOAT) {
+			mv.visitInsn(F2I);
+		} else if (me==Type.FLOAT && ff==Type.INT) {
+			mv.visitInsn(I2F);
+		}
+		
+		l.generateCode(writer, mv, tut);
+		if (me==Type.INT && ll==Type.FLOAT) {
+			mv.visitInsn(F2I);
+		} else if (me==Type.FLOAT && ll==Type.INT) {
+			mv.visitInsn(I2F);
+		}
+		
+		
+		switch(me)
+		{
+		case INT:
+			mv.visitInsn(IMUL);
+			break;
+		case FLOAT:
+			mv.visitInsn(FMUL);
+			break;
+		default:
+			break;
+		}
 	}
 }

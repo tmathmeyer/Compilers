@@ -33,6 +33,10 @@ public abstract class ExprAST implements AST, Term
 			{
 				return (ExprAST) ttt;
 			}
+			if (ttt instanceof ArrayAccessAST)
+			{
+				return (ExprAST) ttt;
+			}
 			return new TerminalAST(ttt.toString());
 		}
 		else if (size == 2)

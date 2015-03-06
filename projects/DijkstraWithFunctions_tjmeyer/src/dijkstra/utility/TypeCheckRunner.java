@@ -40,6 +40,10 @@ public class TypeCheckRunner
 		
 		t.buildTUT(tut);
 		
-		return new Tuple<TypeUnificationTable, AST>(tut.check(RList.emptyList()), t);
+		tut = tut.check(RList.emptyList());
+		
+		tut.smush();
+		
+		return new Tuple<TypeUnificationTable, AST>(tut, t);
 	}
 }

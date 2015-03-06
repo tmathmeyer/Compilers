@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -104,8 +106,29 @@ public class ArrayDecAST implements AST
 	}
 
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		int TYPE = NOP;
+		
+		switch(type)
+		{
+		case A_BOOL:
+			TYPE = T_BOOLEAN;
+			break;
+		case A_FLOAT:
+			TYPE = T_FLOAT;
+			break;
+		case A_INT:
+			TYPE = T_INT;
+			break;
+		}
+		
+		for(TerminalAST tast : ids)
+		{
+			arraySize.generateCode(writer, mv, tut);
+			mv.visitInsn(NEWARRAY);
+			mv.visitInsn(TYPE);
+			tast.generateCode(writer, mv, tut);
+		}
 	}
 }

@@ -150,7 +150,7 @@ public class Constraint implements Combinable<Constraint, Term>
 		
 		if (left == Type.INT && right == Type.FLOAT)
 		{
-			throw new RuntimeException("you can't do that Dave");
+			return Type.NUMERIC_GENERAL;
 		}
 		
 		if (right == Type.INT && left == Type.FLOAT)

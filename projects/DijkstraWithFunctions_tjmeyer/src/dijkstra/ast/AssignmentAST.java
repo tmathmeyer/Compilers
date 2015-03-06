@@ -1,7 +1,6 @@
 package dijkstra.ast;
 
-import static org.objectweb.asm.Opcodes.ISTORE;
-import static org.objectweb.asm.Opcodes.FSTORE;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +12,7 @@ import java.util.stream.Stream;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import dijkstra.ast.expr.ArrayAccessAST;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.FunctionCallExpr;
 import dijkstra.ast.expr.TerminalAST;
@@ -97,6 +97,7 @@ public class AssignmentAST implements AST
 			else
 			{
 				tut.register(t, f);
+				tut.register(f, t);
 			}
 		}
 	}
@@ -111,15 +112,33 @@ public class AssignmentAST implements AST
 			ExprAST t = to.next();
 			ExprAST f = from.next();
 			
-			f.generateCode(writer, mv, null);
+			if (t instanceof ArrayAccessAST)
+			{
+				((ArrayAccessAST)t).store(writer, mv, tut);
+			}
+			f.generateCode(writer, mv, tut);
 			switch(tut.getTypeByName(t))
 			{
-				case A_BOOL: case INT: case C_INT: case NUMERIC_GENERAL:
-				case CASTABLE: case BOOLEAN: case A_INT:
-					mv.visitVarInsn(ISTORE, t.getAddr());
+				case INT: case C_INT: case NUMERIC_GENERAL:
+				case BOOLEAN:
+					if (t instanceof ArrayAccessAST)
+					{
+						mv.visitInsn(IASTORE);
+					}
+					else
+					{
+						mv.visitVarInsn(ISTORE, t.getAddr());
+					}
 					break;
 				case A_FLOAT: case C_FLOAT: case FLOAT:
-					mv.visitVarInsn(FSTORE, t.getAddr());
+					if (t instanceof ArrayAccessAST)
+					{
+						mv.visitInsn(FASTORE);
+					}
+					else
+					{
+						mv.visitVarInsn(FSTORE, t.getAddr());
+					}
 					break;
 				default:
 					throw new RuntimeException("Cant Load that type " + t);

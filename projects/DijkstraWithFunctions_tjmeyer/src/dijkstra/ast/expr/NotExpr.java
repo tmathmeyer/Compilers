@@ -4,7 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.AST;
@@ -61,8 +64,17 @@ public class NotExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		n.generateCode(writer, mv, tut);
+		final Label l1 = new Label();
+		final Label l2 = new Label();
+		mv.visitInsn(ICONST_0);
+		mv.visitJumpInsn(IFEQ, l1);
+		mv.visitInsn(ICONST_0);		// true -> false
+		mv.visitJumpInsn(GOTO, l2);
+		mv.visitLabel(l1);
+		mv.visitInsn(ICONST_1);		// false -> true
+		mv.visitLabel(l2);
 	}
 }

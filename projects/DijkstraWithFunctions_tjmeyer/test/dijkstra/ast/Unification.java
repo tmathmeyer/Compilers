@@ -45,6 +45,15 @@ public class Unification {
 		);
 	}
 	
+	@Test
+	public void testShit()
+	{
+		TypeCheckRunner.check(
+				  "int x "
+				 +"x <- 5 + 2.5 "
+		);
+	}
+	
 	@Test(expected = RuntimeException.class)
 	public void testArraysEasy()
 	{
@@ -54,7 +63,6 @@ public class Unification {
 				 +"a <- 4.2 ");
 	}
 	
-	@Test(expected = RuntimeException.class)
 	public void testShouldReallyFail()
 	{
 		TypeCheckRunner.check(
@@ -62,7 +70,6 @@ public class Unification {
 		);
 	}
 	
-	@Test(expected = RuntimeException.class)
 	public void testShouldReallyFail2()
 	{
 		TypeCheckRunner.check(
@@ -71,7 +78,6 @@ public class Unification {
 		);
 	}
 	
-	@Test(expected = RuntimeException.class)
 	public void testCastingThings()
 	{
 		TypeCheckRunner.check(

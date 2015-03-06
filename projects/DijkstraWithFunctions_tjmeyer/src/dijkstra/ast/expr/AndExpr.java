@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
@@ -53,8 +55,11 @@ public class AndExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		f.generateCode(writer, mv, tut);
+		l.generateCode(writer, mv, tut);
+		
+		mv.visitInsn(IMUL);
 	}
 }

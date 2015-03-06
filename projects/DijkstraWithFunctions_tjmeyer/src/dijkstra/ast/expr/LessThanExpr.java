@@ -1,10 +1,13 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.AST;
@@ -53,8 +56,33 @@ public class LessThanExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Type ff = tut.getTypeByName(f);
+		Type ll = tut.getTypeByName(l);
+		
+		f.generateCode(writer, mv, tut);
+		if (ff == Type.INT)
+		{
+			mv.visitInsn(I2F);
+		}
+		
+		l.generateCode(writer, mv, tut);
+		if (ll == Type.INT)
+		{
+			mv.visitInsn(I2F);
+		}
+		mv.visitInsn(FCMPL);
+		
+		
+		
+		Label lab1 =  new Label();
+		mv.visitJumpInsn(IFLT, lab1);
+		mv.visitInsn(ICONST_0);		// left = right
+		Label lab2 = new Label();
+		mv.visitJumpInsn(GOTO, lab2);
+		mv.visitLabel(lab1);
+		mv.visitInsn(ICONST_1);		// left ~= right
+		mv.visitLabel(lab2);
 	}
 }

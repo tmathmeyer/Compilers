@@ -6,7 +6,7 @@ import dijkstra.unify.Term;
 public enum Type implements AType
 {
 	INT, FLOAT, NUMERIC_GENERAL,
-	C_INT, C_FLOAT, CASTABLE,
+	C_INT, C_FLOAT,
 	A_INT, A_FLOAT, A_BOOL,
 	UNKNOWN, VOID,
 	BOOLEAN, LOOKUP;
@@ -74,11 +74,6 @@ public enum Type implements AType
 			return true;
 		}
 		
-		if (type == CASTABLE && (other==INT || other==FLOAT || other==C_INT || other==C_FLOAT || other==NUMERIC_GENERAL))
-		{
-			return true;
-		}
-		
 		if (type==INT && (other==C_FLOAT || other==C_INT))
 		{
 			return true;
@@ -90,6 +85,11 @@ public enum Type implements AType
 		}
 		
 		if (type==C_INT && other==C_FLOAT)
+		{
+			return true;
+		}
+		
+		if (type==BOOLEAN && ((other==INT)))
 		{
 			return true;
 		}
@@ -122,10 +122,6 @@ public enum Type implements AType
 		
 		if (a==VOID) return b;
 		if (b==VOID) return a;
-		
-		if (a==CASTABLE) return getCastable(b);
-		if (b==CASTABLE) return getCastable(a);
-		
 
 		if (a==INT && b==C_INT) return C_INT;
 		if (a==C_INT && b==INT) return C_INT;
@@ -139,14 +135,11 @@ public enum Type implements AType
 		if (a==INT && b==C_FLOAT) return INT;
 		if (b==INT && a==C_FLOAT) return INT;
 		
-		if (a==CASTABLE && b==NUMERIC_GENERAL) return NUMERIC_GENERAL;
-		if (b==CASTABLE && a==NUMERIC_GENERAL) return NUMERIC_GENERAL;
-		
 		if (b==INT && a==FLOAT) return FLOAT;
 		if (b==FLOAT && a==INT) return FLOAT;
 		
-		if (a==INT && b==NUMERIC_GENERAL) return INT;
-		if (a==FLOAT && b==NUMERIC_GENERAL) return FLOAT;
+		if (a==INT && b==NUMERIC_GENERAL) return C_INT;
+		if (a==FLOAT && b==NUMERIC_GENERAL) return C_FLOAT;
 
 		if (b==INT && a==NUMERIC_GENERAL) return INT;
 		if (b==FLOAT && a==NUMERIC_GENERAL) return FLOAT;
@@ -154,7 +147,8 @@ public enum Type implements AType
 		if (b==C_INT && a==NUMERIC_GENERAL) return C_INT;
 		if (b==C_FLOAT && a==NUMERIC_GENERAL) return C_FLOAT;
 		
-		
+		if (b==C_INT && a==C_FLOAT) return NUMERIC_GENERAL;
+		if (b==C_FLOAT && a==C_INT) return NUMERIC_GENERAL;
 		
 		
 		

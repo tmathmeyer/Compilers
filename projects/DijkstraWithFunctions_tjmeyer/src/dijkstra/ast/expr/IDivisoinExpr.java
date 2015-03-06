@@ -1,5 +1,7 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -53,8 +55,21 @@ public class IDivisoinExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Type ff = tut.getTypeByName(f);
+		Type ll = tut.getTypeByName(l);
+		
+		f.generateCode(writer, mv, tut);
+		if (ff==Type.FLOAT) {
+			mv.visitInsn(F2I);
+		}
+		
+		l.generateCode(writer, mv, tut);
+		if (ll==Type.FLOAT) {
+			mv.visitInsn(F2I);
+		}
+
+		mv.visitInsn(IDIV);
 	}
 }

@@ -102,7 +102,7 @@ public class TypeUnificationTable
 		if (r instanceof Arrow) {
 			return replaceInList(l, ((Arrow) r).o, s);
 		}
-		return s.map(a -> new Constraint(a.left().replace(l, r), a.right().replace(l, r)));
+		return s.map(a -> new Constraint(a.left(), a.right().replace(l, r)));
 	}
 	
 	public TypeUnificationTable check(RList<Term, Constraint> cons)
@@ -112,6 +112,7 @@ public class TypeUnificationTable
 
 	public Type getTypeByName(AST outputAST)
 	{
+		RList<Term, Constraint> temp = this.temp;
 		while(!temp.empty())
 		{
 			Constraint c = temp.first();
@@ -120,7 +121,7 @@ public class TypeUnificationTable
 			{
 				if (c.right() instanceof Type)
 				{
-					return (Type) c.right();
+					return consolidate((Type) c.right());
 				}
 			}
 			
@@ -128,7 +129,7 @@ public class TypeUnificationTable
 			{
 				if (c.left() instanceof Type)
 				{
-					return (Type) c.left();
+					return consolidate((Type) c.left());
 				}
 			}
 			
@@ -136,5 +137,61 @@ public class TypeUnificationTable
 		}
 		
 		return Type.INT;
+	}
+	
+	public Type consolidate(Type t) {
+		switch(t)
+		{
+		case C_INT: case INT: case NUMERIC_GENERAL:
+			return Type.INT;
+		case C_FLOAT: case FLOAT:
+			return Type.FLOAT;
+		case BOOLEAN:
+			return Type.BOOLEAN;
+		case A_INT:
+			return Type.A_INT;
+		case A_FLOAT:
+			return Type.A_FLOAT;
+		case A_BOOL:
+			return Type.A_BOOL;
+			
+		default:
+			throw new RuntimeException("no "+t);
+		}
+	}
+
+	public void smush() {
+		RList<Term, Constraint> nnn = RList.emptyList();
+		
+		while(!temp.empty())
+		{
+			nnn = nnn.setAdd(temp.first(), Monad.of());
+			
+			temp = temp.rest();
+		}
+		
+		temp = nnn;
+	}
+
+	public Constraint getConstraintByName(String arr)
+	{
+		RList<Term, Constraint> temp = this.temp;
+		while(!temp.empty())
+		{
+			Constraint c = temp.first();
+			
+			if (c.left().toString().equals(arr))
+			{
+				return c;
+			}
+			
+			if (c.right().toString().equals(arr))
+			{
+				return c;
+			}
+			
+			temp = temp.rest();
+		}
+		return null;
 	}
 }

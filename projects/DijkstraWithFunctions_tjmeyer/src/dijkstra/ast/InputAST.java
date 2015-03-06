@@ -1,5 +1,8 @@
 package dijkstra.ast;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.ISTORE;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,8 +72,27 @@ public class InputAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		//throw new RuntimeException("NOT IMPLEMENTED");
+		for(TerminalAST tast : input)
+		{
+			mv.visitLdcInsn(tast.toString());
+			switch(tut.getTypeByName(tast))
+			{
+			case BOOLEAN:
+				mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "inputBoolean", 
+						"(Ljava/lang/String;)Z", false);
+				break;
+			case FLOAT:
+				throw new RuntimeException("NOT IMPL");
+			case INT:
+				mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "inputInt", 
+						"(Ljava/lang/String;)I", false);
+				break;
+			default:
+				throw new RuntimeException("Can't print this type");
+			}
+			mv.visitVarInsn(ISTORE, tast.getAddr());
+		}
 	}
 }
