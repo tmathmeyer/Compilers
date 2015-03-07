@@ -52,6 +52,12 @@ public class CompoundBodyAST implements AST
 	}
 	
 	@Override
+	public void buildTUT(TypeUnificationTable tut)
+	{
+		parts.stream().forEach(a -> a.buildTUT(tut));
+	}
+	
+	@Override
 	public CompoundBodyAST renameScoping(ScopedSet<VarBind> vb)
 	{
 		List<AST> np = new ArrayList<>();

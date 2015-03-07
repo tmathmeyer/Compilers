@@ -25,7 +25,7 @@ public class MethodSignitureGenerator
 	
 	private String semiArrow(Arrow a)
 	{
-		return jvmName(a.i, false)+","+jvmName(a.o, false);
+		return jvmName(a.i, false)+""+jvmName(a.o, false);
 	}
 	
 	private String jvmName(Term t, boolean isReturn)
@@ -37,7 +37,7 @@ public class MethodSignitureGenerator
 			{
 			case BOOLEAN:
 				return "B";
-			case FLOAT:
+			case FLOAT: case C_FLOAT:
 				return "F";
 			case INT: case NUMERIC_GENERAL:
 				return "I";

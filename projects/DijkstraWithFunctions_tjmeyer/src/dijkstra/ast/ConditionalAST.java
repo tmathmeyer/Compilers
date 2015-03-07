@@ -63,7 +63,6 @@ public class ConditionalAST implements AST
 			mv.visitLabel(notDone);
 		}
 		mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "runtimeException", "()V", false);
-		
 		mv.visitLabel(done);
 	}
 }

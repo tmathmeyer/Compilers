@@ -142,6 +142,10 @@ public class TypeUnificationTable
 				{
 					return consolidate((Type) c.right());
 				}
+				if (c.right() instanceof Arrow)
+				{
+					return (Type) ((Arrow)c.right()).o;
+				}
 			}
 			
 			if (c.right().equals(outputAST))
@@ -150,12 +154,16 @@ public class TypeUnificationTable
 				{
 					return consolidate((Type) c.left());
 				}
+				if (c.left() instanceof Arrow)
+				{
+					return (Type) ((Arrow)c.left()).o;
+				}
 			}
 			
 			temp = temp.rest();
 		}
 		
-		return Type.INT;
+		return Type.UNKNOWN;
 	}
 	
 	public Type consolidate(Type t) {

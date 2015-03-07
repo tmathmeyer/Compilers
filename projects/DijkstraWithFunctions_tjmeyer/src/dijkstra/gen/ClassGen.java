@@ -13,7 +13,7 @@ import dijkstra.utility.TypeCheckRunner;
 
 public class ClassGen
 {
-	public static void writeCode(String inputText)
+	public static byte[] writeCode(String inputText)
 	{
 		Tuple<TypeUnificationTable, AST> res = TypeCheckRunner.check(inputText);
 		
@@ -36,5 +36,7 @@ public class ClassGen
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return code;
 	}
 }

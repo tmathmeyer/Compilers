@@ -62,8 +62,24 @@ public class AdditionExpr extends ExprAST
 	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
 		Type me = tut.getTypeByName(this);
-		Type ff = tut.getTypeByName(f);
-		Type ll = tut.getTypeByName(l);
+		Type ff, ll;
+		if (f instanceof FunctionCallExpr)
+		{
+			ff = tut.getTypeByName(new TerminalAST(((FunctionCallExpr)f).getName()));
+		}
+		else
+		{
+			ff = tut.getTypeByName(f);
+		}
+		
+		if (l instanceof FunctionCallExpr)
+		{
+			ll = tut.getTypeByName(new TerminalAST(((FunctionCallExpr)l).getName()));
+		}
+		else
+		{
+			ll = tut.getTypeByName(l);
+		}
 		
 		f.generateCode(writer, mv, tut);
 		if (me==Type.INT && ff==Type.FLOAT) {

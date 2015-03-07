@@ -42,7 +42,6 @@ public class FunctionAST implements AST
 		name = n;
 		body = b;
 		a.map(x -> (TerminalAST)x).forEach(x -> args.add(x));
-		args.stream().forEach(x -> x.setT(Type.UNKNOWN));
 		type = t;
 	}
 
@@ -119,6 +118,7 @@ public class FunctionAST implements AST
 		Arrow a = new Arrow(Arrow.fromList(args), type);
 		
 		tut.register(new TerminalAST(name, a), a);
+		tut.register(new TerminalAST(name, type), a);
 		tut.registerFunction(name, this);
 	}
 	
@@ -170,9 +170,7 @@ public class FunctionAST implements AST
 		body.generateCode(writer, mv2, tut);
 		
 		
-		//mv2.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "runtimeException", "()V", false);
-		//mv2.visitInsn(RETURN);
-		mv2.visitMaxs(0, 0);
+		mv2.visitMaxs(10, 10);
 		mv2.visitEnd();
 	}
 }

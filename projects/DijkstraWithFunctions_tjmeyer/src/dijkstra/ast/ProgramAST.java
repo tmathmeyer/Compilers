@@ -110,7 +110,7 @@ public class ProgramAST implements AST
 		// program end
 		//  End of main
 		mv2.visitInsn(RETURN);
-		mv2.visitMaxs(10, 10);
+		mv2.visitMaxs(0, 0);
 		mv2.visitEnd();
 		// Actual end of generation
 		cw.visitEnd();

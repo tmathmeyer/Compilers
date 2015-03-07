@@ -61,6 +61,11 @@ public class SubtractionExpr extends ExprAST
 		Type ff = tut.getTypeByName(f);
 		Type ll = tut.getTypeByName(l);
 		
+		if (me == Type.UNKNOWN)
+		{
+			me = ff;
+		}
+		
 		f.generateCode(writer, mv, tut);
 		if (me==Type.INT && ff==Type.FLOAT) {
 			mv.visitInsn(F2I);
@@ -74,7 +79,6 @@ public class SubtractionExpr extends ExprAST
 		} else if (me==Type.FLOAT && ll==Type.INT) {
 			mv.visitInsn(I2F);
 		}
-		
 		
 		switch(me)
 		{

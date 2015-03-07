@@ -84,7 +84,8 @@ public class InputAST implements AST
 						"(Ljava/lang/String;)Z", false);
 				break;
 			case FLOAT:
-				throw new RuntimeException("NOT IMPL");
+				mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "inputFloat", 
+						"(Ljava/lang/String;)F", false);
 			case INT:
 				mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "inputInt", 
 						"(Ljava/lang/String;)I", false);

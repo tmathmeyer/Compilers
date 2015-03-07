@@ -24,7 +24,7 @@ public class GeneratorTest extends ClassLoader
 		System.out.println("\n\n");
 	}
 	
-	//@Test
+	@Test
 	public void testInput() throws Exception
 	{	
 		System.out.println("====testInput====");
@@ -181,7 +181,7 @@ public class GeneratorTest extends ClassLoader
 	}
 	
 	
-	//@Test
+	@Test
 	public void testEuclid() throws Exception
 	{	
 		System.out.println("====testEuclid====");
@@ -237,7 +237,7 @@ public class GeneratorTest extends ClassLoader
 	
 	
 	
-	//@Test
+	@Test
 	public void testFibonacci() throws Exception
 	{
 		System.out.println("====testFibonacci====");
@@ -266,6 +266,49 @@ public class GeneratorTest extends ClassLoader
 		System.out.println("\n\n");
 	}
 	
+	@Test(expected=VerifyError.class)
+	public void testSQRT() throws Exception
+	{
+		System.out.println("====testFibonacci====");
+		System.out.println("this doesn't run, and I dont know why");
+		String s = 
+			"	float inVal"
+			+"	input inVal"
+			+"	root <- compute(inVal, inVal / 2)"
+			+"	print root"
+			+""
+			+"	fun compute(float inVal, float guess) : float {"
+			+"		float computedRoot"
+			+"		if"
+			+"			check(inVal / guess, guess) :: computedRoot <- guess"
+			+"			~check(inVal / guess, guess) :: computedRoot <- compute(inVal, betterGuess(inVal, guess))"
+			+"		fi"
+			+"		return computedRoot"
+			+"	}"
+			+""
+			+"	fun abs(float val) : float {"
+			+"		float other"
+			+"		if"
+			+"			val >= 0.0 :: other <- val"
+			+"			val < 0.0 :: other <- -val"
+			+"		fi"
+			+"		return other"
+			+"	}"
+			+""
+			+"	fun check(float a, float b) : boolean {"
+			+"		if"
+			+"			abs(a - b) < 0.00001 :: return true"
+			+"			abs(a - b) >= 0.00001 :: return false"
+			+"		fi"
+			+"		return false"
+			+"	}"
+			+""
+			+"	fun betterGuess(float a, float b) : float {"
+			+"		return ((b + (a / b)) / 2)"
+			+"	}";
+		run(ClassGen.writeCode(s));
+	}
+	
 	
 	
 	
@@ -287,7 +330,12 @@ public class GeneratorTest extends ClassLoader
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 		
 		ast.generateCode(cw, null, t);
-		byte[] code = cw.toByteArray();
+		run(cw.toByteArray());
+		
+	}
+	
+	private void run(byte[] code) throws Exception
+	{
 		GeneratorTest loader = new GeneratorTest();
 		
 		

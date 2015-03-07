@@ -7,6 +7,8 @@ import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import dijkstra.ast.expr.FunctionCallExpr;
+import dijkstra.ast.expr.TerminalAST;
 import dijkstra.unify.TypeUnificationTable;
 
 public class OutputAST implements AST
@@ -39,8 +41,16 @@ public class OutputAST implements AST
 	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
 		outputAST.generateCode(writer, mv, tut);	// TOS = expression value
+		AST toGet = outputAST;
+		if (toGet instanceof FunctionCallExpr)
+		{
+			toGet = new TerminalAST(((FunctionCallExpr)toGet).getName());
+		}
 		
-		switch(tut.getTypeByName(outputAST))
+		
+		
+		
+		switch(tut.getTypeByName(toGet))
 		{
 		case BOOLEAN:
 			mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "printBoolean", "(Z)V", false);
@@ -52,7 +62,7 @@ public class OutputAST implements AST
 			mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "printInt", "(I)V", false);
 			break;
 		default:
-			throw new RuntimeException("Can't print this type");
+			throw new RuntimeException("Can't print this type "+tut.getTypeByName(toGet));
 		}
 	}
 }
