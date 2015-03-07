@@ -46,11 +46,19 @@ public class Arrow implements AType
 		TerminalAST t = q.remove();
 		if (q.size() == 0)
 		{
+			if (t.getT() == Type.UNKNOWN)
+			{
+				return t;
+			}
 			return t.getT();
 		}
 		
 		if (q.size() == 1)
 		{
+			if (t.getT() == Type.UNKNOWN)
+			{
+				return new Arrow(t, q.remove());
+			}
 			return new Arrow(t.getT(), q.remove());
 		}
 		

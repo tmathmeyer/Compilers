@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.unify.ScopedSet;
@@ -14,15 +15,14 @@ import dijkstra.unify.TypeUnificationTable;
 
 public class IterativeAST implements AST
 {
-
-	private final List<AST> conditionals = new LinkedList<>();
+	private final List<GuardedAST> conditionals = new LinkedList<>();
 	
 	public IterativeAST(Stream<AST> map)
 	{
 		Iterator<AST> it = map.iterator();
 		while(it.hasNext())
 		{
-			conditionals.add(it.next());
+			conditionals.add((GuardedAST) it.next());
 		}
 	}
 	
@@ -66,8 +66,15 @@ public class IterativeAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Label oneTrue = new Label();
+		mv.visitLabel(oneTrue);
+		for(GuardedAST t : conditionals)
+		{
+			Label notDone = new Label();
+			t.generateCode(writer, mv, tut, oneTrue, notDone);
+			mv.visitLabel(notDone);
+		}
 	}
 }

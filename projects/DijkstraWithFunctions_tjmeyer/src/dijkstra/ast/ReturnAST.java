@@ -5,6 +5,7 @@ import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import static org.objectweb.asm.Opcodes.*;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
@@ -47,8 +48,9 @@ public class ReturnAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		parts.generateCode(writer, mv, tut);
+		mv.visitInsn(IRETURN);
 	}
 }

@@ -167,7 +167,7 @@ public class DijkstraRuntime
 	
 	
 	
-	public static void condFail()
+	public static void runtimeException()
 	{
 		throw new ConditionRuntimeException("none of the conditional branches evaluated");
 	}

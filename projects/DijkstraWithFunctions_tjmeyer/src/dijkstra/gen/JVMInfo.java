@@ -28,9 +28,15 @@ public class JVMInfo
 		Integer i = m.get(name);
 		if (i == null)
 		{
-			m.put(name, m.size()+1);
+			m.put(name, m.size());
 		}
 		
 		return m.get(name);
+	}
+
+
+	public static void reset()
+	{
+		m.clear();
 	}
 }

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import dijkstra.gen.JVMInfo;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 
@@ -81,6 +82,7 @@ public class ProgramAST implements AST
 	public void buildTUT(TypeUnificationTable tut)
 	{
 		children.stream().forEach(a -> a.buildTUT(tut));
+		tut.setName(programName);
 	}
 	
 	@Override
@@ -95,6 +97,9 @@ public class ProgramAST implements AST
 		mv.visitInsn(RETURN);
 		mv.visitMaxs(0, 0);
 		mv.visitEnd();
+		tut.makeFunctions(cw);
+		JVMInfo.addressOf("______");
+		
 		// Start the main() method
 		final MethodVisitor mv2 = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
 		mv2.visitCode();
@@ -105,9 +110,11 @@ public class ProgramAST implements AST
 		// program end
 		//  End of main
 		mv2.visitInsn(RETURN);
-		mv2.visitMaxs(0, 0);
+		mv2.visitMaxs(10, 10);
 		mv2.visitEnd();
 		// Actual end of generation
 		cw.visitEnd();
+		
+		
 	}
 }

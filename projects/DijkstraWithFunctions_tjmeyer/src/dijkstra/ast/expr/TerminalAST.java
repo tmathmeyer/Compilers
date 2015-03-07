@@ -18,7 +18,7 @@ import dijkstra.unify.ScopedSet;
 import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
-public class TerminalAST extends ExprAST
+public class TerminalAST extends ExprAST implements AType
 {
 	private final String name;
 	private AType t = Type.UNKNOWN;

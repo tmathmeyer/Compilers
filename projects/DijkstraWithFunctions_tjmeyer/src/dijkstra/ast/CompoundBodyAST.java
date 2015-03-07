@@ -80,8 +80,11 @@ public class CompoundBodyAST implements AST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		for(AST t : parts)
+		{
+			t.generateCode(writer, mv, tut);
+		}
 	}
 }

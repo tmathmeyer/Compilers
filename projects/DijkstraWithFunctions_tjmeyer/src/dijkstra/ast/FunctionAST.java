@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.expr.TerminalAST;
+import dijkstra.gen.JVMInfo;
 import dijkstra.type.Arrow;
+import dijkstra.type.MethodSignitureGenerator;
 import dijkstra.type.Type;
+import dijkstra.unify.Constraint;
 import dijkstra.unify.ScopedSet;
 import dijkstra.unify.TypeUnificationTable;
 
@@ -37,7 +42,7 @@ public class FunctionAST implements AST
 		name = n;
 		body = b;
 		a.map(x -> (TerminalAST)x).forEach(x -> args.add(x));
-		args.stream().forEach(x -> x.setT(Type.VOID));
+		args.stream().forEach(x -> x.setT(Type.UNKNOWN));
 		type = t;
 	}
 
@@ -114,11 +119,60 @@ public class FunctionAST implements AST
 		Arrow a = new Arrow(Arrow.fromList(args), type);
 		
 		tut.register(new TerminalAST(name, a), a);
+		tut.registerFunction(name, this);
 	}
 	
+	
+	private boolean genSwitch = false;
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor DO_NOT_USE, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		if (genSwitch)
+		{
+			return;
+		}
+		genSwitch = true;
+		
+		
+		Constraint cons = tut.getConstraintByName(name);
+		MethodSignitureGenerator msg = new MethodSignitureGenerator(cons.right());
+		final MethodVisitor mv2 = writer.visitMethod(ACC_PUBLIC + ACC_STATIC, name, msg.toString(), null, null);
+		mv2.visitCode();
+		
+		for(int i = 0; i<args.size(); i++)
+		{
+			JVMInfo.addressOf("arg"+i);
+		}
+		
+		int argc = 0;
+		for(TerminalAST tast : args)
+		{
+			switch(tut.getTypeByName(tast))
+			{
+			case BOOLEAN:
+				mv2.visitVarInsn(ILOAD, JVMInfo.addressOf("arg"+argc++));
+				mv2.visitVarInsn(ISTORE, tast.getAddr());
+				break;
+			case FLOAT:
+				mv2.visitVarInsn(FLOAD, JVMInfo.addressOf("arg"+argc++));
+				mv2.visitVarInsn(FSTORE, tast.getAddr());
+				break;
+			case INT:
+				mv2.visitVarInsn(ILOAD, JVMInfo.addressOf("arg"+argc++));
+				mv2.visitVarInsn(ISTORE, tast.getAddr());
+				break;
+			default:
+				throw new RuntimeException("bad type!!");
+			
+			}
+		}
+		
+		body.generateCode(writer, mv2, tut);
+		
+		
+		//mv2.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "runtimeException", "()V", false);
+		//mv2.visitInsn(RETURN);
+		mv2.visitMaxs(0, 0);
+		mv2.visitEnd();
 	}
 }

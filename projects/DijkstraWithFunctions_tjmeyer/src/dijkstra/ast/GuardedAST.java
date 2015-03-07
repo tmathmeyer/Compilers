@@ -57,12 +57,10 @@ public class GuardedAST implements AST
 		throw new RuntimeException("no, you should NOT be here");
 	}
 
-	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut, Label done) {
-		Label l = new Label();
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut, Label eTrue, Label eFalse) {
 		conditional.generateCode(writer, mv, tut);
-		mv.visitJumpInsn(IFEQ, l);
+		mv.visitJumpInsn(IFEQ, eFalse);
 		statement.generateCode(writer, mv, tut);
-		mv.visitJumpInsn(GOTO, done);
-		mv.visitLabel(l);
+		mv.visitJumpInsn(GOTO, eTrue);
 	}
 }

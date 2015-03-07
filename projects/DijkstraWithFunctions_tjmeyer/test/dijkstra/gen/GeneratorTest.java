@@ -2,13 +2,13 @@ package dijkstra.gen;
 
 //import org.antlr.v4.codegen.CodeGenerator;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.objectweb.asm.ClassWriter;
 
 import dijkstra.Tuple;
 import dijkstra.ast.AST;
-import dijkstra.runtime.DijkstraRuntime.ConditionRuntimeException;
 import dijkstra.unify.TypeUnificationTable;
 import dijkstra.utility.TypeCheckRunner;
 
@@ -24,12 +24,12 @@ public class GeneratorTest extends ClassLoader
 		System.out.println("\n\n");
 	}
 	
-	@Test
+	//@Test
 	public void testInput() throws Exception
 	{	
 		System.out.println("====testInput====");
-		//runCode("boolean a; input a; print a;");
-		//runCode("int a; input a; print a;");
+		runCode("boolean a; input a; print a;");
+		runCode("int a; input a; print a;");
 		System.out.println("\n\n");
 	}
 	
@@ -134,6 +134,7 @@ public class GeneratorTest extends ClassLoader
 			  + "fi"
 		);
 		
+		/*
 		runCode(
 				"input x; "
 			  + "if "
@@ -143,6 +144,7 @@ public class GeneratorTest extends ClassLoader
 			  + "fi "
 			  + "print x"
 		);
+		*/
 		System.out.println("\n\n");
 	}
 	
@@ -150,8 +152,7 @@ public class GeneratorTest extends ClassLoader
 	
 	@Test(expected=InvocationTargetException.class)
 	public void testInvalidConditionals() throws Exception
-	{	
-		System.out.println("====testInvalidConditionals====");
+	{
 		runCode(
 				"boolean negative "
 			  + "x <- 0; "
@@ -160,7 +161,6 @@ public class GeneratorTest extends ClassLoader
 			  + "  x<0 :: negative <- true; "
 			  + "fi "
 		);
-		System.out.println("\n\n");
 	}
 	
 	
@@ -168,9 +168,103 @@ public class GeneratorTest extends ClassLoader
 	public void testLoops() throws Exception
 	{	
 		System.out.println("====testLoops====");
+		runCode(
+				"x <- 5; "
+			  + "do "
+			  + "  x>0 :: { "
+			  + "            print x; "
+			  + "            x <- x-1 "
+			  + "         } "
+			  + "od "
+		);
 		System.out.println("\n\n");
 	}
 	
+	
+	//@Test
+	public void testEuclid() throws Exception
+	{	
+		System.out.println("====testEuclid====");
+		runCode(
+				"input x, y "
+			  + "do "
+			  + "  x~=y :: if "
+			  + "             x > y :: x <- x-y "
+			  + "             y > x :: y <- y-x "
+			  + "          fi "
+			  + "od "
+			  + "print x "
+		);
+		System.out.println("\n\n");
+	}
+	
+	
+	@Test
+	public void testSwap() throws Exception
+	{
+		System.out.println("====testSwap====");
+		runCode(
+				"int x, y "
+			  + "x <- 5 "
+			  + "y <- 7 "
+			  + "x, y <- y, x + y "
+			  + "print x "
+			  + "print y "
+		);
+		System.out.println("\n\n");
+	}
+	
+	
+	@Test
+	public void testEasyFunction() throws Exception
+	{
+		System.out.println("====testEasyFunction====");
+		runCode(
+				"fun res() : int { "
+			  + "  return 2; "
+			  + "} "
+			  + "print res() "
+		);
+		
+		runCode(
+				"fun res(i, j) : int { "
+			  + "  return i+j; "
+			  + "} "
+			  + "print res(7, 7) "
+		);
+		System.out.println("\n\n");
+	}
+	
+	
+	
+	//@Test
+	public void testFibonacci() throws Exception
+	{
+		System.out.println("====testFibonacci====");
+		runCode(
+			"input howMany?"
+			+"	if"
+			+"		howMany? <= 46 :: {"
+			+"			f1, f2 <- 1, 1"
+			+"	"
+			+"			if"
+			+"				howMany? < 2 :: print 1 "
+			+"				howMany? >= 2 :: {print 1; print 1}"
+			+"			fi"
+			+"	"
+			+"			counter <- 2"
+			+"			do"
+			+"				counter < howMany? :: {"
+			+"                                       f1, f2 <- f2, f1 + f2"
+			+"				                         print f2"
+			+"				                         counter <- counter + 1"
+			+"                                    }"
+			+"			od"
+			+"		}"
+			+"  fi "
+		);
+		System.out.println("\n\n");
+	}
 	
 	
 	
@@ -185,6 +279,7 @@ public class GeneratorTest extends ClassLoader
 	
 	private void runCode(String inputText) throws Exception
 	{
+		JVMInfo.reset();
 		Tuple<TypeUnificationTable, AST> res = TypeCheckRunner.check(inputText);
 		
 		TypeUnificationTable t = res.a;
@@ -198,6 +293,13 @@ public class GeneratorTest extends ClassLoader
 		
 		Class<?> testClass = loader.defineClass("djkcode.test", code, 0, code.length);
 
-		testClass.getMethods()[0].invoke(null, new Object[] { null });
+		Method[] methods = testClass.getMethods();
+		for(Method m : methods)
+		{
+			if (m != null && m.getName().equals("main"))
+			{
+				m.invoke(null, new Object[] { null });
+			}
+		}
 	}
 }

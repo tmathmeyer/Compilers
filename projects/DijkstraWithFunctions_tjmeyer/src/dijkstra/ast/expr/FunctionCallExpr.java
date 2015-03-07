@@ -1,5 +1,7 @@
 package dijkstra.ast.expr;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
 import dijkstra.ast.AST;
+import dijkstra.type.MethodSignitureGenerator;
+import dijkstra.unify.Constraint;
 import dijkstra.unify.Term;
 import dijkstra.unify.TypeUnificationTable;
 
@@ -75,8 +79,12 @@ public class FunctionCallExpr extends ExprAST
 	}
 	
 	@Override
-	public void generateCode(ClassWriter writer, MethodVisitor method, TypeUnificationTable tut)
+	public void generateCode(ClassWriter writer, MethodVisitor mv, TypeUnificationTable tut)
 	{
-		throw new RuntimeException("NOT IMPLEMENTED");
+		Constraint cons = tut.getConstraintByName(fname);
+		MethodSignitureGenerator msg = new MethodSignitureGenerator(cons.right());
+		
+		args.forEach(e -> e.generateCode(writer, mv, tut));
+		mv.visitMethodInsn(INVOKESTATIC, "djkcode/"+tut.getName(), fname, msg.toString(), false);
 	}
 }

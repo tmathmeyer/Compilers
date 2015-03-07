@@ -107,16 +107,27 @@ public class AssignmentAST implements AST
 	{
 		Iterator<ExprAST> to = assignTo.iterator();
 		Iterator<ExprAST> from = assignFrom.iterator();
+		LinkedList<ExprAST> toReverse = new LinkedList<>();
+		
 		for(int i=0; i<assignTo.size(); i++)
 		{
 			ExprAST t = to.next();
 			ExprAST f = from.next();
+			toReverse.push(t);
+			
 			
 			if (t instanceof ArrayAccessAST)
 			{
 				((ArrayAccessAST)t).store(writer, mv, tut);
 			}
 			f.generateCode(writer, mv, tut);
+		}
+		
+		to = toReverse.iterator();
+		
+		for(int i=0; i<toReverse.size(); i++)
+		{
+			ExprAST t = to.next();
 			switch(tut.getTypeByName(t))
 			{
 				case INT: case C_INT: case NUMERIC_GENERAL:
@@ -143,9 +154,6 @@ public class AssignmentAST implements AST
 				default:
 					throw new RuntimeException("Cant Load that type " + t);
 			}
-			
-			
-			
 		}
 	}
 }

@@ -58,9 +58,11 @@ public class ConditionalAST implements AST
 		Label done = new Label();
 		for(GuardedAST t : conditionals)
 		{
-			t.generateCode(writer, mv, tut, done);
+			Label notDone = new Label();
+			t.generateCode(writer, mv, tut, done, notDone);
+			mv.visitLabel(notDone);
 		}
-		mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "condFail", "()V", false);
+		mv.visitMethodInsn(INVOKESTATIC, "dijkstra/runtime/DijkstraRuntime", "runtimeException", "()V", false);
 		
 		mv.visitLabel(done);
 	}

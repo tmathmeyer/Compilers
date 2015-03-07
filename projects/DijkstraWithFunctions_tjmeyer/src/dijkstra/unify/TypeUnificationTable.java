@@ -1,8 +1,15 @@
 package dijkstra.unify;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.objectweb.asm.ClassWriter;
+
 import dijkstra.ast.AST;
+import dijkstra.ast.FunctionAST;
 import dijkstra.ast.expr.ExprAST;
 import dijkstra.ast.expr.TerminalAST;
+import dijkstra.gen.JVMInfo;
 import dijkstra.type.Arrow;
 import dijkstra.type.Monad;
 import dijkstra.type.Type;
@@ -11,8 +18,14 @@ import dijkstra.unify.rlist.RList;
 public class TypeUnificationTable
 {
 	private final ReverseNameIndex rni;
-	
 	private RList<Term, Constraint> temp = RList.emptyList();
+	private Map<String, FunctionAST> fnmap = new HashMap<>();
+	private String name;
+	
+	public void setName(String n)
+	{
+		name = n;
+	}
 	
 	public TypeUnificationTable(RList<Term, Constraint> cs, ReverseNameIndex r)
 	{
@@ -51,7 +64,10 @@ public class TypeUnificationTable
 			temp = temp.rest();
 		}
 		
-		return new TypeUnificationTable(mew, rni);
+		TypeUnificationTable newtut = new TypeUnificationTable(mew, rni);
+		newtut.fnmap = fnmap;
+		newtut.setName(name);
+		return newtut;
 	}
 	
 	
@@ -107,7 +123,10 @@ public class TypeUnificationTable
 	
 	public TypeUnificationTable check(RList<Term, Constraint> cons)
 	{
-		return new TypeUnificationTable(unify(temp, cons), rni);
+		TypeUnificationTable newtut =  new TypeUnificationTable(unify(temp, cons), rni);
+		newtut.fnmap = fnmap;
+		newtut.setName(name);
+		return newtut;
 	}
 
 	public Type getTypeByName(AST outputAST)
@@ -193,5 +212,33 @@ public class TypeUnificationTable
 			temp = temp.rest();
 		}
 		return null;
+	}
+
+	public void makeFunctions(ClassWriter cw)
+	{
+		RList<Term, Constraint> temp = this.temp;
+		while(!temp.empty())
+		{
+			Constraint c = temp.first();
+			
+			if (c.right() instanceof Arrow)
+			{
+				JVMInfo.reset();
+				fnmap.get(c.left().toString()).generateCode(cw, null, this);
+			}
+			
+			
+			temp = temp.rest();
+		}
+	}
+
+	public void registerFunction(String name, FunctionAST functionAST)
+	{
+		fnmap.put(name, functionAST);
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 }
